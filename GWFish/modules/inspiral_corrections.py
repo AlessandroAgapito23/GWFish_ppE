@@ -455,12 +455,11 @@ class IMRPhenomD_PPE(Waveform):
 
         #Total INSPIRAL PART OF THE PHASE, with also late inspiral terms
 
-        #psi_ins = psi_TF2 + psi_ppe + psi_gIMR + psi_late_ins
-        psi_ins = psi_TF2 + psi_ppe + psi_late_ins
+        psi_ins = psi_TF2 + psi_ppe + psi_gIMR + psi_late_ins
 
         # Evaluate PHASE and the PHASE DERIVATIVE at the INTERFACE between inspiral and intermediate phase
 
-        f1 = 0.018 #transition frequency M*f_int, f_int = 56.3 Hz
+        f1 = 0.0166 #transition frequency M*f_int, f_int = 56.3 Hz
 
         # Analytical form
         psi_TF2_prime = 2.*np.pi*cst.c**3/(cst.G*M)*tc +\
@@ -489,9 +488,8 @@ class IMRPhenomD_PPE(Waveform):
 
         psi_late_ins_prime = 1./eta*(sigma2*ff**(1./3.) + sigma3*ff**(2./3.) + sigma4*ff)
 
-       #psi_ins_prime = psi_TF2_prime + psi_ppe_prime + psi_gIMR_prime + psi_late_ins_prime
-        psi_ins_prime = psi_TF2_prime + psi_ppe_prime + psi_late_ins_prime
-
+        psi_ins_prime = psi_TF2_prime + psi_ppe_prime + psi_gIMR_prime + psi_late_ins_prime
+        
         
         #phi_5 and phi_6 are the only ones which depend on the frequency
 
@@ -526,8 +524,7 @@ class IMRPhenomD_PPE(Waveform):
         psi_late_ins_f1 = 1./eta*(3./4.*sigma2*f1**(4./3.) + 3./5.*sigma3*f1**(5./3.) + 1./2.*sigma4*f1**2)
 
         #inspiral part of the fase evaluated at f1  
-        #psi_ins_tot_f1 = psi_TF2_f1 + psi_ppe_f1 + psi_gIMR_f1 + psi_late_ins_f1  
-        psi_ins_tot_f1 = psi_TF2_f1 + psi_ppe_f1 + psi_late_ins_f1   
+        psi_ins_tot_f1 = psi_TF2_f1 + psi_ppe_f1 + psi_gIMR_f1 + psi_late_ins_f1  
 
         #derivative of the inspiral part of the fase evaluated at f1
 
@@ -559,9 +556,9 @@ class IMRPhenomD_PPE(Waveform):
 
         psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) + sigma3*f1**(2./3.) + sigma4*ff)
         
-        #psi_ins_prime_f1 = psi_TF2_prime_f1 + psi_ppe_prime_f1 + psi_gIMR_prime_f1 + psi_late_ins_prime_f1
-        psi_ins_prime_f1 = psi_TF2_prime_f1 + psi_ppe_prime_f1 + psi_late_ins_prime_f1
+        psi_ins_prime_f1 = psi_TF2_prime_f1 + psi_ppe_prime_f1 + psi_gIMR_prime_f1 + psi_late_ins_prime_f1
 
+        
         ########################################################################
         # PN coefficients for the INTERMEDIATE PHASE >>>>>>>>>>>>>>>>>>>>>>>>>>>
         ########################################################################
@@ -640,7 +637,7 @@ class IMRPhenomD_PPE(Waveform):
         psi_MR_prime = 1./eta*(alpha1 + alpha2*ff**(-2.) + alpha3*ff**(-1./4.) + alpha4*ff_damp/(ff_damp**2. + (ff - alpha5*ff_RD)**2.))
     
         # Conjunction functions
-        ff1 = 0.018*ones
+        ff1 = 0.0166*ones
         ff2 = 0.5*ff_RD*ones
     
         theta_minus1 = 0.5*(1*ones - step_function(ff,ff1)) # = 0 per f>ff1
