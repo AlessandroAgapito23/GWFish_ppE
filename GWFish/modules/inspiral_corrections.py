@@ -501,7 +501,7 @@ class IMRPhenomD_PPE(Waveform):
         
         #INSPIRAL PART OF THE FASE (and its derivative) evaluated at f1
         
-        psi_TF2_f1 = 2.*np.pi*ff*cst.c**3/(cst.G*M)*tc - phic*ones - np.pi/4.*ones +\
+        psi_TF2_f1 = 2.*np.pi*f1*cst.c**3/(cst.G*M)*tc - phic*ones - np.pi/4.*ones +\
                 3./(128.*eta)*((np.pi*f1)**(-5./3.) +\
                 phi_2*(np.pi*f1)**(-1.) +\
                 phi_3*(np.pi*f1)**(-2./3.) +\
