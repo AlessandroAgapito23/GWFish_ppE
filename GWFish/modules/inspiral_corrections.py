@@ -257,8 +257,8 @@ class TaylorF2_PPE(Waveform):
                 phi_2*delta_phi_2*(np.pi*ff)**(-1.) +\
                 phi_3*delta_phi_3*(np.pi*ff)**(-2./3.) +\
                 phi_4*delta_phi_4*(np.pi*ff)**(-1./3.) +\
-                phi_5*delta_phi_5*np.log(ff) +\
-                phi_6*delta_phi_6*(np.pi*ff)**(1./3.)*(1+np.log(ff)) +\
+                phi_5*delta_phi_5 +\
+                phi_6*delta_phi_6*(np.pi*ff)**(1./3.) +\
                 phi_7*delta_phi_7*(np.pi*ff)**(2./3.)) 
         
         psi_ppe = beta*((np.pi*frequencyvector*Mc)**((2*PN-5.)/3.))  #ppe correction at every b order
