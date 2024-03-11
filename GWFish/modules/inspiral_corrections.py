@@ -257,8 +257,8 @@ class TaylorF2_PPE(Waveform):
                 phi_2*delta_phi_2*(np.pi*ff)**(-1.) +\
                 phi_3*delta_phi_3*(np.pi*ff)**(-2./3.) +\
                 phi_4*delta_phi_4*(np.pi*ff)**(-1./3.) +\
-                phi_5*delta_phi_5 +\
-                phi_6*delta_phi_6*(np.pi*ff)**(1./3.) +\
+                phi_5*delta_phi_5*np.log(ff) +\
+                phi_6*delta_phi_6*(np.pi*ff)**(1./3.)*(1+np.log(ff)) +\
                 phi_7*delta_phi_7*(np.pi*ff)**(2./3.)) 
         
         psi_ppe = beta*((np.pi*frequencyvector*Mc)**((2*PN-5.)/3.))  #ppe correction at every b order
@@ -473,8 +473,10 @@ class IMRPhenomD_PPE(Waveform):
                         phi_2*(np.pi)**(-1.)*(-1.*ff**(-2.)) +\
                         phi_3*(np.pi)**(-2./3.)*(-2./3.*ff**(-5./3.))+\
                         phi_4*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
-                        phi_6*(np.pi)**(1./3.)*(1./3.*ff**(-1.)) +\
-                        phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-2./3.))
+                        ff**(-1.)*(38645./756.*np.pi - 65./9.*np.pi*eta + delta_mass*(-(732985./2268.) - 140./9.*eta)*chi_a + (-(732985./2268.) + 24260./81.*eta + 340./9.*eta2)*chi_s) +\
+                        phi_6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) -\
+                        6848./63.*64.*np.pi*ff**(-1.)*(np.pi*ff)**(1./3.) +\
+                        phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.))
                       )
         
         psi_gIMR_prime = 3./(128.*eta)*((np.pi)**(-5./3.)*(-5./3.*ff**(-8./3.)) +\
@@ -482,13 +484,17 @@ class IMRPhenomD_PPE(Waveform):
                         phi_2*delta_phi_2*(np.pi)**(-1.)*(-1.*ff**(-2.)) +\
                         phi_3*delta_phi_3*(np.pi)**(-2./3.)*(-2./3.*ff**(-5./3.))+\
                         phi_4*delta_phi_4*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
-                        phi_6*delta_phi_5*(np.pi)**(1./3.)*(1./3.*ff**(-1.)) +\
-                        phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-2./3.))
+                        delta_phi_5*ff**(-1.)*(38645./756.*np.pi - 65./9.*np.pi*eta + delta_mass*(-(732985./2268.) - 140./9.*eta)*chi_a + (-(732985./2268.) + 24260./81.*eta + 340./9.*eta2)*chi_s) +\
+                        phi_6*delta_phi_6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
+                        delta_phi_6*(np.pi*ff)**(1./3.)*(-6848./63.*64.*np.pi*ff**(-1.)) +\
+                        phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.))
                       )
         
         psi_ppe_prime = beta*(2*PN-5.)/3.*((np.pi*(ff/(cst.G*M/cst.c**3))*Mc)**((2*PN-8.)/3.))
 
-        psi_ins_prime = psi_TF2_prime + psi_ppe_prime + 1./eta*(sigma2*ff**(1./3.) + sigma3*ff**(2./3.) + sigma4*ff)
+        psi_late_ins_prime = 1./eta*(sigma2*ff**(1./3.) + sigma3*ff**(2./3.) + sigma4*ff)
+
+        psi_ins_prime = psi_TF2_prime + psi_ppe_prime + psi_late_ins_prime
 
         
         #phi_5 and phi_6 are the only ones which depend on the frequency
@@ -501,51 +507,64 @@ class IMRPhenomD_PPE(Waveform):
         
         #INSPIRAL PART OF THE FASE (and its derivative) evaluated at f1
         
-        psi_ins_f1 = 2.*np.pi*f1/(cst.G*M)*cst.c**3*tc - phic - np.pi/4. + 3./(128.*eta)*(np.pi*f1)**(-5/3)*(phi_0 +\
-                phi_2*(np.pi*f1)**(2./3.) +\
-                phi_3*(np.pi*f1) +\
-                phi_4*(np.pi*f1)**(4./3.) +\
-                phi_5_f1*(np.pi*f1)**(5./3.) +\
-                phi_6_f1*(np.pi*f1)**2. +\
-                phi_7*(np.pi*f1)**(7./3.))
+        psi_TF2_f1 = 2.*np.pi*ff*cst.c**3/(cst.G*M)*tc - phic*ones - np.pi/4.*ones +\
+                3./(128.*eta)*((np.pi*f1)**(-5./3.) +\
+                phi_2*(np.pi*f1)**(-1.) +\
+                phi_3*(np.pi*f1)**(-2./3.) +\
+                phi_4*(np.pi*f1)**(-1./3.) +\
+                phi_5_f1 +\
+                phi_6_f1*(np.pi*f1)**(1./3.) +\
+                phi_7*(np.pi*f1)**(2./3.))
 
         psi_gIMR_f1 = 3./(128.*eta)*(delta_phi_0*(np.pi*f1)**(-5./3.) +\
                 delta_phi_1*(np.pi*f1)**(-4./3.)+\
                 phi_2*delta_phi_2*(np.pi*f1)**(-1.) +\
                 phi_3*delta_phi_3*(np.pi*f1)**(-2./3.) +\
                 phi_4*delta_phi_4*(np.pi*f1)**(-1./3.) +\
-                phi_5*delta_phi_5 +\
-                phi_6*delta_phi_6*(np.pi*f1)**(1./3.) +\
-                phi_7*delta_phi_7*(np.pi*f1)**(2./3.)) 
+                phi_5_f1*delta_phi_5 +\
+                phi_6_f1*delta_phi_6*(np.pi*f1)**(1./3.) +\
+                phi_7*delta_phi_7*(np.pi*f1)**(2./3.))
                 
         psi_ppe_f1 = beta*((np.pi*(f1/(cst.G*M/cst.c**3)*Mc))**((2*PN-5.)/3.))
 
         psi_late_ins_f1 = 1./eta*(3./4.*sigma2*f1**(4./3.) + 3./5.*sigma3*f1**(5./3.) + 1./2.*sigma4*f1**2)
 
         #inspiral part of the fase evaluated at f1  
-        psi_ins_tot_f1 = psi_ins_f1 + psi_ppe_f1 + psi_gIMR_f1 + psi_late_ins_f1   
+        psi_ins_tot_f1 = psi_TF2_f1 + psi_ppe_f1 + psi_gIMR_f1 + psi_late_ins_f1   
 
         #derivative of the inspiral part of the fase evaluated at f1
 
         # Analytical form
-        psi_ins_prime_f1 = psi_TF2_prime = 2.*np.pi*cst.c**3/(cst.G*M)*tc +\
-                        3./(128.*eta)*((np.pi)**(-5./3.)*(-5./3.*f1**(-2./3.)) +\
-                        phi_2*(np.pi)**(-1.)*(-1.) +\
-                        phi_3*(np.pi)**(-2./3.)*(-2./3.*f1**(1./3.))+\
-                        phi_4*(np.pi)**(-1./3.)*(-1./3.*f1**(2./3.)) +\
-                        phi_6_f1*(np.pi)**(1./3.)*(1./3.*f1**(4./3.)) +\
-                        phi_7*(np.pi)**(2./3.)*(2./3.*f1**(5./3.))) +\
+
+        psi_TF2_prime_f1 = 2.*np.pi*cst.c**3/(cst.G*M)*tc +\
                         3./(128.*eta)*((np.pi)**(-5./3.)*(-5./3.*f1**(-8./3.)) +\
+                        phi_2*(np.pi)**(-1.)*(-1.*f1**(-2.)) +\
+                        phi_3*(np.pi)**(-2./3.)*(-2./3.*f1**(-5./3.))+\
+                        phi_4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
+                        f1**(-1.)*(38645./756.*np.pi - 65./9.*np.pi*eta + delta_mass*(-(732985./2268.) - 140./9.*eta)*chi_a + (-(732985./2268.) + 24260./81.*eta + 340./9.*eta2)*chi_s) +\
+                        phi_6_f1*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) -\
+                        6848./63.*64.*np.pi*f1**(-1.)*(np.pi*f1)**(1./3.) +\
+                        phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.))
+                      )
+        
+        psi_gIMR_prime_f1 = 3./(128.*eta)*((np.pi)**(-5./3.)*(-5./3.*f1**(-8./3.)) +\
                         delta_phi_1*(np.pi)**(-4./3.)*(-4./3.*f1**(-7./3.)) +\
                         phi_2*delta_phi_2*(np.pi)**(-1.)*(-1.*f1**(-2.)) +\
                         phi_3*delta_phi_3*(np.pi)**(-2./3.)*(-2./3.*f1**(-5./3.))+\
                         phi_4*delta_phi_4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
-                        phi_6*delta_phi_5*(np.pi)**(1./3.)*(1./3.*f1**(-1.)) +\
-                        phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-2./3.))) +\
-                        1./eta*(sigma2*f1**(1./3.) + sigma3*f1**(2./3.) + sigma4*f1) +\
-                        (beta*(2*PN-5.)/3.)*((np.pi*(f1/(cst.G*M/cst.c**3))*Mc)**((2*PN-8.)/3.))
+                        delta_phi_5*f1**(-1.)*(38645./756.*np.pi - 65./9.*np.pi*eta + delta_mass*(-(732985./2268.) - 140./9.*eta)*chi_a + (-(732985./2268.) + 24260./81.*eta + 340./9.*eta2)*chi_s) +\
+                        phi_6_f1*delta_phi_6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
+                        delta_phi_6*(np.pi*f1)**(1./3.)*(-6848./63.*64.*np.pi*f1**(-1.)) +\
+                        phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.))
+                      )
 
-    
+        psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*((np.pi*(f1/(cst.G*M/cst.c**3))*Mc)**((2*PN-8.)/3.))
+
+        psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) + sigma3*f1**(2./3.) + sigma4*ff)
+        
+        
+        psi_ins_prime_f1 = psi_TF2_prime_f1 + psi_gIMR_prime_f1 + psi_ppe_prime_f1 + psi_late_ins_prime_f1
+
         ########################################################################
         # PN coefficients for the INTERMEDIATE PHASE >>>>>>>>>>>>>>>>>>>>>>>>>>>
         ########################################################################
