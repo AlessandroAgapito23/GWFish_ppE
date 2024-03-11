@@ -406,16 +406,10 @@ class IMRPhenomD_PPE(Waveform):
         phi_1 = 0.
         phi_2 = 3715./756. + 55./9.*eta
         phi_3 = -16.*np.pi + 113./3.*delta_mass*chi_a + (113./3. - 76./3.*eta)*chi_s
-        phi_4 = 15293365./508032. + 27145./504.*eta + 3085./72.*eta2 + (-(405./8.) + 200*eta)*chi_a**2 - \
-                405./4.*delta_mass*chi_a*chi_s + (-(405./8.) + 5./2.*eta)*chi_s**2
-        phi_5 = (1 + np.log(np.pi*ff))*(38645./756.*np.pi - 65./9.*np.pi*eta + \
-                delta_mass*(-(732985./2268.) - 140./9.*eta)*chi_a + (-(732985./2268.) + 24260./81.*eta + 340./9.*eta2)*chi_s)
-        phi_6 = 11583231236531./4694215680. - 6848./21.*C - (640.*np.pi**2)/3. + (-15737765635./3048192. + 2255.*np.pi**2/12.)*eta +\
-                76055.*eta2/1728. - 127825.*eta3/1296. - 6848./63.*np.log(64*np.pi*ff) + 2270./3.*np.pi*delta_mass*chi_a +\
-                (2270.*np.pi/3. - 520.*np.pi*eta)*chi_s
-        phi_7 = (77096675./254016. + 378515./1512.*eta - 74045./756.*eta2)*np.pi +\
-                delta_mass*(-(25150083775./3048192.) + 26804935./6048.*eta - 1985./48.*eta2)*chi_a +\
-                (-(25150083775./3048192.) + 10566655595./762048.*eta - 1042165./3024.*eta2 + 5345./36.*eta3)*chi_s
+        phi_4 = 15293365./508032. + 27145./504.*eta + 3085./72.*eta2 + (-(405./8.) + 200*eta)*chi_a**2 - 405./4.*delta_mass*chi_a*chi_s + (-(405./8.) + 5./2.*eta)*chi_s**2
+        phi_5 = (1 + np.log(np.pi*ff))*(38645./756.*np.pi - 65./9.*np.pi*eta + delta_mass*(-(732985./2268.) - 140./9.*eta)*chi_a + (-(732985./2268.) + 24260./81.*eta + 340./9.*eta2)*chi_s)
+        phi_6 = 11583231236531./4694215680. - 6848./21.*C - (640.*np.pi**2)/3. + (-15737765635./3048192. + 2255.*np.pi**2/12.)*eta + 76055.*eta2/1728. - 127825.*eta3/1296. - 6848./63.*np.log(64*np.pi*ff) + 2270./3.*np.pi*delta_mass*chi_a + (2270.*np.pi/3. - 520.*np.pi*eta)*chi_s
+        phi_7 = (77096675./254016. + 378515./1512.*eta - 74045./756.*eta2)*np.pi + delta_mass*(-(25150083775./3048192.) + 26804935./6048.*eta - 1985./48.*eta2)*chi_a + (-(25150083775./3048192.) + 10566655595./762048.*eta - 1042165./3024.*eta2 + 5345./36.*eta3)*chi_s
        
 
         #EARLY INSPIRAL PART OF THE PHASE phi_EI(f)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -461,9 +455,9 @@ class IMRPhenomD_PPE(Waveform):
 
         #Total INSPIRAL PART OF THE PHASE, with also late inspiral terms
 
-        psi_ins = psi_TF2 + psi_ppe + psi_late_ins
+        psi_ins = psi_TF2 + psi_ppe + psi_gIMR + psi_late_ins
 
-        # Evaluate phase and its DERIVATIVE at the INTERFACE between inspiral and intermediate phase
+        # Evaluate PHASE and the PHASE DERIVATIVE at the INTERFACE between inspiral and intermediate phase
 
         f1 = 0.018 #transition frequency M*f_int, f_int = 56.3 Hz
 
@@ -494,7 +488,7 @@ class IMRPhenomD_PPE(Waveform):
 
         psi_late_ins_prime = 1./eta*(sigma2*ff**(1./3.) + sigma3*ff**(2./3.) + sigma4*ff)
 
-        psi_ins_prime = psi_TF2_prime + psi_ppe_prime + psi_late_ins_prime
+        psi_ins_prime = psi_TF2_prime + psi_ppe_prime + psi_gIMR_prime + psi_late_ins_prime
 
         
         #phi_5 and phi_6 are the only ones which depend on the frequency
@@ -561,7 +555,6 @@ class IMRPhenomD_PPE(Waveform):
         psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*((np.pi*(f1/(cst.G*M/cst.c**3))*Mc)**((2*PN-8.)/3.))
 
         psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) + sigma3*f1**(2./3.) + sigma4*ff)
-        
         
         psi_ins_prime_f1 = psi_TF2_prime_f1 + psi_gIMR_prime_f1 + psi_ppe_prime_f1 + psi_late_ins_prime_f1
 
