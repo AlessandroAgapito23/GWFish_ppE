@@ -437,7 +437,9 @@ class IMRPhenomD_PPE(Waveform):
                 phi_3*delta_phi_3*(np.pi*ff)**(-2./3.) +\
                 phi_4*delta_phi_4*(np.pi*ff)**(-1./3.) +\
                 phi_5*delta_phi_5 +\
+                phi_5_l*delta_phi_8*np.log(np.pi*ff) +\  # 2.5 PN logarithmic correction
                 phi_6*delta_phi_6*(np.pi*ff)**(1./3.) +\
+                phi_6_l*delta_phi_9*np.log(64*np.pi*ff)*(np.pi*ff)**(1./3.) +\  # 3 PN logarithmic correction
                 phi_7*delta_phi_7*(np.pi*ff)**(2./3.)) 
         
         psi_ppe = beta*((np.pi*(ff/(cst.G*M/cst.c**3))*Mc)**((2*PN-5.)/3.)) #ppe correction at every b order
@@ -478,8 +480,7 @@ class IMRPhenomD_PPE(Waveform):
                         phi_5_l*(np.pi)*ff**(-1.) +\
                         phi_6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
                         phi_6_l*(64.*np.pi)*ff**(-1.)*(np.pi*ff)**(1./3.) +\
-                        phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.))
-                      )
+                        phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.)))
         
         psi_gIMR_prime = 3./(128.*eta)*((np.pi)**(-5./3.)*(-5./3.*ff**(-8./3.)) +\
                         delta_phi_1*(np.pi)**(-4./3.)*(-4./3.*ff**(-7./3.)) +\
@@ -487,15 +488,17 @@ class IMRPhenomD_PPE(Waveform):
                         phi_3*delta_phi_3*(np.pi)**(-2./3.)*(-2./3.*ff**(-5./3.)) +\
                         phi_4*delta_phi_4*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
                         phi_6*delta_phi_6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
-                        phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.))
-                      )
+                        phi_6_l*delta_phi_9*((np.pi*ff)**(1./3.)*(64*np.pi*ff**(-1.)) + np.log(64*np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
+                        phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.)))
         
         psi_ppe_prime = beta*(2*PN-5.)/3.*((np.pi*(ff/(cst.G*M/cst.c**3))*Mc)**((2*PN-8.)/3.))
 
         psi_late_ins_prime = 1./eta*(sigma2*ff**(1./3.) + sigma3*ff**(2./3.) + sigma4*ff)
 
         psi_ins_prime = psi_TF2_prime + psi_ppe_prime + psi_gIMR_prime + psi_late_ins_prime
-        
+
+                     
+        ############################## EVALUATION AT f = f1 #########################################
         
         #phi_5 and phi_6 are the only ones which depend on the frequency
 
@@ -522,7 +525,9 @@ class IMRPhenomD_PPE(Waveform):
                 phi_3*delta_phi_3*(np.pi*f1)**(-2./3.) +\
                 phi_4*delta_phi_4*(np.pi*f1)**(-1./3.) +\
                 phi_5_f1*delta_phi_5 +\
+                phi_5_l*delta_phi_8*np.log(np.pi*f1) +\
                 phi_6_f1*delta_phi_6*(np.pi*f1)**(1./3.) +\
+                phi_6_l*delta_phi_9*np.log(64*np.pi*f1)*(np.pi*f1)**(1./3.) +\
                 phi_7*delta_phi_7*(np.pi*f1)**(2./3.))
                 
         psi_ppe_f1 = beta*((np.pi*(f1/(cst.G*M/cst.c**3)*Mc))**((2*PN-5.)/3.))
@@ -544,8 +549,7 @@ class IMRPhenomD_PPE(Waveform):
                         phi_5_l*(np.pi)*ff**(-1.) +\
                         phi_6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
                         phi_6_l*(64.*np.pi)*f1**(-1.)*(np.pi*f1)**(1./3.) +\
-                        phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.))
-                      )
+                        phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
         
         psi_gIMR_prime_f1 = 3./(128.*eta)*((np.pi)**(-5./3.)*(-5./3.*f1**(-8./3.)) +\
                         delta_phi_1*(np.pi)**(-4./3.)*(-4./3.*f1**(-7./3.)) +\
@@ -553,8 +557,8 @@ class IMRPhenomD_PPE(Waveform):
                         phi_3*delta_phi_3*(np.pi)**(-2./3.)*(-2./3.*f1**(-5./3.)) +\
                         phi_4*delta_phi_4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
                         phi_6*delta_phi_6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
-                        phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.))
-                      )
+                        phi_6_l*delta_phi_9*((np.pi*f1)**(1./3.)*(64*np.pi*f1**(-1.)) + np.log(64*np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
+                        phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
 
         psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*((np.pi*(f1/(cst.G*M/cst.c**3))*Mc)**((2*PN-8.)/3.))
 
