@@ -204,6 +204,8 @@ class TaylorF2_PPE(Waveform):
         delta_phi_5 = self.gw_params['delta_phi_5']
         delta_phi_6 = self.gw_params['delta_phi_6']
         delta_phi_7 = self.gw_params['delta_phi_7']
+        delta_phi_8 = self.gw_params['delta_phi_8']
+        delta_phi_9 = self.gw_params['delta_phi_9']
 
         #f_cut = cut_order * f_isco
         cut = self.gw_params['cut']
