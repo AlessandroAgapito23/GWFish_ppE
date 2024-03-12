@@ -171,6 +171,8 @@ class Waveform:
             'delta_phi_5':0.,
             'delta_phi_6':0.,
             'delta_phi_7':0.,
+            'delta_phi_8':0.,
+            'delta_phi_9':0.,
             #f_cut for TaylorF2
             'cut':4.
         }
