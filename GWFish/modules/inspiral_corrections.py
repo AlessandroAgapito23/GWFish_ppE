@@ -487,7 +487,7 @@ class IMRPhenomD_PPE(Waveform):
                         phi_4*delta_phi_4*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
                         phi_6*delta_phi_6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
                         phi_6_l*delta_phi_9*((np.pi*ff)**(1./3.)*(64*np.pi*ff**(-1.)) + np.log(64*np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
-                        phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.)))
+                        phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.))))
         
         psi_ppe_prime = beta*(2*PN-5.)/3.*((np.pi*(ff/(cst.G*M/cst.c**3))*Mc)**((2*PN-8.)/3.))
 
@@ -556,7 +556,7 @@ class IMRPhenomD_PPE(Waveform):
                         phi_4*delta_phi_4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
                         phi_6*delta_phi_6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
                         phi_6_l*delta_phi_9*((np.pi*f1)**(1./3.)*(64*np.pi*f1**(-1.)) + np.log(64*np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
-                        phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
+                        phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.))))
 
         psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*((np.pi*(f1/(cst.G*M/cst.c**3))*Mc)**((2*PN-8.)/3.))
 
