@@ -462,10 +462,13 @@ class IMRPhenomD_PPE(Waveform):
         psi_late_ins = 1./eta*(3./4.*sigma2*ff**(4./3.) + 3./5.*sigma3*ff**(5./3.) + 1./2.*sigma4*ff**2)
 
         #Total INSPIRAL PART OF THE PHASE, with also late inspiral terms
-
+        ################################################################################ 
         psi_ins = psi_TF2 + psi_ppe + psi_gIMR + psi_late_ins
+        ################################################################################ 
 
-        # Evaluate PHASE and the PHASE DERIVATIVE at the INTERFACE between inspiral and intermediate phase
+        ################################################################################ 
+        # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
+        ################################################################################ 
 
         f1 = 0.018 #transition frequency M*f_int, f_int = 56.3 Hz
 
@@ -493,20 +496,14 @@ class IMRPhenomD_PPE(Waveform):
 
         psi_late_ins_prime = 1./eta*(sigma2*ff**(1./3.) + sigma3*ff**(2./3.) + sigma4*ff)
 
+        ################################################################################ 
         psi_ins_prime = psi_TF2_prime + psi_ppe_prime + psi_gIMR_prime + psi_late_ins_prime
+        ################################################################################ 
 
                      
-        ############################## EVALUATION AT f = f1 #########################################
+        ############################## EVALUATION AT f = f1 ############################
         
-        #phi_5 and phi_6 are the only ones which depend on the frequency
-
-        phi_5_f1 = (1 + np.log(np.pi*f1))*(38645./756.*np.pi - 65./9.*np.pi*eta + \
-                delta_mass*(-(732985./2268.) - 140./9.*eta)*chi_a + (-(732985./2268.) + 24260./81.*eta + 340./9.*eta2)*chi_s)
-        phi_6_f1 = 11583231236531./4694215680. - 6848./21.*C - (640.*np.pi**2)/3. + (-15737765635./3048192. + 2255.*np.pi**2/12.)*eta +\
-                76055.*eta2/1728. - 127825.*eta3/1296. - 6848./63.*np.log(64*np.pi*f1) + 2270./3.*np.pi*delta_mass*chi_a +\
-                (2270.*np.pi/3. - 520.*np.pi*eta)*chi_s
-        
-        #INSPIRAL PART OF THE FASE (and its derivative) evaluated at f1
+        #INSPIRAL PART OF THE phase evaluated at f1
         
         psi_TF2_f1 = 2.*np.pi*f1*cst.c**3/(cst.G*M)*tc - phic*ones - np.pi/4.*ones +\
                      3./(128.*eta)*((np.pi*f1)**(-5./3.) +\
@@ -535,7 +532,7 @@ class IMRPhenomD_PPE(Waveform):
         #inspiral part of the fase evaluated at f1  
         psi_ins_tot_f1 = psi_TF2_f1 + psi_ppe_f1 + psi_gIMR_f1 + psi_late_ins_f1  
 
-        #derivative of the inspiral part of the fase evaluated at f1
+        #DERIVATIVE OF THE INSPIRAL PART of the phase evaluated at f1
 
         # Analytical form
 
@@ -562,13 +559,15 @@ class IMRPhenomD_PPE(Waveform):
         psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*((np.pi*(f1/(cst.G*M/cst.c**3))*Mc)**((2*PN-8.)/3.))
 
         psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) + sigma3*f1**(2./3.) + sigma4*ff)
-        
+
+        ################################################################################ 
         psi_ins_prime_f1 = psi_TF2_prime_f1 + psi_ppe_prime_f1 + psi_gIMR_prime_f1 + psi_late_ins_prime_f1
+        ################################################################################ 
 
         
-        ########################################################################
-        # PN coefficients for the INTERMEDIATE PHASE >>>>>>>>>>>>>>>>>>>>>>>>>>>
-        ########################################################################
+        ################################################################################ 
+        # PN coefficients for the INTERMEDIATE PHASE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ################################################################################ 
         #beta0 and beta1 are fixed by the continuity conditions 
 
         beta2 = -3.282701958759534 - 9.051384468245866*eta\
@@ -580,10 +579,9 @@ class IMRPhenomD_PPE(Waveform):
                 + (chi_PN - 1)**2*(7.157371250566708e-6 - 0.000055780000112270685*eta + 0.00019142082884072178*eta2)\
                 + (chi_PN - 1)**3*(5.447166261464217e-6 - 0.00003220610095021982*eta + 0.00007974016714984341*eta2)
         
-        ########################################################################     
-        #################### INS-INT PHASE CONTINUITY CONDITIONS ###############
-        ########################################################################
-        # Impose C1 conditions at the interface (same conditions as in IMRPhenomD but with different psi_ins_prime)
+        
+        ####################### INS-INT PHASE CONTINUITY CONDITIONS ###################
+        # Impose C1 conditions at the interface (same conditions as in IMRPhenomD but with different psi_ins & psi_ins_prime)
         
         beta1 = eta*psi_ins_prime_f1 - beta2*f1**(-1.) - beta3*f1**(-4.)  #psi_ins_prime_f1 = psi_int_prime_f1
         beta0 = eta*psi_ins_tot_f1 - beta1*f1 - beta2*np.log(f1) + beta3/3.*f1**(-3.) #psi_ins_tot_f1 = psi_int_f1
@@ -593,9 +591,9 @@ class IMRPhenomD_PPE(Waveform):
         psi_int = 1./eta*(beta0 + beta1*ff + beta2*np.log(ff) - 1./3.*beta3*ff**(-3.))
         psi_int_prime = 1./eta*(beta1 + beta2*ff**(-1.) + beta3*ff**(-4.))
         
-        ########################################################################
-        # PN coefficients for the MERGER-RINGDOWN PHASE>>>>>>>>>>>>>>>>>>>>>>>>>
-        ########################################################################
+        ################################################################################ 
+        # PN coefficients for the MERGER-RINGDOWN PHASE>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        ################################################################################ 
         #alpha0 and alpha1 are fixed by the continuity conditions
 
         alpha2 = -0.07020209449091723 - 0.16269798450687084*eta\
@@ -629,11 +627,11 @@ class IMRPhenomD_PPE(Waveform):
         # Frequency at the interface between intermediate and merger-ringdown phases
         f2 = 0.5*ff_RD
         
-        ########################################################################
-        #################### INT-MERG PHASE CONTINUITY CONDITIONS ##############
-        ########################################################################
+        ################################################################################ 
+        ####################### INT-MERG PHASE CONTINUITY CONDITIONS ###################
+        ################################################################################ 
 
-        # Impose C1 conditions at the interface
+        ####################### IN-MERG PHASE CONTINUITY CONDITIONS ###################
         alpha1 = (beta1 + beta2*f2**(-1.) + beta3*f2**(-4.)) - alpha2*f2**(-2.) - alpha3*f2**(-1./4.) -\
                 (alpha4*ff_damp)/(ff_damp**2. + (f2 - alpha5*ff_RD)**2.) # psi_int_prime_f2 = psi_MR_prime_f2
         alpha0 = (beta0 + beta1*f2 + beta2*np.log(f2) - beta3/3.*f2**(-3.)) - alpha1*f2 + alpha2*f2**(-1.) -\
