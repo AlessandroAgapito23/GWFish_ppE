@@ -216,9 +216,10 @@ class TaylorF2_PPE(Waveform):
         ########################### without PN corrections #############################
         
         # compute GW AMPLITUDES (https://arxiv.org/pdf/2012.01350.pdf)
-        hp = cst.c / (2. * r) * np.sqrt(5. * np.pi / 24.) * Mc ** (5. / 6.) / (np.pi * frequencyvector) ** (7. / 6.) * (1. + np.cos(iota) ** 2.)
-        hc = cst.c / (2. * r) * np.sqrt(5. * np.pi / 24.) * Mc ** (5. / 6.) / (np.pi * frequencyvector) ** (7. / 6.) * 2. * np.cos(iota)
-
+        hp = cst.c / (2. * r) * np.sqrt(5. * np.pi / 24.) *\
+             Mc ** (5. / 6.) / (np.pi * frequencyvector) ** (7. / 6.) * (1. + np.cos(iota) ** 2.)
+        hc = cst.c / (2. * r) * np.sqrt(5. * np.pi / 24.) *\
+             Mc ** (5. / 6.) / (np.pi * frequencyvector) ** (7. / 6.) * 2. * np.cos(iota)
 
         ################################################################################ 
         ################################### PHASE ######################################
@@ -237,10 +238,16 @@ class TaylorF2_PPE(Waveform):
         phi_1 = 0.
         phi_2 = 3715./756. + 55./9.*eta
         phi_3 = -16.*np.pi + 113./3.*delta_mass*chi_a + (113./3. - 76./3.*eta)*chi_s
-        phi_4 = 15293365./508032. + 27145./504.*eta + 3085./72.*eta2 + (-(405./8.) + 200*eta)*chi_a**2 - 405./4.*delta_mass*chi_a*chi_s + (-(405./8.) + 5./2.*eta)*chi_s**2
-        phi_5 = (1 + np.log(np.pi*ff))*(38645./756.*np.pi - 65./9.*np.pi*eta + delta_mass*(-(732985./2268.) - 140./9.*eta)*chi_a + (-(732985./2268.) + 24260./81.*eta + 340./9.*eta2)*chi_s)
-        phi_6 = 11583231236531./4694215680. - 6848./21.*C - (640.*np.pi**2)/3. + (-15737765635./3048192. + 2255.*np.pi**2/12.)*eta + 76055.*eta2/1728. - 127825.*eta3/1296. - 6848./63.*np.log(64*np.pi*ff) + 2270./3.*np.pi*delta_mass*chi_a + (2270.*np.pi/3. - 520.*np.pi*eta)*chi_s   
-        phi_7 = (77096675./254016. + 378515./1512.*eta - 74045./756.*eta2)*np.pi + delta_mass*(-(25150083775./3048192.) + 26804935./6048.*eta - 1985./48.*eta2)*chi_a + (-(25150083775./3048192.) + 10566655595./762048.*eta - 1042165./3024.*eta2 + 5345./36.*eta3)*chi_s
+        phi_4 = 15293365./508032. + 27145./504.*eta + 3085./72.*eta2 + (-(405./8.) + 200*eta)*chi_a**2 -\
+                405./4.*delta_mass*chi_a*chi_s + (-(405./8.) + 5./2.*eta)*chi_s**2
+        phi_5 = (1 + np.log(np.pi*ff))*(38645./756.*np.pi - 65./9.*np.pi*eta + delta_mass*(-(732985./2268.) -\
+                140./9.*eta)*chi_a + (-(732985./2268.) + 24260./81.*eta + 340./9.*eta2)*chi_s)
+        phi_6 = 11583231236531./4694215680. - 6848./21.*C - (640.*np.pi**2)/3. + (-15737765635./3048192. +\
+                2255.*np.pi**2/12.)*eta + 76055.*eta2/1728. - 127825.*eta3/1296. - 6848./63.*np.log(64*np.pi*ff) +\
+                2270./3.*np.pi*delta_mass*chi_a + (2270.*np.pi/3. - 520.*np.pi*eta)*chi_s   
+        phi_7 = (77096675./254016. + 378515./1512.*eta - 74045./756.*eta2)*np.pi +\
+                delta_mass*(-(25150083775./3048192.) + 26804935./6048.*eta - 1985./48.*eta2)*chi_a +\
+                (-(25150083775./3048192.) + 10566655595./762048.*eta - 1042165./3024.*eta2 + 5345./36.*eta3)*chi_s
 
         
         #EARLY INSPIRAL PART OF THE PHASE
@@ -410,12 +417,18 @@ class IMRPhenomD_PPE(Waveform):
         phi_1 = 0.
         phi_2 = 3715./756. + 55./9.*eta
         phi_3 = -16.*np.pi + 113./3.*delta_mass*chi_a + (113./3. - 76./3.*eta)*chi_s
-        phi_4 = 15293365./508032. + 27145./504.*eta + 3085./72.*eta2 + (-(405./8.) + 200*eta)*chi_a**2 - 405./4.*delta_mass*chi_a*chi_s + (-(405./8.) + 5./2.*eta)*chi_s**2
-        phi_5 = 38645./756.*np.pi - 65./9.*np.pi*eta + delta_mass*(-(732985./2268.) - 140./9.*eta)*chi_a + (-(732985./2268.) + 24260./81.*eta + 340./9.*eta2)*chi_s
+        phi_4 = 15293365./508032. + 27145./504.*eta + 3085./72.*eta2 + (-(405./8.) +\
+                200*eta)*chi_a**2 - 405./4.*delta_mass*chi_a*chi_s + (-(405./8.) + 5./2.*eta)*chi_s**2
+        phi_5 = 38645./756.*np.pi - 65./9.*np.pi*eta + delta_mass*(-(732985./2268.) -\
+                140./9.*eta)*chi_a + (-(732985./2268.) + 24260./81.*eta + 340./9.*eta2)*chi_s
         phi_5_l = 3.*phi_5
-        phi_6 = 11583231236531./4694215680. - 6848./21.*C - (640.*np.pi**2)/3. + (-15737765635./3048192. + 2255.*np.pi**2/12.)*eta + 76055.*eta2/1728. - 127825.*eta3/1296. + 2270./3.*np.pi*delta_mass*chi_a + (2270.*np.pi/3. - 520.*np.pi*eta)*chi_s -6848./63.*np.log(64.)
+        phi_6 = 11583231236531./4694215680. - 6848./21.*C - (640.*np.pi**2)/3. +\
+                (-15737765635./3048192. + 2255.*np.pi**2/12.)*eta + 76055.*eta2/1728. - 127825.*eta3/1296. +\
+                2270./3.*np.pi*delta_mass*chi_a + (2270.*np.pi/3. - 520.*np.pi*eta)*chi_s -6848./63.*np.log(64.)
         phi_6_l = - 6848./63.*3.
-        phi_7 = (77096675./254016. + 378515./1512.*eta - 74045./756.*eta2)*np.pi + delta_mass*(-(25150083775./3048192.) + 26804935./6048.*eta - 1985./48.*eta2)*chi_a + (-(25150083775./3048192.) + 10566655595./762048.*eta - 1042165./3024.*eta2 + 5345./36.*eta3)*chi_s
+        phi_7 = (77096675./254016. + 378515./1512.*eta - 74045./756.*eta2)*np.pi +\
+                delta_mass*(-(25150083775./3048192.) + 26804935./6048.*eta - 1985./48.*eta2)*chi_a +\
+                (-(25150083775./3048192.) + 10566655595./762048.*eta - 1042165./3024.*eta2 + 5345./36.*eta3)*chi_s
        
 
         #EARLY INSPIRAL PART OF THE PHASE phi_EI(f)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -480,7 +493,8 @@ class IMRPhenomD_PPE(Waveform):
                       phi_4*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
                       phi_5_l*(np.pi)*ff**(-1.) +\
                       phi_6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
-                      phi_6_l*((np.pi)*ff**(-1.)*(np.pi*ff)**(1./3.) + np.log(np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.))) +\
+                      phi_6_l*((np.pi)*ff**(-1.)*(np.pi*ff)**(1./3.) +\
+                               np.log(np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.))) +\
                       phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.)))
         
         psi_gIMR_prime = 3./(128.*eta)*((np.pi)**(-5./3.)*(-5./3.*ff**(-8./3.)) +\
@@ -489,7 +503,8 @@ class IMRPhenomD_PPE(Waveform):
                         phi_3*delta_phi_3*(np.pi)**(-2./3.)*(-2./3.*ff**(-5./3.)) +\
                         phi_4*delta_phi_4*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
                         phi_6*delta_phi_6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
-                        phi_6_l*delta_phi_9*((np.pi*ff)**(1./3.)*(np.pi*ff**(-1.)) + np.log(np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
+                        phi_6_l*delta_phi_9*((np.pi*ff)**(1./3.)*(np.pi*ff**(-1.)) +\
+                                             np.log(np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
                         phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.))))
         
         psi_ppe_prime = beta*(2*PN-5.)/3.*((np.pi*(ff/(cst.G*M/cst.c**3))*Mc)**((2*PN-8.)/3.))
@@ -543,7 +558,8 @@ class IMRPhenomD_PPE(Waveform):
                         phi_4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
                         phi_5_l*(np.pi)*f1**(-1.) +\
                         phi_6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
-                        phi_6_l*((np.pi)*f1**(-1.)*(np.pi*f1)**(1./3.) + np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
+                        phi_6_l*((np.pi)*f1**(-1.)*(np.pi*f1)**(1./3.) +\
+                                 np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
                         phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
         
         psi_gIMR_prime_f1 = 3./(128.*eta)*((np.pi)**(-5./3.)*(-5./3.*f1**(-8./3.)) +\
@@ -553,7 +569,8 @@ class IMRPhenomD_PPE(Waveform):
                         phi_4*delta_phi_4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
                         phi_5_l*delta_phi_8*(np.pi)*f1**(-1.) +\
                         phi_6*delta_phi_6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
-                        phi_6_l*delta_phi_9*((np.pi*f1)**(1./3.)*(np.pi*ff**(-1.)) + np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
+                        phi_6_l*delta_phi_9*((np.pi*f1)**(1./3.)*(np.pi*ff**(-1.)) +\
+                                             np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
                         phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
 
         psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*((np.pi*(f1/(cst.G*M/cst.c**3))*Mc)**((2*PN-8.)/3.))
@@ -694,7 +711,11 @@ class IMRPhenomD_PPE(Waveform):
             (31./12.*np.pi - 7./3.*np.pi*eta)*chi_s + (1614569./64512. - 61391./1344.*eta + 57451./4032.*eta2)*chi_s**2. +\
             delta_mass*chi_a*(31./12.*np.pi + (1614569./32256. - 165961./2688.*eta)*chi_s)
         
-        a_pn_ei = a_2*(np.pi*ff)**(2./3.) + a_3*(np.pi*ff) + a_4*(np.pi*ff)**(4./3.) + a_5*(np.pi*ff)**(5./3.) + a_6*(np.pi*ff)**2.
+        a_pn_ei = a_2*(np.pi*ff)**(2./3.) +\
+                  a_3*(np.pi*ff) +\
+                  a_4*(np.pi*ff)**(4./3.) +\
+                  a_5*(np.pi*ff)**(5./3.) +\
+                  a_6*(np.pi*ff)**2.
 
         amp_PN = a_0 + a_pn_ei
 
