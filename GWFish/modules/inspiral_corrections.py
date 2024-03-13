@@ -575,7 +575,7 @@ class IMRPhenomD_PPE(Waveform):
 
         psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*((np.pi*(f1/(cst.G*M/cst.c**3))*Mc)**((2*PN-8.)/3.))
 
-        psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) + sigma3*f1**(2./3.) + sigma4*ff)
+        psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) + sigma3*f1**(2./3.) + sigma4*f1)
 
         ################################################################################ 
         psi_ins_prime_f1 = psi_TF2_prime_f1 + psi_ppe_prime_f1 + psi_gIMR_prime_f1 + psi_late_ins_prime_f1
