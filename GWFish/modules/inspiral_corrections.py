@@ -45,7 +45,7 @@ class TaylorF2_PPE(Waveform):
                 return ValueError('maxn must be integer')
         return self._maxn
 
-    def EI_phase_coeff(self):
+    def EI_phase_coeff():
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb()
     
