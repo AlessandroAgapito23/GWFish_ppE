@@ -243,7 +243,7 @@ class TaylorF2_PPE(Waveform):
 
         plt.figure()
         plt.semilogx(ff, phase)
-        plt.xlabel('Frequency [Hz]')
+        plt.xlabel('Dimensionless frequency')
         plt.ylabel('Phase [rad]')
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.tight_layout()
@@ -253,7 +253,7 @@ class TaylorF2_PPE(Waveform):
         
         plt.figure()
         plt.semilogx(ff, delta_phase)
-        plt.xlabel('Frequency [Hz]')
+        plt.xlabel('Dimensionless frequency')
         plt.ylabel('Phase difference [rad]')
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.tight_layout()
