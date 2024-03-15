@@ -47,7 +47,7 @@ class TaylorF2_PPE(Waveform):
 
     def EI_phase_coeff():
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb()
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
     
         # Coefficienti della fase dell'ispirazione precoce
         phi_0 = 1.
