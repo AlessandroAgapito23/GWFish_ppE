@@ -221,7 +221,8 @@ class TaylorF2_PPE(Waveform):
 
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
         psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2_PPE.calculate_phase(self)
-
+        
+        phase = np.exp(1.j * psi)
         delta_phase = np.exp(1.j * (psi - psi_TF2))
         
         plt.figure()
@@ -238,6 +239,17 @@ class TaylorF2_PPE(Waveform):
         plt.savefig(output_folder + 'amp_tot_TF2_PPE.png')
         plt.close()
 
+
+        plt.figure()
+        plt.semilogx(self.frequencyvector, phase)
+        plt.xlabel('Frequency [Hz]')
+        plt.ylabel('Phase [rad]')
+        plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
+        plt.tight_layout()
+        plt.savefig(output_folder + 'phase_tot_TF2_PPE.png')
+        plt.close()
+
+        
         plt.figure()
         plt.semilogx(self.frequencyvector, delta_phase)
         plt.xlabel('Frequency [Hz]')
