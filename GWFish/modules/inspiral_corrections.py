@@ -45,6 +45,29 @@ class TaylorF2_PPE(Waveform):
                 return ValueError('maxn must be integer')
         return self._maxn
 
+    def get_phase_corr(self):
+        
+        #PPE phase parameters
+
+        PN = self.gw_params['PN']
+        beta = self.gw_params['beta']
+        
+        #gIMR phase parameters
+        delta_phi_0 = self.gw_params['delta_phi_0']
+        delta_phi_1 = self.gw_params['delta_phi_1']
+        delta_phi_2 = self.gw_params['delta_phi_2']
+        delta_phi_3 = self.gw_params['delta_phi_3']
+        delta_phi_4 = self.gw_params['delta_phi_4']
+        delta_phi_5 = self.gw_params['delta_phi_5']
+        delta_phi_6 = self.gw_params['delta_phi_6']
+        delta_phi_7 = self.gw_params['delta_phi_7']
+        delta_phi_8 = self.gw_params['delta_phi_8']
+        delta_phi_9 = self.gw_params['delta_phi_9']
+
+        return PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
+        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9
+
+
     def EI_phase_coeff(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
@@ -78,23 +101,9 @@ class TaylorF2_PPE(Waveform):
         f_isco = aux.fisco(self.gw_params)  #inner stable circular orbit 
 
         ones = np.ones((len(ff), 1)) 
-        
-        #PPE phase parameters
 
-        PN = self.gw_params['PN']
-        beta = self.gw_params['beta']
-        
-        #gIMR phase parameters
-        delta_phi_0 = self.gw_params['delta_phi_0']
-        delta_phi_1 = self.gw_params['delta_phi_1']
-        delta_phi_2 = self.gw_params['delta_phi_2']
-        delta_phi_3 = self.gw_params['delta_phi_3']
-        delta_phi_4 = self.gw_params['delta_phi_4']
-        delta_phi_5 = self.gw_params['delta_phi_5']
-        delta_phi_6 = self.gw_params['delta_phi_6']
-        delta_phi_7 = self.gw_params['delta_phi_7']
-        delta_phi_8 = self.gw_params['delta_phi_8']
-        delta_phi_9 = self.gw_params['delta_phi_9']
+        PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
+        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9 = TaylotF2_PPE.get_phase_corr(self)
 
         #f_cut = cut_order * f_isco
         cut = self.gw_params['cut']
@@ -328,26 +337,12 @@ class IMRPhenomD_PPE(Waveform):
 
         ones = np.ones((len(ff), 1)) 
 
-        #PPE phase parameters
-
-        PN = self.gw_params['PN']
-        beta = self.gw_params['beta']
+        PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
+        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9 = TaylotF2_PPE.get_phase_corr(self)
         
-        #gIMR phase parameters
-        delta_phi_0 = self.gw_params['delta_phi_0']
-        delta_phi_1 = self.gw_params['delta_phi_1']
-        delta_phi_2 = self.gw_params['delta_phi_2']
-        delta_phi_3 = self.gw_params['delta_phi_3']
-        delta_phi_4 = self.gw_params['delta_phi_4']
-        delta_phi_5 = self.gw_params['delta_phi_5']
-        delta_phi_6 = self.gw_params['delta_phi_6']
-        delta_phi_7 = self.gw_params['delta_phi_7']
-        delta_phi_8 = self.gw_params['delta_phi_8']
-        delta_phi_9 = self.gw_params['delta_phi_9']
+        phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = TaylorF2_PPE.EI_phase_coeff(self)
 
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
-
-        phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = TaylorF2_PPE.EI_phase_coeff(self)
 
         psi_gIMR = 3./(128.*eta)*(delta_phi_0*(np.pi*ff)**(-5./3.) +\
                 delta_phi_1*(np.pi*ff)**(-4./3.)+\
@@ -413,7 +408,6 @@ class IMRPhenomD_PPE(Waveform):
         psi_ins = psi + psi_late_ins
         psi_ins_f1 = psi_f1 + psi_late_ins_f1
 
-        psi_ins_prime = psi_prime + psi_late_ins_prime
         psi_ins_prime_f1 = psi_prime_f1 + psi_late_ins_prime_f1
         
         ####################### INS-INT PHASE CONTINUITY CONDITIONS ###################
@@ -463,11 +457,6 @@ class IMRPhenomD_PPE(Waveform):
         theta_plus1 = 0.5*(1*ones + wf.step_function(ff,ff1))
         theta_plus2 = 0.5*(1*ones + wf.step_function(ff,ff2))
 
-        psi_ins, psi_ins_prime, psi_ins_f1, psi_ins_prime_f1 = wf.IMRPhenomD.calculate_ins_phase(self)
-        psi_int, psi_int_prime, psi_int_f2, psi_int_prime_f2 = wf.IMRPhenomD.calculate_int_phase(self)
-        psi_MR, psi_MR_prime = wf.IMRPhenomD.calculate_MR_phase(self)
-
-
         ########################### PHASE COMPONENTS ############################
         ###################### written continuosly in frequency #################
 
@@ -476,16 +465,14 @@ class IMRPhenomD_PPE(Waveform):
         psi_MR = psi_MR*theta_plus2
 
         psi_tot = psi_ins + psi_int + psi_MR
-        
-        psi_prime_tot = psi_ins_prime*theta_minus1+theta_minus2*psi_int_prime*theta_plus1+theta_plus2*psi_MR_prime
 
-        return psi_tot, psi_prime_tot
+        return psi_tot
 
         
 
     def calculate_frequency_domain_strain(self): 
 
-        psi, psi_prime = IMRPhenomD_PPE.calculate_phase(self)
+        psi = IMRPhenomD_PPE.calculate_phase(self)
 
         hp, hc = wf.IMRPhenomD.calculate_amplitude(self)
         ########################### PHASE OUTPUT ###############################
