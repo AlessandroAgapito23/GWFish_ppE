@@ -439,7 +439,7 @@ class IMRPhenomD_PPE(Waveform):
         
         ####################### IN-MERG PHASE CONTINUITY CONDITIONS ###################
 
-         alpha2, alpha3, alpha4, alpha5 = MR_phase_coeff()
+        alpha2, alpha3, alpha4, alpha5 = MR_phase_coeff()
         
         alpha1 = psi_int_prime_f2 - alpha2*f2**(-2.) - alpha3*f2**(-1./4.) -\
                 (alpha4*ff_damp)/(ff_damp**2. + (f2 - alpha5*ff_RD)**2.) # psi_int_prime_f2 = psi_MR_prime_f2
