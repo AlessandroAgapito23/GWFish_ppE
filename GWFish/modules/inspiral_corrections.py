@@ -45,7 +45,7 @@ class TaylorF2_PPE(Waveform):
                 return ValueError('maxn must be integer')
         return self._maxn
 
-    def EI_phase_coeff():
+    def EI_phase_coeff(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
     
@@ -111,7 +111,7 @@ class TaylorF2_PPE(Waveform):
 
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
 
-        phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = TaylorF2_PPE.EI_phase_coeff()
+        phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = TaylorF2_PPE.EI_phase_coeff(self)
 
         psi_gIMR = 3./(128.*eta)*(delta_phi_0*(np.pi*ff)**(-5./3.) +\
                 delta_phi_1*(np.pi*ff)**(-4./3.)+\
@@ -253,7 +253,7 @@ class IMRPhenomD_PPE(Waveform):
             logging.warning('Different waveform name passed to IMRPhenomD_PPE: '+\
                              self.name)
 
-    def LI_phase_coeff():
+    def LI_phase_coeff(self):
     
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
     
@@ -275,7 +275,7 @@ class IMRPhenomD_PPE(Waveform):
 
         return sigma2, sigma3, sigma4
 
-    def INT_phase_coeff():
+    def INT_phase_coeff(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
 
@@ -293,7 +293,7 @@ class IMRPhenomD_PPE(Waveform):
     
         return beta2, beta3
 
-    def MR_phase_coeff():
+    def MR_phase_coeff(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
 
@@ -347,7 +347,7 @@ class IMRPhenomD_PPE(Waveform):
 
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
 
-        phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = TaylorF2_PPE.EI_phase_coeff()
+        phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = TaylorF2_PPE.EI_phase_coeff(self)
 
         psi_gIMR = 3./(128.*eta)*(delta_phi_0*(np.pi*ff)**(-5./3.) +\
                 delta_phi_1*(np.pi*ff)**(-4./3.)+\
@@ -362,7 +362,7 @@ class IMRPhenomD_PPE(Waveform):
 
         psi = psi_TF2 + psi_ppe + psi_gIMR
 
-        sigma2, sigma3, sigma4 = IMRPhenomD_PPE.LI_phase_coeff()
+        sigma2, sigma3, sigma4 = IMRPhenomD_PPE.LI_phase_coeff(self)
 
         psi_late_ins = + 1./eta*(3./4.*sigma2*ff**(4./3.) +\
                             3./5.*sigma3*ff**(5./3.) +\
@@ -419,7 +419,7 @@ class IMRPhenomD_PPE(Waveform):
         ####################### INS-INT PHASE CONTINUITY CONDITIONS ###################
         # Impose C1 conditions at the interface (same conditions as in IMRPhenomD but with different psi_ins & psi_ins_prime)
 
-        beta2, beta3 = IMRPhenomD_PPE.INT_phase_coeff()
+        beta2, beta3 = IMRPhenomD_PPE.INT_phase_coeff(self)
 
         beta1 = eta*psi_ins_prime_f1 - beta2*f1**(-1.) - beta3*f1**(-4.)  # psi_ins_prime_f1 = psi_int_prime_f1
         beta0 = eta*psi_ins_f1 - beta1*f1 - beta2*np.log(f1) + beta3/3.*f1**(-3.) #psi_ins_f1 = psi_int_f1
@@ -438,7 +438,7 @@ class IMRPhenomD_PPE(Waveform):
         
         ####################### IN-MERG PHASE CONTINUITY CONDITIONS ###################
 
-        alpha2, alpha3, alpha4, alpha5 = IMRPhenomD_PPE.MR_phase_coeff()
+        alpha2, alpha3, alpha4, alpha5 = IMRPhenomD_PPE.MR_phase_coeff(self)
         
         alpha1 = psi_int_prime_f2 - alpha2*f2**(-2.) - alpha3*f2**(-1./4.) -\
                 (alpha4*ff_damp)/(ff_damp**2. + (f2 - alpha5*ff_RD)**2.) # psi_int_prime_f2 = psi_MR_prime_f2
