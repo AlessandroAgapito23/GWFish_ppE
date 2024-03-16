@@ -293,21 +293,19 @@ class IMRPhenomD_PPE(Inspiral_corr):
                 (phi_6*delta_phi_6 + phi_6_l*delta_phi_9*np.log(np.pi*ff))*((np.pi*ff)**(1./3.)) +\
                 phi_7*delta_phi_7*(np.pi*ff)**(2./3.)) 
         
-        psi_ppe = beta*((np.pi*(ff*cst.c**3/(cst.G*M))*Mc)**((2*PN-5.)/3.))  #ppe correction at every b order
+        psi_ppe = beta*(np.pi*ff * cst.c**3 / (cst.G*M) *Mc)**((2*PN-5.)/3.))  #ppe correction at every b order
 
         psi = psi_TF2 + psi_ppe + psi_gIMR
 
         sigma2, sigma3, sigma4 = wf.IMRPhenomD.LI_phase_coeff(self)
 
-        psi_late_ins = + 1./eta*(3./4.*sigma2*ff**(4./3.) +\
-                            3./5.*sigma3*ff**(5./3.) +\
-                            1./2.*sigma4*ff**2)
+        psi_late_ins = + 1./eta*(3./4.*sigma2*ff**(4./3.) + 3./5.*sigma3*ff**(5./3.) + 1./2.*sigma4*ff**2)
         
         ################################################################################ 
         # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
         ################################################################################ 
 
-        f1 = 0.018
+        f1 = 0.0166
 
         psi_gIMR_f1 = 3./(128.*eta)*(delta_phi_0*(np.pi*f1)**(-5./3.) +\
                     delta_phi_1*(np.pi*f1)**(-4./3.)+\
@@ -318,7 +316,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
                     (phi_6*delta_phi_6*+ phi_6_l*delta_phi_9*np.log(np.pi*f1))*((np.pi*f1)**(1./3.)) +\
                     phi_7*delta_phi_7*(np.pi*f1)**(2./3.))
                 
-        psi_ppe_f1 = beta*((np.pi*(f1/(cst.G*M/cst.c**3)*Mc))**((2*PN-5.)/3.))
+        psi_ppe_f1 = beta*(np.pi*f1 * cst.c**3 / (cst.G*M) * Mc)**((2*PN-5.)/3.))
 
         psi_f1 = psi_TF2_f1 + psi_ppe_f1 + psi_gIMR_f1
 
@@ -333,7 +331,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
                                              np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
                         phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
 
-        psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*((np.pi*(f1/(cst.G*M/cst.c**3))*Mc)**((2*PN-8.)/3.))
+        psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*(np.pi*f1 * cst.c**3 / (cst.G*M) *Mc)**((2*PN-8.)/3.))
 
         psi_prime_f1 = psi_TF2_prime_f1 + psi_gIMR_prime_f1 + psi_ppe_prime_f1
         
@@ -385,7 +383,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
                         (ff - alpha5*ff_RD)**2.))
 
         # Conjunction functions
-        ff1 = 0.018*ones
+        ff1 = 0.0166*ones
         ff2 = 0.5*ff_RD*ones
 
         
