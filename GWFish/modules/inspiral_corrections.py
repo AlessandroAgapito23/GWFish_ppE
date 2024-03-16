@@ -146,7 +146,7 @@ class TaylorF2_PPE(Inspiral_corr):
                     (phi_6*delta_phi_6*+ phi_6_l*delta_phi_9*np.log(np.pi*f1))*((np.pi*f1)**(1./3.)) +\
                     phi_7*delta_phi_7*(np.pi*f1)**(2./3.))
                 
-        psi_ppe_f1 = beta*((np.pi*f1 * cst.c**3 / (cst.G*M) * Mc))**((2*PN-5.)/3.))
+        psi_ppe_f1 = beta*((np.pi*f1 * cst.c**3 / (cst.G*M) * Mc))**((2*PN-5.)/3.)
 
         psi_EI_f1 = psi_TF2_f1 + psi_ppe_f1 + psi_gIMR_f1
         
