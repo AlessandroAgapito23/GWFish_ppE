@@ -270,6 +270,27 @@ class IMRPhenomD_PPE(Waveform):
             logging.warning('Different waveform name passed to IMRPhenomD_PPE: '+\
                              self.name)
 
+    def _set_default_gw_params(self):
+        self.gw_params = {
+            'mass_1': 0., 'mass_2': 0., 'luminosity_distance': 0., 
+            'redshift': 0., 'theta_jn': 0., 'phase': 0., 'geocent_time': 0., 
+            'a_1': 0., 'tilt_1': 0., 'phi_12': 0., 'a_2': 0., 'tilt_2': 0., 
+            'phi_jl': 0., 'lambda_1': 0., 'lambda_2': 0., 'cut': 4.,
+            #ppE parameters
+            'beta':0., 'PN':0.,
+            #gIMR
+            'delta_phi_0':0.,
+            'delta_phi_1':0.,
+            'delta_phi_2':0.,
+            'delta_phi_3':0.,
+            'delta_phi_4':0.,
+            'delta_phi_5':0.,
+            'delta_phi_6':0.,
+            'delta_phi_7':0.,
+            'delta_phi_8':0.,
+            'delta_phi_9':0.
+        }
+
     # Here we add the phase deviations, which satisfy the continuity conditions of the phase and its derivative at the inferface
 
     def calculate_phase(self): 
