@@ -165,7 +165,7 @@ class TaylorF2_PPE(Waveform):
                         phi_6*delta_phi_6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
                         phi_6_l*delta_phi_9*(((np.pi*ff)**(1./3.))*(ff**(-1.)) +\
                                              np.log(np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.))) +\
-                        phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.))))
+                        phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.)))
 
         psi_gIMR_prime_f1 = 3./(128.*eta)*((np.pi)**(-5./3.)*(-5./3.*f1**(-8./3.)) +\
                         delta_phi_1*(np.pi)**(-4./3.)*(-4./3.*f1**(-7./3.)) +\
