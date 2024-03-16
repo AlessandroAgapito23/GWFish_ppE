@@ -556,7 +556,7 @@ class TaylorF2(Waveform):
 
     def EI_phase_coeff(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
     
         # PN coefficients (up to 3.5 PN order) INSPIRAL phase coefficients >>>>>>>>>>>>
         # including the spin corrections and the logaritmic corrections (phi_5_l and phi_6_l)
@@ -800,7 +800,7 @@ class IMRPhenomD(Waveform):
 
     def LI_phase_coeff(self):
     
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
     
         #LATE INSPIRAL Phase Coefficients >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         #(sigma0=sigma1=0 due to phase translation)
@@ -822,7 +822,7 @@ class IMRPhenomD(Waveform):
 
     def INT_phase_coeff(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
 
         # PN coefficients for the INTERMEDIATE PHASE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         #beta0 and beta1 are fixed by the continuity conditions 
@@ -840,7 +840,7 @@ class IMRPhenomD(Waveform):
 
     def MR_phase_coeff(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
 
         # PN coefficients for the MERGER-RINGDOWN PHASE>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         #alpha0 and alpha1 are fixed by the continuity conditions
@@ -866,6 +866,8 @@ class IMRPhenomD(Waveform):
 
     def INS_amp_coeff(self):
 
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+
         # PN coefficients:
         a_0 = 1.
         a_1 = 0.
@@ -884,6 +886,8 @@ class IMRPhenomD(Waveform):
 
     def INT_amp_coeff(self):
 
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+
         # Late inspiral coefficients
         rho1 = 3931.8979897196696 - 17395.758706812805*eta\
                 + (chi_PN - 1)*(3132.375545898835 + 343965.86092361377*eta - 1.2162565819981997e6*eta2)\
@@ -901,6 +905,8 @@ class IMRPhenomD(Waveform):
         return rho1, rho2, rho3
     
     def MR_amp_coeff(self):
+
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
 
         # Merger-ringdown coefficients
         gamma1 = 0.006927402739328343 + 0.03020474290328911*eta\
