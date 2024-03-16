@@ -422,8 +422,8 @@ class IMRPhenomD_PPE(Waveform):
         ################################################################################ 
         
         psi_ins = psi + psi_late_ins
+        
         psi_ins_f1 = psi_f1 + psi_late_ins_f1
-
         psi_ins_prime_f1 = psi_prime_f1 + psi_late_ins_prime_f1
         
         ####################### INS-INT PHASE CONTINUITY CONDITIONS ###################
@@ -443,7 +443,6 @@ class IMRPhenomD_PPE(Waveform):
         f2 = 0.5*ff_RD
 
         psi_int_f2 = 1./eta*(beta0 + beta1*f2 + beta2*np.log(f2) - 1./3.*beta3*f2**(-3.))
-        
         psi_int_prime_f2 = 1./eta*(beta1 + beta2*f2**(-1.) + beta3*f2**(-4.))
         
         ####################### IN-MERG PHASE CONTINUITY CONDITIONS ###################
@@ -458,7 +457,6 @@ class IMRPhenomD_PPE(Waveform):
         # Evaluate full merger-ringdown phase and its analytical derivative
         psi_MR = 1./eta*(alpha0 + alpha1*ff - alpha2*ff**(-1.) + 4./3.*alpha3*ff**(3./4.) +\
                                 alpha4*np.arctan((ff - alpha5*ff_RD)/ff_damp))
-        
         psi_MR_prime = 1./eta*(alpha1 + alpha2*ff**(-2.) + alpha3*ff**(-1./4.) + alpha4*ff_damp/(ff_damp**2. +\
                         (ff - alpha5*ff_RD)**2.))
 
