@@ -42,19 +42,23 @@ class Inspiral_corr(Waveform):
             'delta_phi_9':0.
         }
 
-
      def update_gw_params(self, new_gw_params):
         self.gw_params.update(new_gw_params)
         self._frequency_domain_strain = None
         self._time_domain_strain = None
           
      def get_phase_corr(self):
-         
-        #PPE phase parameters
+
+        # We have to add delta_phi_ppe as in gIMRPhenomD (arXiv:1603.08955)
+        # phi ---> phi*(1+delta_phi_i)
+        # phi is a combination of phi_i, i=0,....,7 and i=2PN
+        # We want to modify phi for each b one by one and b = i-5 
+
+        #PPE phase deviations
         PN = self.gw_params['PN']
         beta = self.gw_params['beta']
         
-        #gIMR phase parameters
+        #gIMR phase deviations
         delta_phi_0 = self.gw_params['delta_phi_0']
         delta_phi_1 = self.gw_params['delta_phi_1']
         delta_phi_2 = self.gw_params['delta_phi_2']
@@ -98,9 +102,7 @@ class TaylorF2_PPE(Inspiral_corr):
     def calculate_phase(self): 
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
-
         f_isco = aux.fisco(self.gw_params)  #inner stable circular orbit 
-
         ones = np.ones((len(ff), 1)) 
 
         PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
@@ -113,13 +115,7 @@ class TaylorF2_PPE(Inspiral_corr):
         ############################## PHASE CORRECTIONS ###############################
         ############################# PN expansion of phase ############################
 
-        # We have to add delta_phi_ppe as in gIMRPhenomD (arXiv:1603.08955)
-        # phi ---> phi*(1+delta_phi_i)
-        # phi is a combination of phi_i, i=0,....,7 and i=2PN
-        # We want to modify phi for each b one by one and b = i-5 
-
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
-
         phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = wf.TaylorF2.EI_phase_coeff(self)
 
         psi_gIMR = 3./(128.*eta)*(delta_phi_0*(np.pi*ff)**(-5./3.) +\
@@ -134,9 +130,6 @@ class TaylorF2_PPE(Inspiral_corr):
         psi_ppe = beta*((np.pi*(ff*cst.c**3/(cst.G*M))*Mc)**((2*PN-5.)/3.))  #ppe correction at every b order
 
         psi_EI = psi_TF2 + psi_ppe + psi_gIMR
-
-        #Depending on the choice on gw_params you recover psi_tot = psi_TF2 + psi_ppe
-                                                         #psi_tot = psi_TF2 + psi_gIMR
 
         ################################################################################ 
         # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
@@ -158,6 +151,7 @@ class TaylorF2_PPE(Inspiral_corr):
         psi_EI_f1 = psi_TF2_f1 + psi_ppe_f1 + psi_gIMR_f1
         
 
+        # Analytical derivative 
         psi_gIMR_prime = 3./(128.*eta)*((np.pi)**(-5./3.)*(-5./3.*ff**(-8./3.)) +\
                         delta_phi_1*(np.pi)**(-4./3.)*(-4./3.*ff**(-7./3.)) +\
                         phi_2*delta_phi_2*(np.pi)**(-1.)*(-1.*ff**(-2.)) +\
@@ -179,9 +173,9 @@ class TaylorF2_PPE(Inspiral_corr):
                                              np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
                         phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
 
-        psi_ppe_prime = beta*(2*PN-5.)/3.*((np.pi*(ff/(cst.G*M/cst.c**3))*Mc)**((2*PN-8.)/3.))
-
-        psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*((np.pi*(f1/(cst.G*M/cst.c**3))*Mc)**((2*PN-8.)/3.))
+        psi_ppe_prime = beta*(2*PN-5.)/3.*((np.pi*(ff*cst.c**3/(cst.G*M)*Mc)**((2*PN-8.)/3.))
+                                           
+        psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*((np.pi*(f1*cst.c**3/(cst.G*M)*Mc)**((2*PN-8.)/3.))
         
         psi_EI_prime = psi_TF2_prime + psi_gIMR_prime + psi_ppe_prime
         psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_gIMR_prime_f1 + psi_ppe_prime_f1
@@ -191,13 +185,12 @@ class TaylorF2_PPE(Inspiral_corr):
     def calculate_frequency_domain_strain(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
-
         cut = self.gw_params['cut']
         f_isco = aux.fisco(self.gw_params)
 
         psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2_PPE.calculate_phase(self)
-
         hp, hc = wf.TaylorF2.calculate_amplitude(self)
+         
         ############################### PHASE OUTPUT ###############################
 
         phase = np.exp(1.j * psi)
@@ -212,6 +205,8 @@ class TaylorF2_PPE(Inspiral_corr):
         polarizations[np.where(ff[:,0] > f_cut), :] = 0.j
 
         self._frequency_domain_strain = polarizations
+
+        ############################################################################
         
     ################################################################################
     ############################# Amplitude & phase plot ###########################
@@ -281,17 +276,13 @@ class IMRPhenomD_PPE(Inspiral_corr):
     def calculate_phase(self): 
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
-
         f_isco = aux.fisco(self.gw_params)  #inner stable circular orbit 
-
         ones = np.ones((len(ff), 1)) 
 
+        psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
+        phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = wf.TaylorF2.EI_phase_coeff(self) 
         PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
         delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9 = Inspiral_corr.get_phase_corr(self)
-        
-        phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = wf.TaylorF2.EI_phase_coeff(self)
-
-        psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
 
         psi_gIMR = 3./(128.*eta)*(delta_phi_0*(np.pi*ff)**(-5./3.) +\
                 delta_phi_1*(np.pi*ff)**(-4./3.)+\
@@ -419,8 +410,8 @@ class IMRPhenomD_PPE(Inspiral_corr):
     def calculate_frequency_domain_strain(self): 
 
         psi = IMRPhenomD_PPE.calculate_phase(self)
-
         hp, hc = wf.IMRPhenomD.calculate_amplitude(self)
+         
         ########################### PHASE OUTPUT ###############################
          
         phase = np.exp(1.j * psi)
