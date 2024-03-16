@@ -571,9 +571,7 @@ class TaylorF2(Waveform):
     def calculate_phase(self):
         
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-
         ones = np.ones((len(ff), 1))
-
         phic = self.gw_params['phase']
         tc = self.gw_params['geocent_time']
 
@@ -636,7 +634,6 @@ class TaylorF2(Waveform):
     def calculate_amplitude(self):
         
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-
         r = self.gw_params['luminosity_distance'] * cst.Mpc
         iota = self.gw_params['theta_jn']
 
@@ -654,7 +651,6 @@ class TaylorF2(Waveform):
     def calculate_frequency_domain_strain(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-        
         cut = self.gw_params['cut']
         f_isco = aux.fisco(self.gw_params)
 
@@ -914,7 +910,6 @@ class IMRPhenomD(Waveform):
     def RD_damping(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-        
         M1 = self.gw_params['mass_1'] * cst.Msol
         M2 = self.gw_params['mass_2'] * cst.Msol
         chi_1 = self.gw_params.get('a_1', 0.0)
@@ -1035,9 +1030,7 @@ class IMRPhenomD(Waveform):
     def calculate_phase(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-
         ones = np.ones((len(ff), 1))
-
         ff_RD, ff_damp = IMRPhenomD.RD_damping(self)
         
         # Conjunction functions
@@ -1077,12 +1070,9 @@ class IMRPhenomD(Waveform):
     def calculate_amplitude(self):
         
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-
         r = self.gw_params['luminosity_distance'] * cst.Mpc
         iota = self.gw_params['theta_jn']
-        
         ones = np.ones((len(ff), 1))
-
         a_0, a_1, a_2, a_2, a_3, a_4, a_5, a_6 = IMRPhenomD.INS_amp_coeff(self)
         
         amp_PN = a_0 +\
