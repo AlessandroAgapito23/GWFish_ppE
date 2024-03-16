@@ -1092,19 +1092,19 @@ class IMRPhenomD(Waveform):
 
         a_0, a_1, a_2, a_2, a_3, a_4, a_5, a_6 = IMRPhenomD.INS_amp_coeff(self)
         
-        amp_PN = (a_0 +\
-                  a_2*(np.pi*ff)**(2./3.) +\
-                  a_3*(np.pi*ff) +\
-                  a_4*(np.pi*ff)**(4./3.) +\
-                  a_5*(np.pi*ff)**(5./3.) +\
-                  a_6*(np.pi*ff)**2.)
+        amp_PN = a_0 +\
+                 a_2*(np.pi*ff)**(2./3.) +\
+                 a_3*(np.pi*ff) +\
+                 a_4*(np.pi*ff)**(4./3.) +\
+                 a_5*(np.pi*ff)**(5./3.) +\
+                 a_6*(np.pi*ff)**2.
     
         rho1, rho2, rho3 = IMRPhenomD.INT_amp_coeff(self)
     
         amp_ins = amp_PN +\
                   rho1*(ff)**(7./3.) +\
                   rho2*(ff)**(8./3.) +\
-                  rho3*(ff)**3.)
+                  rho3*(ff)**3.
     
         # Intermediate part 
         v2 = 0.8149838730507785 + 2.5747553517454658*eta\
