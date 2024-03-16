@@ -46,11 +46,7 @@ class TaylorF2_PPE(Waveform):
         return self._maxn
 
     def _set_default_gw_params(self):
-        self.gw_params = {
-            'mass_1': 0., 'mass_2': 0., 'luminosity_distance': 0., 
-            'redshift': 0., 'theta_jn': 0., 'phase': 0., 'geocent_time': 0., 
-            'a_1': 0., 'tilt_1': 0., 'phi_12': 0., 'a_2': 0., 'tilt_2': 0., 
-            'phi_jl': 0., 'lambda_1': 0., 'lambda_2': 0., 'cut': 4.,
+        self.gw_params_dev = {
             #ppE parameters
             'beta':0., 'PN':0.,
             #gIMR
@@ -70,20 +66,20 @@ class TaylorF2_PPE(Waveform):
         
         #PPE phase parameters
 
-        PN = self.gw_params['PN']
-        beta = self.gw_params['beta']
+        PN = self.gw_params_dev['PN']
+        beta = self.gw_params_dev['beta']
         
         #gIMR phase parameters
-        delta_phi_0 = self.gw_params['delta_phi_0']
-        delta_phi_1 = self.gw_params['delta_phi_1']
-        delta_phi_2 = self.gw_params['delta_phi_2']
-        delta_phi_3 = self.gw_params['delta_phi_3']
-        delta_phi_4 = self.gw_params['delta_phi_4']
-        delta_phi_5 = self.gw_params['delta_phi_5']
-        delta_phi_6 = self.gw_params['delta_phi_6']
-        delta_phi_7 = self.gw_params['delta_phi_7']
-        delta_phi_8 = self.gw_params['delta_phi_8']
-        delta_phi_9 = self.gw_params['delta_phi_9']
+        delta_phi_0 = self.gw_params_dev['delta_phi_0']
+        delta_phi_1 = self.gw_params_dev['delta_phi_1']
+        delta_phi_2 = self.gw_params_dev['delta_phi_2']
+        delta_phi_3 = self.gw_params_dev['delta_phi_3']
+        delta_phi_4 = self.gw_params_dev['delta_phi_4']
+        delta_phi_5 = self.gw_params_dev['delta_phi_5']
+        delta_phi_6 = self.gw_params_dev['delta_phi_6']
+        delta_phi_7 = self.gw_params_dev['delta_phi_7']
+        delta_phi_8 = self.gw_params_dev['delta_phi_8']
+        delta_phi_9 = self.gw_params_dev['delta_phi_9']
 
         return PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
         delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9
@@ -271,11 +267,7 @@ class IMRPhenomD_PPE(Waveform):
                              self.name)
 
     def _set_default_gw_params(self):
-        self.gw_params = {
-            'mass_1': 0., 'mass_2': 0., 'luminosity_distance': 0., 
-            'redshift': 0., 'theta_jn': 0., 'phase': 0., 'geocent_time': 0., 
-            'a_1': 0., 'tilt_1': 0., 'phi_12': 0., 'a_2': 0., 'tilt_2': 0., 
-            'phi_jl': 0., 'lambda_1': 0., 'lambda_2': 0., 'cut': 4.,
+        self.gw_params_dev = {
             #ppE parameters
             'beta':0., 'PN':0.,
             #gIMR
