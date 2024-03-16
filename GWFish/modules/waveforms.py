@@ -1177,10 +1177,12 @@ class IMRPhenomD(Waveform):
         psi, psi_prime = IMRPhenomD.calculate_phase(self)      
         hp, hc = IMRPhenomD.calculate_amplitude(self)
 
-        # Construct the phase
+        ############################### PHASE OUTPUT ###############################
+
         phase = np.exp(1.j * psi)
 
-        # Construct the strain
+        ############################## STRAIN OUTPUT ###############################
+        
         polarizations = np.hstack((hp * phase, hc * 1.j * phase))
     
         self._frequency_domain_strain = polarizations
