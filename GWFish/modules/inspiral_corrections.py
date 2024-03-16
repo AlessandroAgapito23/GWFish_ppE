@@ -20,11 +20,54 @@ import GWFish.modules.waveforms as wf
 from GWFish.modules.waveforms import Waveform
 
 
+class Inspiral_corr(Waveform):
+
+     def _set_default_gw_params(self):
+        self.gw_params_dev = {
+            'mass_1': 0., 'mass_2': 0., 'luminosity_distance': 0., 
+            'redshift': 0., 'theta_jn': 0., 'phase': 0., 'geocent_time': 0., 
+            'a_1': 0., 'a_2': 0.,'cut': 4.,
+            #ppE parameters
+            'beta':0., 'PN':0.,
+            #gIMR
+            'delta_phi_0':0.,
+            'delta_phi_1':0.,
+            'delta_phi_2':0.,
+            'delta_phi_3':0.,
+            'delta_phi_4':0.,
+            'delta_phi_5':0.,
+            'delta_phi_6':0.,
+            'delta_phi_7':0.,
+            'delta_phi_8':0.,
+            'delta_phi_9':0.
+        }
+    
+    def get_phase_corr(self):
+        #PPE phase parameters
+
+        PN = self.gw_params['PN']
+        beta = self.gw_params['beta']
+        
+        #gIMR phase parameters
+        delta_phi_0 = self.gw_params['delta_phi_0']
+        delta_phi_1 = self.gw_params['delta_phi_1']
+        delta_phi_2 = self.gw_params['delta_phi_2']
+        delta_phi_3 = self.gw_params['delta_phi_3']
+        delta_phi_4 = self.gw_params['delta_phi_4']
+        delta_phi_5 = self.gw_params['delta_phi_5']
+        delta_phi_6 = self.gw_params['delta_phi_6']
+        delta_phi_7 = self.gw_params['delta_phi_7']
+        delta_phi_8 = self.gw_params['delta_phi_8']
+        delta_phi_9 = self.gw_params['delta_phi_9']
+
+        return PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
+        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9
+
 ################################################################################
 ################################ TAYLORF2_PPE ##################################
 ########################## with spin corrections ###############################
 
-class TaylorF2_PPE(Waveform):
+class TaylorF2_PPE(Inspiral_corr):
 
     """ GWFish implementation of TaylorF2_PPE """
     def __init__(self, name, gw_params, data_params):
@@ -44,46 +87,7 @@ class TaylorF2_PPE(Waveform):
             if type(self._maxn) is not int:
                 return ValueError('maxn must be integer')
         return self._maxn
-
-    def _set_default_gw_params(self):
-        self.gw_params_dev = {
-            #ppE parameters
-            'beta':0., 'PN':0.,
-            #gIMR
-            'delta_phi_0':0.,
-            'delta_phi_1':0.,
-            'delta_phi_2':0.,
-            'delta_phi_3':0.,
-            'delta_phi_4':0.,
-            'delta_phi_5':0.,
-            'delta_phi_6':0.,
-            'delta_phi_7':0.,
-            'delta_phi_8':0.,
-            'delta_phi_9':0.
-        }
             
-    def get_phase_corr(self):
-        
-        #PPE phase parameters
-
-        PN = self.gw_params_dev['PN']
-        beta = self.gw_params_dev['beta']
-        
-        #gIMR phase parameters
-        delta_phi_0 = self.gw_params_dev['delta_phi_0']
-        delta_phi_1 = self.gw_params_dev['delta_phi_1']
-        delta_phi_2 = self.gw_params_dev['delta_phi_2']
-        delta_phi_3 = self.gw_params_dev['delta_phi_3']
-        delta_phi_4 = self.gw_params_dev['delta_phi_4']
-        delta_phi_5 = self.gw_params_dev['delta_phi_5']
-        delta_phi_6 = self.gw_params_dev['delta_phi_6']
-        delta_phi_7 = self.gw_params_dev['delta_phi_7']
-        delta_phi_8 = self.gw_params_dev['delta_phi_8']
-        delta_phi_9 = self.gw_params_dev['delta_phi_9']
-
-        return PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
-        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9
-
     
     def calculate_phase(self): 
 
@@ -94,7 +98,7 @@ class TaylorF2_PPE(Waveform):
         ones = np.ones((len(ff), 1)) 
 
         PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
-        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9 = TaylorF2_PPE.get_phase_corr(self)
+        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9 = Inspiral_corr.get_phase_corr(self)
         
         #f_cut = cut_order * f_isco
         cut = self.gw_params['cut']
@@ -255,7 +259,7 @@ class TaylorF2_PPE(Waveform):
 ############################## IMRPhenomD_PPE ##################################
 ################################################################################
 
-class IMRPhenomD_PPE(Waveform):
+class IMRPhenomD_PPE(Inspiral_corr):
     
     """ GWFish implementation of IMRPhenomD_PPE """
     def __init__(self, name, gw_params, data_params):
@@ -265,23 +269,6 @@ class IMRPhenomD_PPE(Waveform):
         if self.name != 'IMRPhenomD_PPE':
             logging.warning('Different waveform name passed to IMRPhenomD_PPE: '+\
                              self.name)
-
-    def _set_default_gw_params(self):
-        self.gw_params_dev = {
-            #ppE parameters
-            'beta':0., 'PN':0.,
-            #gIMR
-            'delta_phi_0':0.,
-            'delta_phi_1':0.,
-            'delta_phi_2':0.,
-            'delta_phi_3':0.,
-            'delta_phi_4':0.,
-            'delta_phi_5':0.,
-            'delta_phi_6':0.,
-            'delta_phi_7':0.,
-            'delta_phi_8':0.,
-            'delta_phi_9':0.
-        }
 
     # Here we add the phase deviations, which satisfy the continuity conditions of the phase and its derivative at the inferface
 
@@ -294,7 +281,7 @@ class IMRPhenomD_PPE(Waveform):
         ones = np.ones((len(ff), 1)) 
 
         PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
-        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9 = TaylorF2_PPE.get_phase_corr(self)
+        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9 = Inspiral_corr.get_phase_corr(self)
         
         phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = wf.TaylorF2.EI_phase_coeff(self)
 
