@@ -41,10 +41,10 @@ class Inspiral_corr(Waveform):
             'delta_phi_8':0.,
             'delta_phi_9':0.
         }
-    
-    def get_phase_corr(self):
+     
+     def get_phase_corr(self):
+         
         #PPE phase parameters
-
         PN = self.gw_params['PN']
         beta = self.gw_params['beta']
         
