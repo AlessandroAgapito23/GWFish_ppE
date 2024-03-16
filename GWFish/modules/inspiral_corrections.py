@@ -127,7 +127,7 @@ class TaylorF2_PPE(Inspiral_corr):
                 (phi_6*delta_phi_6 + phi_6_l*delta_phi_9*np.log(np.pi*ff))*((np.pi*ff)**(1./3.)) +\
                 phi_7*delta_phi_7*(np.pi*ff)**(2./3.)) 
         
-        psi_ppe = beta*((np.pi*(ff*cst.c**3/(cst.G*M))*Mc)**((2*PN-5.)/3.))  #ppe correction at every b order
+        psi_ppe = beta*(np.pi* ff * cst.c**3 / (cst.G*M) * Mc)**((2*PN-5.)/3.)  #ppe correction at every b order
 
         psi_EI = psi_TF2 + psi_ppe + psi_gIMR
 
@@ -146,7 +146,7 @@ class TaylorF2_PPE(Inspiral_corr):
                     (phi_6*delta_phi_6*+ phi_6_l*delta_phi_9*np.log(np.pi*f1))*((np.pi*f1)**(1./3.)) +\
                     phi_7*delta_phi_7*(np.pi*f1)**(2./3.))
                 
-        psi_ppe_f1 = beta*((np.pi*(f1/(cst.G*M/cst.c**3)*Mc))**((2*PN-5.)/3.))
+        psi_ppe_f1 = beta*((np.pi*f1 * cst.c**3 / (cst.G*M) * Mc))**((2*PN-5.)/3.))
 
         psi_EI_f1 = psi_TF2_f1 + psi_ppe_f1 + psi_gIMR_f1
         
@@ -173,9 +173,9 @@ class TaylorF2_PPE(Inspiral_corr):
                                              np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
                         phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
 
-        psi_ppe_prime = beta*(2*PN-5.)/3.*(np.pi* ff * cst.c**3 / (cst.G*M) *Mc)**((2*PN-8.)/3.)
+        psi_ppe_prime = beta*(2*PN-5.)/3.*(np.pi*ff * cst.c**3 / (cst.G*M) * Mc)**((2*PN-8.)/3.)
                                            
-        psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*(np.pi * f1 * cst.c**3/(cst.G*M) * Mc)**((2*PN-8.)/3.)
+        psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*(np.pi*f1 * cst.c**3 / (cst.G*M) * Mc)**((2*PN-8.)/3.)
         
         psi_EI_prime = psi_TF2_prime + psi_gIMR_prime + psi_ppe_prime
         psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_gIMR_prime_f1 + psi_ppe_prime_f1
