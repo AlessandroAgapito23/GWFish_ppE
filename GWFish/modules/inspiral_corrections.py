@@ -102,9 +102,8 @@ class TaylorF2_PPE(Waveform):
 
         ones = np.ones((len(ff), 1)) 
 
-        PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
-        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9 = TaylorF2_PPE.get_phase_corr(self)
-
+        PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4, delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9 = TaylorF2_PPE.get_phase_corr(self)
+        
         #f_cut = cut_order * f_isco
         cut = self.gw_params['cut']
 
