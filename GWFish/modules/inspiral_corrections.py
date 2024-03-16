@@ -277,6 +277,8 @@ class IMRPhenomD_PPE(Waveform):
             logging.warning('Different waveform name passed to IMRPhenomD_PPE: '+\
                              self.name)
 
+    # Here we want to define the late-inspiral, intermediate & merger-ringdown phase coefficients
+
     def LI_phase_coeff(self):
     
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
@@ -343,6 +345,7 @@ class IMRPhenomD_PPE(Waveform):
     
         return alpha2, alpha3, alpha4, alpha5
 
+    # Here we add the phase deviations, which satisfy the continuity conditions of the phase and its derivative at the inferface
 
     def calculate_phase(self): 
 
