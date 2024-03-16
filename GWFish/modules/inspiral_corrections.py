@@ -175,7 +175,7 @@ class TaylorF2_PPE(Inspiral_corr):
 
         psi_ppe_prime = beta*(2*PN-5.)/3.*(np.pi* ff * cst.c**3 / (cst.G*M) *Mc)**((2*PN-8.)/3.)
                                            
-        psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*((np.pi*(f1*cst.c**3/(cst.G*M)*Mc)**((2*PN-8.)/3.))
+        psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*(np.pi * f1 * cst.c**3/(cst.G*M) * Mc)**((2*PN-8.)/3.)
         
         psi_EI_prime = psi_TF2_prime + psi_gIMR_prime + psi_ppe_prime
         psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_gIMR_prime_f1 + psi_ppe_prime_f1
