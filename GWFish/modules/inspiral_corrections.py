@@ -81,11 +81,11 @@ class TaylorF2_PPE(Waveform):
                 200*eta)*chi_a**2 - 405./4.*delta_mass*chi_a*chi_s + (-(405./8.) + 5./2.*eta)*chi_s**2
         phi_5 = 38645./756.*np.pi - 65./9.*np.pi*eta + delta_mass*(-(732985./2268.) -\
                 140./9.*eta)*chi_a + (-(732985./2268.) + 24260./81.*eta + 340./9.*eta2)*chi_s
-        phi_5_l = 3.*phi_5
+        phi_5_l = 3*phi_5
         phi_6 = 11583231236531./4694215680. - 6848./21.*C - (640.*np.pi**2)/3. +\
             (-15737765635./3048192. + 2255.*np.pi**2/12.)*eta + 76055.*eta2/1728. - 127825.*eta3/1296. +\
             2270./3.*np.pi*delta_mass*chi_a + (2270.*np.pi/3. - 520.*np.pi*eta)*chi_s -6848./63.*np.log(64.)
-        phi_6_l = - 6848./63.*3.
+        phi_6_l = (-6848./63.)*3
         phi_7 = (77096675./254016. + 378515./1512.*eta - 74045./756.*eta2)*np.pi +\
             delta_mass*(-(25150083775./3048192.) + 26804935./6048.*eta - 1985./48.*eta2)*chi_a +\
             (-(25150083775./3048192.) + 10566655595./762048.*eta - 1042165./3024.*eta2 + 5345./36.*eta3)*chi_s
@@ -130,7 +130,7 @@ class TaylorF2_PPE(Waveform):
                 (phi_6*delta_phi_6 + phi_6_l*delta_phi_9*np.log(np.pi*ff))*((np.pi*ff)**(1./3.)) +\
                 phi_7*delta_phi_7*(np.pi*ff)**(2./3.)) 
         
-        psi_ppe = beta*((np.pi*(ff * cst.c**3/(cst.G*M))*Mc)**((2*PN-5.)/3.))  #ppe correction at every b order
+        psi_ppe = beta*((np.pi*(ff*cst.c**3/(cst.G*M))*Mc)**((2*PN-5.)/3.))  #ppe correction at every b order
 
         psi_EI = psi_TF2 + psi_ppe + psi_gIMR
 
@@ -163,8 +163,8 @@ class TaylorF2_PPE(Waveform):
                         phi_3*delta_phi_3*(np.pi)**(-2./3.)*(-2./3.*ff**(-5./3.)) +\
                         phi_4*delta_phi_4*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
                         phi_6*delta_phi_6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
-                        phi_6_l*delta_phi_9*((np.pi*ff)**(1./3.)*(np.pi*ff**(-1.)) +\
-                                             np.log(np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
+                        phi_6_l*delta_phi_9*(((np.pi*ff)**(1./3.))*(ff**(-1.)) +\
+                                             np.log(np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.))) +\
                         phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.))))
 
         psi_gIMR_prime_f1 = 3./(128.*eta)*((np.pi)**(-5./3.)*(-5./3.*f1**(-8./3.)) +\
@@ -174,7 +174,7 @@ class TaylorF2_PPE(Waveform):
                         phi_4*delta_phi_4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
                         phi_5_l*delta_phi_8*(np.pi)*f1**(-1.) +\
                         phi_6*delta_phi_6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
-                        phi_6_l*delta_phi_9*((np.pi*f1)**(1./3.)*(np.pi*f1**(-1.)) +\
+                        phi_6_l*delta_phi_9*(((np.pi*f1)**(1./3.))*(f1**(-1.)) +\
                                              np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
                         phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
 
@@ -371,7 +371,7 @@ class IMRPhenomD_PPE(Waveform):
                 (phi_6*delta_phi_6 + phi_6_l*delta_phi_9*np.log(np.pi*ff))*((np.pi*ff)**(1./3.)) +\
                 phi_7*delta_phi_7*(np.pi*ff)**(2./3.)) 
         
-        psi_ppe = beta*((np.pi*(ff * cst.c**3/(cst.G*M))*Mc)**((2*PN-5.)/3.))  #ppe correction at every b order
+        psi_ppe = beta*((np.pi*(ff*cst.c**3/(cst.G*M))*Mc)**((2*PN-5.)/3.))  #ppe correction at every b order
 
         psi = psi_TF2 + psi_ppe + psi_gIMR
 
@@ -407,7 +407,7 @@ class IMRPhenomD_PPE(Waveform):
                         phi_4*delta_phi_4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
                         phi_5_l*delta_phi_8*(np.pi)*f1**(-1.) +\
                         phi_6*delta_phi_6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
-                        phi_6_l*delta_phi_9*((np.pi*f1)**(1./3.)*(np.pi*f1**(-1.)) +\
+                        phi_6_l*delta_phi_9*(((np.pi*f1)**(1./3.))*(f1**(-1.)) +\
                                              np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
                         phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
 
