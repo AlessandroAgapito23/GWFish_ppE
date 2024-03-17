@@ -1,3 +1,23 @@
+# I break the standard code waveforms.py into more functions and attributes inside the Waveform class:
+# - get_param_comb(self) returns a few quantities which are present in TaylorF2 and IMRPhenomD
+
+# TaylorF2 >>>
+# - EI_phase_coeff(self) returns the early-inspiral phase coefficients phi_i
+# - calculate_phase(self) returns the early-inspiral phase and its analytical derivative at a generic f and at a specific f = f1
+# - calculate_amplitude(self) returns the two amplitudes hp and hc
+# - calculate_frequency_domain_strain(self) returns the strain which is zero if f > f_cut = cut * f_isco, and cut belongs to gw_params
+
+# IMRPhenomD >>>
+# - LI_phase_coeff(self), INT_phase_coeff(self), MR_phase_coeff(self) return the phase coefficients
+# - INS_amp_coeff(self), INT_amp_coeff(self), MR_amp_coeff(self) return the amplitude coefficients
+# - RD_damping(self) returns the ff_RD and ff_damp
+# - calculate_ins_phase(self), calculate_int_phase(self), calculate_MR_phase(self) return the different parts of the phase and their analytical derivatives
+# - calculate_phase(self) returns the total phase
+# - calculate_amplitude(self) returns the total amplitudes hp and hc
+# - calculate_frequency_domain_strain(self) returns the strain
+
+# Some of these functions are used in the inspiral_corrections.py module
+
 import os
 import logging
 import matplotlib.pyplot as plt
