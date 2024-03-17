@@ -19,7 +19,7 @@ import GWFish.modules.fft as fft
 import GWFish.modules.waveforms as wf
 from GWFish.modules.waveforms import Waveform
 
-
+#class which inherits the Waveform class in waveforms.py
 class Inspiral_corr(Waveform):
 
      def _set_default_gw_params(self):
@@ -49,10 +49,11 @@ class Inspiral_corr(Waveform):
           
      def get_phase_corr(self):
 
-        # We have to add delta_phi_ppe as in gIMRPhenomD (arXiv:1603.08955)
+        # We have to add delta_phi_i as in gIMRPhenomD (arXiv:1603.08955)
         # phi ---> phi*(1+delta_phi_i)
         # phi is a combination of phi_i, i=0,....,7 and i=2PN
         # We want to modify phi for each b one by one and b = i-5 
+        # beta is a function of delta_phi_i, phi_i and eta
 
         #PPE phase deviations
         PN = self.gw_params['PN']
@@ -127,7 +128,7 @@ class TaylorF2_PPE(Inspiral_corr):
                 (phi_6*delta_phi_6 + phi_6_l*delta_phi_9*np.log(np.pi*ff))*((np.pi*ff)**(1./3.)) +\
                 phi_7*delta_phi_7*(np.pi*ff)**(2./3.)) 
         
-        psi_ppe = beta*(np.pi* ff * cst.c**3 / (cst.G*M) * Mc)**((2*PN-5.)/3.)  #ppe correction at every b order
+        psi_ppe = beta*(np.pi*ff*cst.c**3/(cst.G*M)*Mc)**((2*PN-5.)/3.)  #ppe correction at every b order
 
         psi_EI = psi_TF2 + psi_ppe + psi_gIMR
 
@@ -146,7 +147,7 @@ class TaylorF2_PPE(Inspiral_corr):
                     (phi_6*delta_phi_6 + phi_6_l*delta_phi_9*np.log(np.pi*f1))*((np.pi*f1)**(1./3.)) +\
                     phi_7*delta_phi_7*(np.pi*f1)**(2./3.))
                 
-        psi_ppe_f1 = beta*((np.pi*f1 * cst.c**3 / (cst.G*M) * Mc))**((2*PN-5.)/3.)
+        psi_ppe_f1 = beta*((np.pi*f1*cst.c**3/(cst.G*M)*Mc))**((2*PN-5.)/3.)
 
         psi_EI_f1 = psi_TF2_f1 + psi_ppe_f1 + psi_gIMR_f1
         
@@ -174,9 +175,9 @@ class TaylorF2_PPE(Inspiral_corr):
                                              np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
                         phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
 
-        psi_ppe_prime = beta*(2*PN-5.)/3.*(np.pi*ff * cst.c**3 / (cst.G*M) * Mc)**((2*PN-8.)/3.)
+        psi_ppe_prime = beta*(2*PN-5.)/3.*(np.pi*ff*cst.c**3/(cst.G*M)*Mc)**((2*PN-8.)/3.)
                                            
-        psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*(np.pi*f1 * cst.c**3 / (cst.G*M) * Mc)**((2*PN-8.)/3.)
+        psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*(np.pi*f1*cst.c**3/(cst.G*M)*Mc)**((2*PN-8.)/3.)
         
         psi_EI_prime = psi_TF2_prime + psi_gIMR_prime + psi_ppe_prime
         psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_gIMR_prime_f1 + psi_ppe_prime_f1
@@ -294,7 +295,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
                 (phi_6*delta_phi_6 + phi_6_l*delta_phi_9*np.log(np.pi*ff))*((np.pi*ff)**(1./3.)) +\
                 phi_7*delta_phi_7*(np.pi*ff)**(2./3.)) 
         
-        psi_ppe = beta*(np.pi* (ff*(cst.c**3)/(cst.G*M)) * Mc)**((2*PN-5.)/3.)  #ppe correction at every b order
+        psi_ppe = beta*(np.pi*(ff*(cst.c**3)/(cst.G*M))*Mc)**((2*PN-5.)/3.)  #ppe correction at every b order
 
         psi_EI = psi_TF2 + psi_ppe + psi_gIMR
 
@@ -317,7 +318,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
                     (phi_6*delta_phi_6 + phi_6_l*delta_phi_9*np.log(np.pi*f1))*((np.pi*f1)**(1./3.)) +\
                     phi_7*delta_phi_7*(np.pi*f1)**(2./3.))
                 
-        psi_ppe_f1 = beta*(np.pi* (f1*(cst.c**3)/(cst.G*M)) * Mc)**((2*PN-5.)/3.)
+        psi_ppe_f1 = beta*(np.pi*(f1*(cst.c**3)/(cst.G*M))*Mc)**((2*PN-5.)/3.)
          
         psi_EI_f1 = psi_TF2_f1 + psi_ppe_f1 + psi_gIMR_f1
 
@@ -332,7 +333,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
                                              np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
                         phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
 
-        psi_ppe_prime_f1 = beta*((2*PN-5.)/3.)*(np.pi* (ff*(cst.c**3)/(cst.G*M)) * Mc)**((2*PN-8.)/3.)
+        psi_ppe_prime_f1 = beta*((2*PN-5.)/3.)*(np.pi*(ff*(cst.c**3)/(cst.G*M))*Mc)**((2*PN-8.)/3.)
 
         psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_ppe_prime_f1 + psi_gIMR_prime_f1
          
