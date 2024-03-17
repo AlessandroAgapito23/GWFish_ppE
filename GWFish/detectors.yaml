@@ -92,7 +92,7 @@ LLO_O1:
             detector_class:   earthL
             plotrange:        10, 1000, 1e-25, 1e-20
             fmin:             20
-            fmax:             512
+            fmax:             1024
             spacing:          geometric 
             df:               1./4.    
             npoints:          5000  
@@ -106,7 +106,7 @@ LHO_O1:
             detector_class:   earthL
             plotrange:        10, 1000, 1e-25, 1e-20
             fmin:             20
-            fmax:             512
+            fmax:             1024
             spacing:          geometric 
             df:               1./4.    
             npoints:          5000 
