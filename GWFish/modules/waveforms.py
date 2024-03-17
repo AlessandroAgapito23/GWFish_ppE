@@ -1125,10 +1125,11 @@ class IMRPhenomD(Waveform):
        
         # Solve for delta coefficients (intermediate phase)
         A = np.array([[1., f1_amp, f1_amp**2., f1_amp**3., f1_amp**4.],\
-                        [1., f2_amp, f2_amp**2., f2_amp**3., f2_amp**4.],\
-                        [1., f3_amp, f3_amp**2., f3_amp**3., f3_amp**4.],\
-                        [0., 1., 2.*f1_amp, 3.*f1_amp**2., 4.*f1_amp**3.],\
-                        [0., 1., 2.*f3_amp, 3.*f3_amp**2., 4.*f3_amp**3.]])
+                      [1., f2_amp, f2_amp**2., f2_amp**3., f2_amp**4.],\
+                      [1., f3_amp, f3_amp**2., f3_amp**3., f3_amp**4.],\
+                      [0., 1., 2.*f1_amp, 3.*f1_amp**2., 4.*f1_amp**3.],\
+                      [0., 1., 2.*f3_amp, 3.*f3_amp**2., 4.*f3_amp**3.]])
+        
         b = np. array([amp_ins_f1, v2, amp_MR_f3, amp_ins_prime_f1, amp_MR_prime_f3])
         delta = np.linalg.solve(A, b)
     
@@ -1146,7 +1147,7 @@ class IMRPhenomD(Waveform):
         theta_plus2_amp = 0.5*(1*ones + step_function(ff,ff3_amp))
     
         # Overall (2,2) mode factor and its derivative
-        A0 = 1./(np.pi**(2./3.))*(5./24.)**(0.5)*cst.c/r*Mc**(5./6.)*(ff * cst.c**3/(cst.G*M))**(-7./6.)
+        A0 = 1./(np.pi**(2./3.))*(5./24.)**(0.5)*cst.c/r*Mc**(5./6.)*(ff*cst.c**3/(cst.G*M))**(-7./6.)
 
         ####################### AMPLITUDE COMPONENTS ###########################
         ###################### written continuosly in frequency ################
