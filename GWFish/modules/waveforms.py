@@ -587,9 +587,9 @@ class TaylorF2(Waveform):
                 phi_3*(np.pi*ff)**(-2./3.) +\
                 phi_4*(np.pi*ff)**(-1./3.) +\
                 phi_5 +\
-                phi_5_l*np.log(np.pi*ff) +\
+                phi_5_l*np.log((np.pi*ff)**(1./3.)) +\
                 phi_6*(np.pi*ff)**(1./3.) +\
-                phi_6_l*np.log(np.pi*ff)*(np.pi*ff)**(1./3.) +\
+                phi_6_l*np.log((np.pi*ff)**(1./3.))*(np.pi*ff)**(1./3.) +\
                 phi_7*(np.pi*ff)**(2./3.))
 
         ################################################################################ 
@@ -604,9 +604,9 @@ class TaylorF2(Waveform):
                 phi_3*(np.pi*f1)**(-2./3.) +\
                 phi_4*(np.pi*f1)**(-1./3.) +\
                 phi_5 +\
-                phi_5_l*np.log(np.pi*f1) +\
+                phi_5_l*1./3.*np.log(np.pi*f1) +\
                 phi_6*(np.pi*f1)**(1./3.) +\
-                phi_6_l*np.log(np.pi*f1)*(np.pi*f1)**(1./3.) +\
+                phi_6_l*1./3.*np.log(np.pi*f1)*(np.pi*f1)**(1./3.) +\
                 phi_7*(np.pi*f1)**(2./3.))
         
         psi_TF2_prime = 2.*np.pi*cst.c**3/(cst.G*M)*tc +\
@@ -614,10 +614,10 @@ class TaylorF2(Waveform):
                 phi_2*(np.pi)**(-1.)*(-1.*ff**(-2.)) +\
                 phi_3*(np.pi)**(-2./3.)*(-2./3.*ff**(-5./3.)) +\
                 phi_4*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
-                phi_5_l*ff**(-1.) +\
+                phi_5_l*1.3.*ff**(-1.) +\
                 phi_6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
-                phi_6_l*(ff**(-1.)*(np.pi*ff)**(1./3.) +\
-                        np.log(np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.))) +\
+                phi_6_l*(1./3.*ff**(-1.)*(np.pi*ff)**(1./3.) +\
+                         1./3.*np.log(np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.))) +\
                 phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.)))
         
         psi_TF2_prime_f1 = 2.*np.pi*cst.c**3/(cst.G*M)*tc +\
@@ -625,10 +625,10 @@ class TaylorF2(Waveform):
                 phi_2*(np.pi)**(-1.)*(-1.*f1**(-2.)) +\
                 phi_3*(np.pi)**(-2./3.)*(-2./3.*f1**(-5./3.)) +\
                 phi_4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
-                phi_5_l*f1**(-1.) +\
+                phi_5_l*1./3.*f1**(-1.) +\
                 phi_6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
-                phi_6_l*(f1**(-1.)*(np.pi*f1)**(1./3.) +\
-                        np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
+                phi_6_l*(1./3.*f1**(-1.)*(np.pi*f1)**(1./3.) +\
+                         1./3.*np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
                 phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
         
         return psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1
