@@ -291,8 +291,8 @@ class IMRPhenomD_PPE(Inspiral_corr):
                 phi_3*delta_phi_3*(np.pi*ff)**(-2./3.) +\
                 phi_4*delta_phi_4*(np.pi*ff)**(-1./3.) +\
                 phi_5*delta_phi_5 + phi_5_l*delta_phi_8*1./3.*np.log(np.pi*ff) +\
-                (phi_6*delta_phi_6 + phi_6_l*delta_phi_9*1./3.*np.log(np.pi*ff)*((np.pi*ff)**(1./3.)) +\
-                phi_7*delta_phi_7*(np.pi*ff)**(2./3.))) 
+                phi_6*delta_phi_6 + phi_6_l*delta_phi_9*1./3.*np.log(np.pi*ff)*((np.pi*ff)**(1./3.)) +\
+                phi_7*delta_phi_7*(np.pi*ff)**(2./3.)) 
         
         psi_ppe = beta*(np.pi* (ff*(cst.c**3)/(cst.G*M)) * Mc)**((2*PN-5.)/3.)  #ppe correction at every b order
 
@@ -315,7 +315,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
                     phi_4*delta_phi_4*(np.pi*f1)**(-1./3.) +\
                     phi_5*delta_phi_5 + phi_5_l*delta_phi_8*1./3.*np.log(np.pi*f1) +\
                     phi_6*delta_phi_6*+ phi_6_l*delta_phi_9*1./3.*np.log(np.pi*f1)*((np.pi*f1)**(1./3.)) +\
-                    phi_7*delta_phi_7*(np.pi*f1)**(2./3.)))
+                    phi_7*delta_phi_7*(np.pi*f1)**(2./3.))
                 
         psi_ppe_f1 = beta*(np.pi* (f1*(cst.c**3)/(cst.G*M)) * Mc)**((2*PN-5.)/3.)
          
