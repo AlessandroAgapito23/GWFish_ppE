@@ -92,8 +92,11 @@ def t_of_f_PN(parameters, frequencyvector):
     term, which does not matter for SNR calculations.
     """
 
-    M1 = parameters['mass_1'] * (1 + parameters['redshift']) * cst.Msol
-    M2 = parameters['mass_2'] * (1 + parameters['redshift']) * cst.Msol
+    local_params = parameters.copy()
+    aux.check_and_convert_to_mass_1_mass_2(local_params)
+
+    M1 = local_params['mass_1'] * cst.Msol
+    M2 = local_params['mass_2'] * cst.Msol
 
     M = M1 + M2
     mu = M1 * M2 / M
@@ -102,7 +105,7 @@ def t_of_f_PN(parameters, frequencyvector):
 
     t_of_f = -5./(256.*np.pi**(8/3))/Mc**(5/3)/frequencyvector**(8/3)
 
-    return t_of_f + parameters['geocent_time']
+    return t_of_f+local_params['geocent_time']
 
 
 class Waveform:
