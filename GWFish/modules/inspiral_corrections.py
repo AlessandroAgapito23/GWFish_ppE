@@ -295,7 +295,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
         
         psi_ppe = beta*(np.pi* ff * cst.c**3 / (cst.G*M) * Mc)**((2*PN-5.)/3.)  #ppe correction at every b order
 
-        psi_EI = psi_TF2 + psi_ppe + psi_gIMR
+        psi_EI = psi_TF2 + psi_ppe 
 
         sigma2, sigma3, sigma4 = wf.IMRPhenomD.LI_phase_coeff(self)
 
@@ -318,7 +318,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
                 
         psi_ppe_f1 = beta*((np.pi*f1 * cst.c**3 / (cst.G*M) * Mc))**((2*PN-5.)/3.)
          
-        psi_EI_f1 = psi_TF2_f1 + psi_ppe_f1 + psi_gIMR_f1
+        psi_EI_f1 = psi_TF2_f1 + psi_ppe_f1 
 
         psi_gIMR_prime_f1 = 3./(128.*eta)*((np.pi)**(-5./3.)*(-5./3.*f1**(-8./3.)) +\
                         delta_phi_1*(np.pi)**(-4./3.)*(-4./3.*f1**(-7./3.)) +\
@@ -333,7 +333,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
 
         psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*(np.pi*f1 * cst.c**3 / (cst.G*M) * Mc)**((2*PN-8.)/3.)
 
-        psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_gIMR_prime_f1 + psi_ppe_prime_f1
+        psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_ppe_prime_f1
         
         psi_late_ins_f1 = 1./eta*(3./4.*sigma2*f1**(4./3.) + 3./5.*sigma3*f1**(5./3.) + 1./2.*sigma4*f1**2)
         psi_late_ins_prime = 1./eta*(sigma2*ff**(1./3.) + sigma3*ff**(2./3.) + sigma4*ff)
