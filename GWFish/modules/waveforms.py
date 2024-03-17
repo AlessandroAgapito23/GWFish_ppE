@@ -222,8 +222,9 @@ class Waveform:
     def get_param_comb(self):
         
         frequencyvector = self.frequencyvector[:,np.newaxis]
-        M1 = self.gw_params['mass_1'] * cst.Msol
-        M2 = self.gw_params['mass_2'] * cst.Msol
+        z = self.gw_params['redshift']
+        M1 = self.gw_params['mass_1'] * (1 + z) * cst.Msol
+        M2 = self.gw_params['mass_2'] * (1 + z) * cst.Msol
         chi_1 = self.gw_params.get('a_1', 0.0)
         chi_2 = self.gw_params.get('a_2', 0.0)
 
