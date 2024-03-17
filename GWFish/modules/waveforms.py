@@ -587,9 +587,9 @@ class TaylorF2(Waveform):
                 phi_3*(np.pi*ff)**(-2./3.) +\
                 phi_4*(np.pi*ff)**(-1./3.) +\
                 phi_5 +\
-                phi_5_l*np.log((np.pi*ff)**(1./3.)) +\
+                phi_5_l*1./3.*np.log(np.pi*ff) +\
                 phi_6*(np.pi*ff)**(1./3.) +\
-                phi_6_l*np.log((np.pi*ff)**(1./3.))*(np.pi*ff)**(1./3.) +\
+                phi_6_l*1./3.*np.log(np.pi*ff)*(np.pi*ff)**(1./3.) +\
                 phi_7*(np.pi*ff)**(2./3.))
 
         ################################################################################ 
