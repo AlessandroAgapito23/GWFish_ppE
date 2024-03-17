@@ -909,8 +909,9 @@ class IMRPhenomD(Waveform):
     def RD_damping(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-        M1 = self.gw_params['mass_1'] * cst.Msol
-        M2 = self.gw_params['mass_2'] * cst.Msol
+        z = self.gw_params['redshift']
+        M1 = self.gw_params['mass_1'] * (1 + z) * cst.Msol
+        M2 = self.gw_params['mass_2'] * (1 + z) * cst.Msol
         chi_1 = self.gw_params.get('a_1', 0.0)
         chi_2 = self.gw_params.get('a_2', 0.0)
         
