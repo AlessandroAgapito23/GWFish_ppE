@@ -293,9 +293,9 @@ class IMRPhenomD_PPE(Inspiral_corr):
                 (phi_6*delta_phi_6 + phi_6_l*delta_phi_9*np.log(np.pi*ff))*((np.pi*ff)**(1./3.)) +\
                 phi_7*delta_phi_7*(np.pi*ff)**(2./3.)) 
         
-        psi_ppe = beta*(np.pi* ff * cst.c**3 / (cst.G*M) * Mc)**((2*PN-5.)/3.)  #ppe correction at every b order
+        psi_ppe = beta*(np.pi* (ff*(cst.c**3)/(cst.G*M)) * Mc)**((2*PN-5.)/3.)  #ppe correction at every b order
 
-        psi_EI = psi_TF2 + psi_ppe 
+        psi_EI = psi_TF2 + psi_ppe + psi_gIMR
 
         sigma2, sigma3, sigma4 = wf.IMRPhenomD.LI_phase_coeff(self)
 
@@ -316,9 +316,9 @@ class IMRPhenomD_PPE(Inspiral_corr):
                     (phi_6*delta_phi_6*+ phi_6_l*delta_phi_9*np.log(np.pi*f1))*((np.pi*f1)**(1./3.)) +\
                     phi_7*delta_phi_7*(np.pi*f1)**(2./3.))
                 
-        psi_ppe_f1 = beta*((np.pi*f1 * cst.c**3 / (cst.G*M) * Mc))**((2*PN-5.)/3.)
+        psi_ppe_f1 = beta*(np.pi* (f1*(cst.c**3)/(cst.G*M)) * Mc)**((2*PN-5.)/3.)
          
-        psi_EI_f1 = psi_TF2_f1 + psi_ppe_f1 
+        psi_EI_f1 = psi_TF2_f1 + psi_ppe_f1 + psi_gIMR_f1
 
         psi_gIMR_prime_f1 = 3./(128.*eta)*((np.pi)**(-5./3.)*(-5./3.*f1**(-8./3.)) +\
                         delta_phi_1*(np.pi)**(-4./3.)*(-4./3.*f1**(-7./3.)) +\
@@ -331,10 +331,10 @@ class IMRPhenomD_PPE(Inspiral_corr):
                                              np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
                         phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
 
-        psi_ppe_prime_f1 = beta*(2*PN-5.)/3.*(np.pi*f1 * cst.c**3 / (cst.G*M) * Mc)**((2*PN-8.)/3.)
+        psi_ppe_prime_f1 = beta*((2*PN-5.)/3.)*(np.pi* (ff*(cst.c**3)/(cst.G*M)) * Mc)**((2*PN-8.)/3.)
 
-        psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_ppe_prime_f1
-        
+        psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_ppe_prime_f1 + psi_gIMR_prime_f1
+         
         psi_late_ins_f1 = 1./eta*(3./4.*sigma2*f1**(4./3.) + 3./5.*sigma3*f1**(5./3.) + 1./2.*sigma4*f1**2)
         psi_late_ins_prime = 1./eta*(sigma2*ff**(1./3.) + sigma3*ff**(2./3.) + sigma4*ff)
         psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) + sigma3*f1**(2./3.) + sigma4*f1)
@@ -365,26 +365,25 @@ class IMRPhenomD_PPE(Inspiral_corr):
         psi_int_f2 = 1./eta*(beta0 + beta1*f2 + beta2*np.log(f2) - 1./3.*beta3*f2**(-3.))
         psi_int_prime_f2 = 1./eta*(beta1 + beta2*f2**(-1.) + beta3*f2**(-4.))
         
-        ####################### IN-MERG PHASE CONTINUITY CONDITIONS ###################
+        ####################### INT-MERG PHASE CONTINUITY CONDITIONS ###################
 
         alpha2, alpha3, alpha4, alpha5 = wf.IMRPhenomD.MR_phase_coeff(self)
         
-        alpha1 = psi_int_prime_f2 - alpha2*f2**(-2.) - alpha3*f2**(-1./4.) -\
+        alpha1 = psi_int_prime_f2*eta - alpha2*f2**(-2.) - alpha3*f2**(-1./4.) -\
                 (alpha4*ff_damp)/(ff_damp**2. + (f2 - alpha5*ff_RD)**2.) # psi_int_prime_f2 = psi_MR_prime_f2
-        alpha0 = psi_int_f2 - alpha1*f2 + alpha2*f2**(-1.) -\
+        alpha0 = psi_int_f2*eta - alpha1*f2 + alpha2*f2**(-1.) -\
                 4./3.*alpha3*f2**(3./4.) - alpha4*np.arctan((f2 - alpha5*ff_RD)/ff_damp) #psi_int_f2 = psi_MR_f2
 
         # Evaluate full merger-ringdown phase and its analytical derivative
         psi_MR = 1./eta*(alpha0 + alpha1*ff - alpha2*ff**(-1.) + 4./3.*alpha3*ff**(3./4.) +\
-                                alpha4*np.arctan((ff - alpha5*ff_RD)/ff_damp))
+                         alpha4*np.arctan((ff - alpha5*ff_RD)/ff_damp))
         psi_MR_prime = 1./eta*(alpha1 + alpha2*ff**(-2.) + alpha3*ff**(-1./4.) + alpha4*ff_damp/(ff_damp**2. +\
-                        (ff - alpha5*ff_RD)**2.))
+                          (ff - alpha5*ff_RD)**2.))
 
         # Conjunction functions
         ff1 = 0.0166*ones
         ff2 = 0.5*ff_RD*ones
 
-        
         theta_minus1 = 0.5*(1*ones - wf.step_function(ff,ff1))
         theta_minus2 = 0.5*(1*ones - wf.step_function(ff,ff2))
     
