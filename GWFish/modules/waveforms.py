@@ -568,21 +568,24 @@ class TaylorF2(Waveform):
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
     
         # PN coefficients (up to 3.5 PN order) INSPIRAL phase coefficients >>>>>>>>>>>>
-        # including the spin corrections and the logaritmic corrections (phi_5_l and phi_6_l)
+        # including the spin corrections and the logaritmic corrections (phi_5_l and phi_6_l) and the quadratic spin correction at 3PN (phi_6_quad)
         
         phi_0 = 1.
         phi_1 = 0.
         phi_2 = 3715./756. + 55./9.*eta
         phi_3 = -16.*np.pi + 113./3.*delta_mass*chi_a + (113./3. - 76./3.*eta)*chi_s
-        phi_4 = 15293365./508032. + 27145./504.*eta + 3085./72.*eta2 + (-(405./8.) +\
-                200*eta)*chi_a**2 - 405./4.*delta_mass*chi_a*chi_s + (-(405./8.) + 5./2.*eta)*chi_s**2
+        phi_4 = 15293365./508032. + 27145./504.*eta + 3085./72.*eta2 +\
+                (-(405./8.) + 200*eta)*chi_a**2 - 405./4.*delta_mass*chi_a*chi_s + (-(405./8.) + 5./2.*eta)*chi_s**2
         phi_5 = 38645./756.*np.pi - 65./9.*np.pi*eta + delta_mass*(-(732985./2268.) -\
                 140./9.*eta)*chi_a + (-(732985./2268.) + 24260./81.*eta + 340./9.*eta2)*chi_s
         phi_5_l = phi_5
-        phi_6 = 11583231236531./4694215680. - 6848./21.*C - (640.*np.pi**2)/3. +\
+        phi_6 = 11583231236531./4694215680. - 6848./21.*C - (640.*np.pi**2)/3. -6848./63.*np.log(64.) +\
               (-15737765635./3048192. + 2255.*np.pi**2/12.)*eta + 76055.*eta2/1728. - 127825.*eta3/1296. +\
-              2270./3.*np.pi*delta_mass*chi_a + (2270.*np.pi/3. - 520.*np.pi*eta)*chi_s -6848./63.*np.log(64.)
+              2270./3.*np.pi*delta_mass*chi_a + (2270.*np.pi/3. - 520.*np.pi*eta)*chi_s 
         phi_6_l = -6848./63.
+        phi_6_quad = (75515./28. - 232415./504.*eta -1255./9.*eta**2)*chi_s**2 +\
+                    (75515./28. - 263245./252.*eta - 480.*eta**2)*chi_a**2 +\
+                    (75515./144. - 8225./18.*eta)*delta_mass*chi_a*chi_s
         phi_7 = (77096675./254016. + 378515./1512.*eta - 74045./756.*eta2)*np.pi +\
               delta_mass*(-(25150083775./3048192.) + 26804935./6048.*eta - 1985./48.*eta2)*chi_a +\
               (-(25150083775./3048192.) + 10566655595./762048.*eta - 1042165./3024.*eta2 + 5345./36.*eta3)*chi_s
