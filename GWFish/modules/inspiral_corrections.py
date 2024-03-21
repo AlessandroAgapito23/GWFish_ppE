@@ -73,13 +73,18 @@ class Inspiral_corr(Waveform):
         delta_phi_8 = self.gw_params['delta_phi_8']
         delta_phi_9 = self.gw_params['delta_phi_9']
 
+
+        return PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
+        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9
+          
+    def get_mult_corr(self):
+
         #quadrupole deviations
         k_s = self.gw_params['k_s']
         k_a = self.gw_params['k_a']
 
-        return PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
-        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9
-
+        return k_s, k_a
+         
 ################################################################################
 ################################ TAYLORF2_PPE ##################################
 ########################## with spin corrections ###############################
@@ -262,6 +267,109 @@ class TaylorF2_PPE(Inspiral_corr):
         plt.tight_layout()
         plt.savefig(output_folder + 'delta_phase_tot_PPE.png')
         plt.close()
+
+
+################################################################################
+################################ TAYLORF2_k ####################################
+########################## with multipolar corrections #########################
+
+class TaylorF2_k(Inspiral_corr):
+
+    """ GWFish implementation of TaylorF2_k """
+    def __init__(self, name, gw_params, data_params):
+        super().__init__(name, gw_params, data_params)
+        self._maxn = None
+        self.psi = None
+        if self.name != 'TaylorF2_k':
+            logging.warning('Different waveform name passed to TaylorF2_k: '+ self.name)
+
+    @property
+    def maxn(self):
+        if self._maxn is None:
+            if 'maxn' in self.data_params:
+                self._maxn = self.data_params['maxn']
+            else:
+                self._maxn = 8
+            if type(self._maxn) is not int:
+                return ValueError('maxn must be integer')
+        return self._maxn
+            
+    
+    def calculate_phase(self): 
+
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
+        f_isco = aux.fisco(self.gw_params)  #inner stable circular orbit 
+        ones = np.ones((len(ff), 1)) 
+
+        k_s, k_a = Inspiral_corr.get_mult_corr(self)
+        
+        #f_cut = cut_order * f_isco
+        cut = self.gw_params['cut']
+
+        ################################################################################ 
+        ############################## PHASE CORRECTIONS ###############################
+        ############################# multipolar deviations ############################
+
+        psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
+        phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = wf.TaylorF2.EI_phase_coeff(self)
+
+        psi_k = 3./(128.*eta)*(()*(np.pi*ff)**(-1./3.) +\
+                ()*np.log(np.pi*ff)*(np.pi*ff)**(1./3.)) 
+
+        psi_EI = psi_TF2 + psi_k
+
+        ################################################################################ 
+        # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
+        ################################################################################ 
+
+        f1 = 0.018
+
+        psi_k_f1 = 3./(128.*eta)*(()*(np.pi*f1)**(-1./3.) +\
+                   ()*np.log(np.pi*f1)*(np.pi*f1)**(1./3.))
+                
+        psi_EI_f1 = psi_TF2_f1 + psi_k_f1        
+
+        # Analytical derivative 
+        psi_k_prime = 3./(128.*eta)*(()*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
+                        ()*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
+                        ()*(((np.pi*ff)**(1./3.))*(ff**(-1.)) +\
+                        np.log(np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.))) )
+
+        psi_k_prime_f1 = 3./(128.*eta)*(()*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
+                        ()*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
+                        ()*(((np.pi*f1)**(1./3.))*(f1**(-1.)) +\
+                        np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) )
+       
+        psi_EI_prime = psi_TF2_prime + psi_k_prime
+        psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_k_prime_f1
+         
+        return psi_EI, psi_EI_prime, psi_EI_f1, psi_EI_prime_f1
+
+    def calculate_frequency_domain_strain(self):
+
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
+        cut = self.gw_params['cut']
+        f_isco = aux.fisco(self.gw_params)
+
+        psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2_PPE.calculate_phase(self)
+        hp, hc = wf.TaylorF2.calculate_amplitude(self)
+         
+        ############################### PHASE OUTPUT ###############################
+
+        phase = np.exp(1.j * psi)
+
+        ############################## STRAIN OUTPUT ###############################
+        
+        polarizations = np.hstack((hp * phase, hc * 1.j * phase))
+
+        # Very crude high-f cut-off which can be an input parameter 'cut', default = 4*f_isco
+        f_cut = cut*f_isco*cst.G*M/cst.c**3
+ 
+        polarizations[np.where(ff[:,0] > f_cut), :] = 0.j
+
+        self._frequency_domain_strain = polarizations
+
+        ############################################################################
 
 
 ################################################################################
