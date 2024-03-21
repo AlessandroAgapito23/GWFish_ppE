@@ -568,7 +568,7 @@ class TaylorF2(Waveform):
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
     
         # PN coefficients (up to 3.5 PN order) INSPIRAL phase coefficients >>>>>>>>>>>>
-        # including the spin corrections and the logaritmic corrections (phi_5_l and phi_6_l) and the quadratic spin correction at 3PN (phi_6_quad)
+        # including the spin corrections and the logaritmic corrections (phi_5_l and phi_6_l)
         
         phi_0 = 1.
         phi_1 = 0.
