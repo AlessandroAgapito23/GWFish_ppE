@@ -321,7 +321,7 @@ class TaylorF2_k(Inspiral_corr):
                 ((26015./28. - 1495./6.*eta)*delta_mass*k_a +\
                 (26015./28. - 44255./21.*eta - 240.*eta**2)*k_s)*(chi_s**2 + chi_a**2) +\
                 ((26015./14. - 1495./3.*eta)*delta_mass*k_s +\
-                (26015./14. - 88510./21.*eta - 480.*eta**2)*k_a)*chi_s*chi_a)*(1 + np.log(np.pi*ff))*(np.pi*ff)**(1./3.)
+                (26015./14. - 88510./21.*eta - 480.*eta**2)*k_a)*chi_s*chi_a)*(1 + np.log(np.pi*ff))*(np.pi*ff)**(1./3.))
 
         psi_EI = psi_TF2 + psi_k
 
@@ -338,7 +338,7 @@ class TaylorF2_k(Inspiral_corr):
                 ((26015./28. - 1495./6.*eta)*delta_mass*k_a +\
                 (26015./28. - 44255./21.*eta - 240.*eta**2)*k_s)*(chi_s**2 + chi_a**2) +\
                 ((26015./14. - 1495./3.*eta)*delta_mass*k_s +\
-                (26015./14. - 88510./21.*eta - 480.*eta**2)*k_a)*chi_s*chi_a)*(1 + np.log(np.pi*f1))*(np.pi*f1)**(1./3.)
+                (26015./14. - 88510./21.*eta - 480.*eta**2)*k_a)*chi_s*chi_a)*(1 + np.log(np.pi*f1))*(np.pi*f1)**(1./3.))
                 
         psi_EI_f1 = psi_TF2_f1 + psi_k_f1        
 
