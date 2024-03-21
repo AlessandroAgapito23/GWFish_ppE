@@ -273,15 +273,15 @@ class TaylorF2_PPE(Inspiral_corr):
 ################################ TAYLORF2_k ####################################
 ########################## with multipolar corrections #########################
 
-class TaylorF2_k(Inspiral_corr):
+class TaylorF2_mult(Inspiral_corr):
 
     """ GWFish implementation of TaylorF2_k """
     def __init__(self, name, gw_params, data_params):
         super().__init__(name, gw_params, data_params)
         self._maxn = None
         self.psi = None
-        if self.name != 'TaylorF2_k':
-            logging.warning('Different waveform name passed to TaylorF2_k: '+ self.name)
+        if self.name != 'TaylorF2_mult':
+            logging.warning('Different waveform name passed to TaylorF2_mult: '+ self.name)
 
     @property
     def maxn(self):
@@ -378,7 +378,7 @@ class TaylorF2_k(Inspiral_corr):
         cut = self.gw_params['cut']
         f_isco = aux.fisco(self.gw_params)
 
-        psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2_k.calculate_phase(self)
+        psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2_mult.calculate_phase(self)
         hp, hc = wf.TaylorF2.calculate_amplitude(self)
          
         ############################### PHASE OUTPUT ###############################
