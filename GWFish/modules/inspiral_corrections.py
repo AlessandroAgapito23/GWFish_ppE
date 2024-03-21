@@ -41,7 +41,7 @@ class Inspiral_corr(Waveform):
             'delta_phi_8':0.,
             'delta_phi_9':0.,
             #quadrupole deviations
-            'k_s':0., 'k_a':0.
+            'k_1':0., 'k_2':0.
         }
 
      def update_gw_params(self, new_gw_params):
@@ -79,10 +79,10 @@ class Inspiral_corr(Waveform):
      def get_mult_corr(self):
           
         #quadrupole deviations
-        k_s = self.gw_params['k_s']
-        k_a = self.gw_params['k_a']
+        k_1 = self.gw_params['k_1']
+        k_2 = self.gw_params['k_2']
           
-        return k_s, k_a
+        return k_1, k_2
      
          
 ################################################################################
@@ -301,7 +301,7 @@ class TaylorF2_k(Inspiral_corr):
         f_isco = aux.fisco(self.gw_params)  #inner stable circular orbit 
         ones = np.ones((len(ff), 1)) 
 
-        k_s, k_a = Inspiral_corr.get_mult_corr(self)
+        k_1, k_2 = Inspiral_corr.get_mult_corr(self)
         
         #f_cut = cut_order * f_isco
         cut = self.gw_params['cut']
@@ -314,14 +314,14 @@ class TaylorF2_k(Inspiral_corr):
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
         phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = wf.TaylorF2.EI_phase_coeff(self)
 
-        psi_k = 3./(128.*eta)*((((-50.)*((1. - 2.*eta)*k_s + delta_mass*k_a))*(chi_s**2 + chi_a**2) +\
-                ((-100.)*((1. - 2.*eta)*k_a + delta_mass *k_s))*chi_s*chi_a)*(np.pi*ff)**(-1./3.) +\
+        psi_k = 3./(128.*eta)*((((-50.)*((1. - 2.*eta)*k_1 + delta_mass*k_2))*(chi_s**2 + chi_a**2) +\
+                ((-100.)*((1. - 2.*eta)*k_2 + delta_mass *k_1))*chi_s*chi_a)*(np.pi*ff)**(-1./3.) +\
                 (((75515./288. - 232415./504.*eta + 1255./9.*eta2)*chi_s**2 +\
                 (75515./288. - 263245./252.*eta -480.*eta2)*chi_a**2)+\
-                ((26015./28. - 1495./6.*eta)*delta_mass*k_a +\
-                (26015./28. - 44255./21.*eta - 240.*eta**2)*k_s)*(chi_s**2 + chi_a**2) +\
-                ((26015./14. - 1495./3.*eta)*delta_mass*k_s +\
-                (26015./14. - 88510./21.*eta - 480.*eta**2)*k_a)*chi_s*chi_a)*(1 + np.log(np.pi*ff))*(np.pi*ff)**(1./3.))
+                ((26015./28. - 1495./6.*eta)*delta_mass*k_2 +\
+                (26015./28. - 44255./21.*eta - 240.*eta**2)*k_1)*(chi_s**2 + chi_a**2) +\
+                ((26015./14. - 1495./3.*eta)*delta_mass*k_1 +\
+                (26015./14. - 88510./21.*eta - 480.*eta**2)*k_2)*chi_s*chi_a)*(1 + np.log(np.pi*ff))*(np.pi*ff)**(1./3.))
 
         psi_EI = psi_TF2 + psi_k
 
@@ -331,38 +331,38 @@ class TaylorF2_k(Inspiral_corr):
 
         f1 = 0.018
 
-        psi_k_f1 = 3./(128.*eta)*(((-50.*((1. - 2.*eta)*k_s + delta_mass*k_a))*(chi_s**2 + chi_a**2) +\
-                (-100.*((1. - 2.*eta)*k_a + delta_mass *k_s))*chi_s*chi_a)*(np.pi*f1)**(-1./3.) +\
+        psi_k_f1 = 3./(128.*eta)*(((-50.*((1. - 2.*eta)*k_1 + delta_mass*k_2))*(chi_s**2 + chi_a**2) +\
+                (-100.*((1. - 2.*eta)*k_2 + delta_mass *k_1))*chi_s*chi_a)*(np.pi*f1)**(-1./3.) +\
                 (((75515./288. - 232415./504.*eta + 1255./9.*eta2)*chi_s**2 +\
                 (75515./288. - 263245./252.*eta -480.*eta2)*chi_a**2)+\
-                ((26015./28. - 1495./6.*eta)*delta_mass*k_a +\
-                (26015./28. - 44255./21.*eta - 240.*eta**2)*k_s)*(chi_s**2 + chi_a**2) +\
-                ((26015./14. - 1495./3.*eta)*delta_mass*k_s +\
-                (26015./14. - 88510./21.*eta - 480.*eta**2)*k_a)*chi_s*chi_a)*(1 + np.log(np.pi*f1))*(np.pi*f1)**(1./3.))
+                ((26015./28. - 1495./6.*eta)*delta_mass*k_2 +\
+                (26015./28. - 44255./21.*eta - 240.*eta**2)*k_1)*(chi_s**2 + chi_a**2) +\
+                ((26015./14. - 1495./3.*eta)*delta_mass*k_1 +\
+                (26015./14. - 88510./21.*eta - 480.*eta**2)*k_2)*chi_s*chi_a)*(1 + np.log(np.pi*f1))*(np.pi*f1)**(1./3.))
                 
         psi_EI_f1 = psi_TF2_f1 + psi_k_f1        
 
         # Analytical derivative 
-        psi_k_prime = 3./(128.*eta)*(((-50.*((1. - 2.*eta)*k_s + delta_mass*k_a))*(chi_s**2 + chi_a**2) +\
-                        (-100.*((1. - 2.*eta)*k_a + delta_mass *k_s))*chi_s*chi_a)*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
+        psi_k_prime = 3./(128.*eta)*(((-50.*((1. - 2.*eta)*k_1 + delta_mass*k_2))*(chi_s**2 + chi_a**2) +\
+                        (-100.*((1. - 2.*eta)*k_2 + delta_mass *k_1))*chi_s*chi_a)*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
                         (((75515./288. - 232415./504.*eta + 1255./9.*eta2)*chi_s**2 +\
                         (75515./288. - 263245./252.*eta -480.*eta2)*chi_a**2)+\
-                        ((26015./28. - 1495./6.*eta)*delta_mass*k_a +\
-                        (26015./28. - 44255./21.*eta - 240.*eta**2)*k_s)*(chi_s**2 + chi_a**2) +\
-                        ((26015./14. - 1495./3.*eta)*delta_mass*k_s +\
-                        (26015./14. - 88510./21.*eta - 480.*eta**2)*k_a)*chi_s*chi_a)*\
+                        ((26015./28. - 1495./6.*eta)*delta_mass*k_2 +\
+                        (26015./28. - 44255./21.*eta - 240.*eta**2)*k_1)*(chi_s**2 + chi_a**2) +\
+                        ((26015./14. - 1495./3.*eta)*delta_mass*k_1 +\
+                        (26015./14. - 88510./21.*eta - 480.*eta**2)*k_2)*chi_s*chi_a)*\
                         ((np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
                         ((np.pi*ff)**(1./3.))*(ff**(-1.)) +\
                         np.log(np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.))))
 
-        psi_k_prime_f1 = 3./(128.*eta)*(((-50.*((1. - 2.*eta)*k_s + delta_mass*k_a))*(chi_s**2 + chi_a**2) +\
-                        (-100.*((1. - 2.*eta)*k_a + delta_mass *k_s))*chi_s*chi_a)*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
+        psi_k_prime_f1 = 3./(128.*eta)*(((-50.*((1. - 2.*eta)*k_1 + delta_mass*k_2))*(chi_s**2 + chi_a**2) +\
+                        (-100.*((1. - 2.*eta)*k_2 + delta_mass *k_1))*chi_s*chi_a)*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
                         (((75515./288. - 232415./504.*eta + 1255./9.*eta2)*chi_s**2 +\
                         (75515./288. - 263245./252.*eta -480.*eta2)*chi_a**2)+\
-                        ((26015./28. - 1495./6.*eta)*delta_mass*k_a +\
-                        (26015./28. - 44255./21.*eta - 240.*eta**2)*k_s)*(chi_s**2 + chi_a**2) +\
-                        ((26015./14. - 1495./3.*eta)*delta_mass*k_s +\
-                        (26015./14. - 88510./21.*eta - 480.*eta**2)*k_a)*chi_s*chi_a)*\
+                        ((26015./28. - 1495./6.*eta)*delta_mass*k_2 +\
+                        (26015./28. - 44255./21.*eta - 240.*eta**2)*k_1)*(chi_s**2 + chi_a**2) +\
+                        ((26015./14. - 1495./3.*eta)*delta_mass*k_1 +\
+                        (26015./14. - 88510./21.*eta - 480.*eta**2)*k_2)*chi_s*chi_a)*\
                         ((np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
                         ((np.pi*f1)**(1./3.))*(f1**(-1.)) +\
                         np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))))
