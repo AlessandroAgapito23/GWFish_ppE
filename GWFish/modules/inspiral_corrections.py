@@ -314,8 +314,8 @@ class TaylorF2_k(Inspiral_corr):
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
         phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = wf.TaylorF2.EI_phase_coeff(self)
 
-        psi_k = 3./(128.*eta)*(((-50.*((1. - 2.*eta)*k_s + delta_mass*k_a))*(chi_s**2 + chi_a**2) +\
-                (-100.*((1. - 2.*eta)*k_a + delta_mass *k_s))*chi_s*chi_a)*(np.pi*ff)**(-1./3.) +\
+        psi_k = 3./(128.*eta)*((((-50.)*((1. - 2.*eta)*k_s + delta_mass*k_a))*(chi_s**2 + chi_a**2) +\
+                ((-100.)*((1. - 2.*eta)*k_a + delta_mass *k_s))*chi_s*chi_a)*(np.pi*ff)**(-1./3.) +\
                 (((75515./288. - 232415./504.*eta + 1255./9.*eta2)*chi_s**2 +\
                 (75515./288. - 263245./252.*eta -480.*eta2)*chi_a**2)+\
                 ((26015./28. - 1495./6.*eta)*delta_mass*k_a +\
