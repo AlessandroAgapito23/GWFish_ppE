@@ -39,7 +39,9 @@ class Inspiral_corr(Waveform):
             'delta_phi_6':0.,
             'delta_phi_7':0.,
             'delta_phi_8':0.,
-            'delta_phi_9':0.
+            'delta_phi_9':0.,
+            #quadrupole deviations
+            'k_s':0., 'k_a':0.
         }
 
      def update_gw_params(self, new_gw_params):
@@ -70,6 +72,10 @@ class Inspiral_corr(Waveform):
         delta_phi_7 = self.gw_params['delta_phi_7']
         delta_phi_8 = self.gw_params['delta_phi_8']
         delta_phi_9 = self.gw_params['delta_phi_9']
+
+        #quadrupole deviations
+        k_s = self.gw_params['k_s']
+        k_a = self.gw_params['k_a']
 
         return PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
         delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9
