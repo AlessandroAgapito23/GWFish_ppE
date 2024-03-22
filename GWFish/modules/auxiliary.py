@@ -31,7 +31,6 @@ def check_and_convert_to_mass_1_mass_2(parameters):
 
 def fisco(parameters):
     local_params = parameters.copy()
-    check_and_convert_to_mass_1_mass_2(local_params)
 
     M = (local_params['mass_1'] + local_params['mass_2']) * cst.Msol
 
