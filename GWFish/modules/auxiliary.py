@@ -30,9 +30,8 @@ def check_and_convert_to_mass_1_mass_2(parameters):
 
 
 def fisco(parameters):
-    local_params = parameters.copy()
 
-    M = (local_params['mass_1'] + local_params['mass_2']) * cst.Msol
+    M = (parameters['mass_1'] + parameters['mass_2']) * cst.Msol
 
     return 1 / (np.pi) * cst.c ** 3 / (cst.G * M) / 6 ** 1.5  # frequency of innermost stable circular orbit
 
