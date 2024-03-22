@@ -379,7 +379,7 @@ class TaylorF2_mult(Inspiral_corr):
         f_isco = aux.fisco(self.gw_params)
 
         psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2_mult.calculate_phase(self)
-        hp, hc = wf.IMRPhenomD.calculate_amplitude(self)
+        hp, hc = wf.TaylorF2.calculate_amplitude(self)
          
         ############################### PHASE OUTPUT ###############################
 
