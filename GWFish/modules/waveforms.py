@@ -242,10 +242,13 @@ class Waveform:
 
     def get_param_comb(self):
         
+        local_params = parameters.copy()
+        aux.check_and_convert_to_mass_1_mass_2(local_params)
+        
         frequencyvector = self.frequencyvector[:,np.newaxis]
-        z = self.gw_params['redshift']
-        M1 = self.gw_params['mass_1'] * (1 + z) * cst.Msol
-        M2 = self.gw_params['mass_2'] * (1 + z) * cst.Msol
+        
+        M1 = local_params['mass_1']  * cst.Msol
+        M2 = local_params['mass_2']  * cst.Msol
         chi_1 = self.gw_params.get('a_1', 0.0)
         chi_2 = self.gw_params.get('a_2', 0.0)
 
@@ -932,9 +935,12 @@ class IMRPhenomD(Waveform):
     def RD_damping(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-        z = self.gw_params['redshift']
-        M1 = self.gw_params['mass_1'] * (1 + z) * cst.Msol
-        M2 = self.gw_params['mass_2'] * (1 + z) * cst.Msol
+
+        local_params = parameters.copy()
+        aux.check_and_convert_to_mass_1_mass_2(local_params)
+        
+        M1 = local_params['mass_1'] * cst.Msol
+        M2 = local_params['mass_2'] * cst.Msol
         chi_1 = self.gw_params.get('a_1', 0.0)
         chi_2 = self.gw_params.get('a_2', 0.0)
         
