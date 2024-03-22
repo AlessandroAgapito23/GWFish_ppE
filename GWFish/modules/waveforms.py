@@ -936,7 +936,7 @@ class IMRPhenomD(Waveform):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
 
-        local_params = parameters.copy()
+        local_params = self.gw_params.copy()
         aux.check_and_convert_to_mass_1_mass_2(local_params)
         
         M1 = local_params['mass_1'] * cst.Msol
