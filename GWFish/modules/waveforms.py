@@ -177,7 +177,7 @@ class Waveform:
 
     def _set_default_gw_params(self):
         self.gw_params = {
-            'mass_1_source': 0., 'mass_2_source': 0., 'luminosity_distance': 0., 
+            'mass_1': 0., 'mass_2': 0., 'luminosity_distance': 0., 
             'redshift': 0., 'theta_jn': 0., 'phase': 0., 'geocent_time': 0., 
             'a_1': 0., 'tilt_1': 0., 'phi_12': 0., 'a_2': 0., 'tilt_2': 0., 
             'phi_jl': 0., 'lambda_1': 0., 'lambda_2': 0., 'cut': 4.
@@ -241,14 +241,10 @@ class Waveform:
         return t_of_f_PN(self.gw_params, self.frequencyvector)
 
     def get_param_comb(self):
-        
-        local_params = self.gw_params.copy()
-        aux.check_and_convert_to_mass_1_mass_2(local_params)
-        
         frequencyvector = self.frequencyvector[:,np.newaxis]
         
-        M1 = local_params['mass_1']  * cst.Msol
-        M2 = local_params['mass_2']  * cst.Msol
+        M1 = self.gw_params['mass_1']  * cst.Msol
+        M2 = self.gw_params['mass_2']  * cst.Msol
         chi_1 = self.gw_params.get('a_1', 0.0)
         chi_2 = self.gw_params.get('a_2', 0.0)
 
@@ -935,12 +931,9 @@ class IMRPhenomD(Waveform):
     def RD_damping(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-
-        local_params = self.gw_params.copy()
-        aux.check_and_convert_to_mass_1_mass_2(local_params)
         
-        M1 = local_params['mass_1'] * cst.Msol
-        M2 = local_params['mass_2'] * cst.Msol
+        M1 = self.gw_params['mass_1'] * cst.Msol
+        M2 = self.gw_params['mass_2'] * cst.Msol
         chi_1 = self.gw_params.get('a_1', 0.0)
         chi_2 = self.gw_params.get('a_2', 0.0)
         
