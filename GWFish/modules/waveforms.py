@@ -177,7 +177,7 @@ class Waveform:
 
     def _set_default_gw_params(self):
         self.gw_params = {
-            'mass_1': 0., 'mass_2': 0., 'luminosity_distance': 0., 
+            'mass_1_source': 0., 'mass_2_source': 0., 'luminosity_distance': 0., 
             'redshift': 0., 'theta_jn': 0., 'phase': 0., 'geocent_time': 0., 
             'a_1': 0., 'tilt_1': 0., 'phi_12': 0., 'a_2': 0., 'tilt_2': 0., 
             'phi_jl': 0., 'lambda_1': 0., 'lambda_2': 0., 'cut': 4.
@@ -242,7 +242,7 @@ class Waveform:
 
     def get_param_comb(self):
         
-        local_params = parameters.copy()
+        local_params = self.gw_params.copy()
         aux.check_and_convert_to_mass_1_mass_2(local_params)
         
         frequencyvector = self.frequencyvector[:,np.newaxis]
