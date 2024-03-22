@@ -24,7 +24,7 @@ class Inspiral_corr(Waveform):
 
      def _set_default_gw_params(self):
         self.gw_params = {
-            'mass_1': 0., 'mass_2': 0., 'luminosity_distance': 0., 
+            'mass_1_source': 0., 'mass_2_source': 0., 'luminosity_distance': 0., 
             'redshift': 0., 'theta_jn': 0., 'phase': 0., 'geocent_time': 0., 
             'a_1': 0., 'a_2': 0.,'cut': 4.,
             #ppE parameters
