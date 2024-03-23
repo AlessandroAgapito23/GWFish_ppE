@@ -394,6 +394,53 @@ class TaylorF2_mult(Inspiral_corr):
 
         ############################################################################
 
+    ################################################################################
+    ############################# Amplitude & phase plot ###########################
+    ################################################################################
+        
+    def plot (self, output_folder='./'):
+
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
+        psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
+        psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2_mult.calculate_phase(self)
+        
+        phase = psi
+        delta_phase = psi - psi_TF2
+        
+        plt.figure()
+        plt.loglog(self.frequencyvector, \
+                   np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+$')
+        plt.loglog(self.frequencyvector, \
+                   np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times$')
+        plt.xlabel('Frequency [Hz]')
+        plt.ylabel(r'Fourier amplitude [$Hz^{-1}$]')
+        plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
+        #plt.axis(axis)
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig(output_folder + 'amp_tot_TF2_PPE.png')
+        plt.close()
+
+
+        plt.figure()
+        plt.semilogx(ff, phase)
+        plt.xlabel('Dimensionless frequency')
+        plt.ylabel('Phase [rad]')
+        plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
+        plt.tight_layout()
+        plt.savefig(output_folder + 'phase_tot_TF2_PPE.png')
+        plt.close()
+
+        
+        plt.figure()
+        plt.semilogx(ff, delta_phase)
+        plt.xlabel('Dimensionless frequency')
+        plt.ylabel('Phase difference [rad]')
+        plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
+        plt.tight_layout()
+        plt.savefig(output_folder + 'delta_phase_tot_PPE.png')
+        plt.close()
+
 
 ################################################################################
 ############################## IMRPhenomD_PPE ##################################
