@@ -617,7 +617,7 @@ class TaylorF2(Waveform):
         # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
         ################################################################################ 
         
-        f1 = 0.0166
+        f1 = 0.018
         
         psi_TF2_f1 = 2.*np.pi*f1*cst.c**3/(cst.G*M)*tc - phic*ones - np.pi/4.*ones +\
                 3./(128.*eta)*((np.pi*f1)**(-5./3.) +\
