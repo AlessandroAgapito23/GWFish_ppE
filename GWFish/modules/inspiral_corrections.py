@@ -528,8 +528,8 @@ class IMRPhenomD_PPE(Inspiral_corr):
         sigma1 = eta*psi_EI_prime_f1 - psi_late_ins_prime_f1
         sigma0 = eta*psi_EI_f1 - psi_late_ins_f1
 
-        psi_late_ins = 1./eta*(sigma_0 + sigma1*ff + 3./4.*sigma2*ff**(4./3.) + 3./5.*sigma3*ff**(5./3.) + 1./2.*sigma4*ff**2)
-        psi_late_ins_f1 = 1./eta*(sigma_0 + sigma1*f1 + 3./4.*sigma2*f1**(4./3.) + 3./5.*sigma3*f1**(5./3.) + 1./2.*sigma4*f1**2)
+        psi_late_ins = 1./eta*(sigma0 + sigma1*ff + 3./4.*sigma2*ff**(4./3.) + 3./5.*sigma3*ff**(5./3.) + 1./2.*sigma4*ff**2)
+        psi_late_ins_f1 = 1./eta*(sigma0 + sigma1*f1 + 3./4.*sigma2*f1**(4./3.) + 3./5.*sigma3*f1**(5./3.) + 1./2.*sigma4*f1**2)
         psi_late_ins_prime_f1 = 1./eta*(sigma_1 + sigma2*f1**(1./3.) + sigma3*f1**(2./3.) + sigma4*f1)
         
         #Total INSPIRAL PART OF THE PHASE (and its DERIVATIVE), with also late inspiral terms
