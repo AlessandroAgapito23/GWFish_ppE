@@ -418,7 +418,7 @@ class TaylorF2_mult(Inspiral_corr):
         #plt.axis(axis)
         plt.legend()
         plt.tight_layout()
-        plt.savefig(output_folder + 'amp_tot_TF2_PPE.png')
+        plt.savefig(output_folder + 'amp_tot_TF2_mult.png')
         plt.close()
 
 
@@ -428,7 +428,7 @@ class TaylorF2_mult(Inspiral_corr):
         plt.ylabel('Phase [rad]')
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.tight_layout()
-        plt.savefig(output_folder + 'phase_tot_TF2_PPE.png')
+        plt.savefig(output_folder + 'phase_tot_TF2_mult.png')
         plt.close()
 
         
@@ -438,7 +438,7 @@ class TaylorF2_mult(Inspiral_corr):
         plt.ylabel('Phase difference [rad]')
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.tight_layout()
-        plt.savefig(output_folder + 'delta_phase_tot_PPE.png')
+        plt.savefig(output_folder + 'delta_phase_tot_mult.png')
         plt.close()
 
 
