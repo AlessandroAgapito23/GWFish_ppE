@@ -491,7 +491,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
         # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
         ################################################################################ 
 
-        f1 = 0.0166
+        f1 = 0.018
             
         psi_gIMR_f1 = 3./(128.*eta)*(delta_phi_0*(np.pi*f1)**(-5./3.) +\
                     delta_phi_1*(np.pi*f1)**(-4./3.)+\
@@ -567,7 +567,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
                           (ff - alpha5*ff_RD)**2.))
 
         # Conjunction functions
-        ff1 = 0.0166*ones
+        ff1 = 0.018*ones
         ff2 = 0.5*ff_RD*ones
 
         theta_minus1 = 0.5*(1*ones - wf.step_function(ff,ff1))
