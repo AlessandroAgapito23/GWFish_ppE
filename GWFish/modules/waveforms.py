@@ -664,10 +664,9 @@ class TaylorF2(Waveform):
         ################################# AMPLITUDE ####################################
         ########################### without PN corrections #############################
 
-        hp = cst.c / (2. * r) * np.sqrt(5. * np.pi / 24.)*\
-             Mc ** (5. / 6.)/(np.pi * ff * cst.c**3/(cst.G*M)) ** (7. / 6.) *(1. + np.cos(iota) ** 2.)
-        hc = cst.c / (2. * r) * np.sqrt(5. * np.pi / 24.)*\
-             Mc ** (5. / 6.)/(np.pi * ff * cst.c**3/(cst.G*M)) ** (7. / 6.) *2. * np.cos(iota)
+        A0 = cst.c / (2.*r) * np.sqrt(5.*np.pi/24.)*Mc**(5./6.)*(np.pi*ff*cst.c**3/(cst.G*M)) ** (-7./6.)
+        hp = A0 * (1. + np.cos(iota) ** 2.)
+        hc = A0 * 2.*np.cos(iota)
 
         return hp, hc
     
