@@ -7,7 +7,7 @@ ET:
             duty_factor:      0.85
             detector_class:   earthDelta
             plotrange:        3, 1000, 1e-25, 1e-20
-            fmin:             5.
+            fmin:             1.
             fmax:             2048.
             spacing:          geometric
             df:               1./16.
