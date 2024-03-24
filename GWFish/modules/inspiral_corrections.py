@@ -378,7 +378,7 @@ class TaylorF2_mult(Inspiral_corr):
          
          
         psi_EI_prime = psi_TF2_prime + psi_mult_prime
-        psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_k_mult_f1
+        psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_mult_prime_f1
          
         return psi_EI, psi_EI_prime, psi_EI_f1, psi_EI_prime_f1
 
