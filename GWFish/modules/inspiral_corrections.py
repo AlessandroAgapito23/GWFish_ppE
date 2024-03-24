@@ -375,6 +375,8 @@ class TaylorF2_mult(Inspiral_corr):
     def calculate_frequency_domain_strain(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
+        r = self.gw_params['luminosity_distance'] * cst.Mpc
+        iota = self.gw_params['theta_jn']
         cut = self.gw_params['cut']
         f_isco = aux.fisco(self.gw_params)
 
