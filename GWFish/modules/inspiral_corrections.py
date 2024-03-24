@@ -297,6 +297,37 @@ class TaylorF2_mult(Inspiral_corr):
             if type(self._maxn) is not int:
                 return ValueError('maxn must be integer')
         return self._maxn
+
+    def INS_mult_coeff(self):
+
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
+        k_1, k_2, lambda_1, lambda_2 = Inspiral_corr.get_mult_corr(self)
+
+        P4 = ((-50.)*((1. - 2.*eta) * k_1 + delta_mass * k_2))*(chi_s**2 + chi_a**2) +\
+             ((-100.)*((1. - 2.*eta) * k_2 + delta_mass * k_1))*chi_s*chi_a
+         
+        P6 = ((75515./288. - 232415./504.*eta + 1255./9.*eta2)*chi_s**2 +\
+              (75515./288. - 263245./252.*eta - 480.*eta2)*chi_a**2)+\
+              ((26015./28. - 1495./6.*eta)*delta_mass * k_2 +\
+              (26015./28. - 44255./21.*eta - 240.*eta2)* k_1)*(chi_s**2 + chi_a**2) +\
+              ((75515./144. - 8225./18.*eta)*delta_mass +\
+              (26015./14. - 1495./3.*eta)*delta_mass * k_1 +\
+              (26015./14. - 88510./21.*eta - 480.*eta2)*k_2)*chi_s*chi_a
+         
+        P7 = (14585./24. - 475./6.*eta + 100./3.*eta2)*chi_s**3 +\
+             (25145./24. -2820.*eta)*delta_mass*chi_a**3 +\
+             (14585/.8 - 215./2*eta)*delta_mass*chi_s**2*chi_a +\
+             (14585./8. - 7270.*eta + 80*eta2)*chi_s*chi_a**2 +\
+             ((3110./3. - 10250./3.*eta + 40*eta2)*k_1 +\
+              ((3110./3. - 4030./3.*eta)*k_2 - 440.*(1 - eta)*lambda_2 - 440.*(1 - 3*eta)*lambda_1)*delta_mass)*chi_s**3 +\
+              ((3110./3. - 8470./3.*eta)*k_2 - 440.*(1 - 3*eta)*lambda_2 +\
+             ((3110./3. - 750.*eta)*k_1 - 440.*(1 - eta)*lambda_1)*delta_mass)*chi_a**3 +\
+             ((3110./3. - 28970./3.*eta + 80.*eta2)*k_2 - 1320.*(1 - eta)*lambda_2 +\
+              ((3110./3. - 10310./3.*eta)*k_1 - 1320.*(1 - eta)*lambda_1)*delta_mass)*chi_s**2*chi_a +\
+             ((3110./3. - 27190./3.*eta + 40.*eta2)*k_1 - 1320.*(1 - 3*eta)*lambda_1 +\
+              ((3110./3. - 8530./3.*eta)*k_2 - 1320.*(1 - eta)*lambda_2)*delta_mass)*chi_s*chi_a**2
+
+        return P4, P6, P7
             
     
     def calculate_phase(self): 
@@ -304,8 +335,6 @@ class TaylorF2_mult(Inspiral_corr):
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
         f_isco = aux.fisco(self.gw_params)  #inner stable circular orbit 
         ones = np.ones((len(ff), 1)) 
-
-        k_1, k_2, lambda_1, lambda_2 = Inspiral_corr.get_mult_corr(self)
         
         #f_cut = cut_order * f_isco
         cut = self.gw_params['cut']
@@ -316,31 +345,15 @@ class TaylorF2_mult(Inspiral_corr):
         # with quadratic spin corrections at 3PN and cubic spin corrections at 3.5PN
 
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
+
         phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = wf.TaylorF2.EI_phase_coeff(self)
+        P4, P6, P7 = Inspiral_corr.INS_mult_coeff(self)
 
-        psi_k = 3./(128.*eta)*((((-50.)*((1. - 2.*eta) * k_1 + delta_mass * k_2))*(chi_s**2 + chi_a**2) +\
-                ((-100.)*((1. - 2.*eta) * k_2 + delta_mass * k_1))*chi_s*chi_a)*(np.pi*ff)**(-1./3.) +\
-                (((75515./288. - 232415./504.*eta + 1255./9.*eta2)*chi_s**2 +\
-                  (75515./288. - 263245./252.*eta - 480.*eta2)*chi_a**2)+\
-                 ((26015./28. - 1495./6.*eta)*delta_mass * k_2 +\
-                 (26015./28. - 44255./21.*eta - 240.*eta2)* k_1)*(chi_s**2 + chi_a**2) +\
-                 ((75515./144. - 8225./18.*eta)*delta_mass +\
-                 (26015./14. - 1495./3.*eta)*delta_mass * k_1 +\
-                 (26015./14. - 88510./21.*eta - 480.*eta2)*k_2)*chi_s*chi_a)*(np.pi*ff)**(1./3.) +\
-                ((14585./24. - 475./6.*eta + 100./3.*eta2)*chi_s**3 +\
-                 (25145./24. -2820.*eta)*delta_mass*chi_a**3 +\
-                 (14585/.8 - 215./2*eta)*delta_mass*chi_s**2*chi_a +\
-                 (14585./8. - 7270.*eta + 80*eta2)*chi_s*chi_a**2 +\
-                 ((3110./3. - 10250./3.*eta + 40*eta2)*k_1 +\
-                 ((3110./3. - 4030./3.*eta)*k_2 - 440.*(1 - eta)*lambda_2 - 440.*(1 - 3*eta)*lambda_1)*delta_mass)*chi_s**3 +\
-                 ((3110./3. - 8470./3.*eta)*k_2 - 440.*(1 - 3*eta)*lambda_2 +\
-                 ((3110./3. - 750.*eta)*k_1 - 440.*(1 - eta)*lambda_1)*delta_mass)*chi_a**3 +\
-                 ((3110./3. - 28970./3.*eta + 80.*eta2)*k_2 - 1320.*(1 - eta)*lambda_2 +\
-                 ((3110./3. - 10310./3.*eta)*k_1 - 1320.*(1 - eta)*lambda_1)*delta_mass)*chi_s**2*chi_a +\
-                 ((3110./3. - 27190./3.*eta + 40.*eta2)*k_1 - 1320.*(1 - 3*eta)*lambda_1 +\
-                 ((3110./3. - 8530./3.*eta)*k_2 - 1320.*(1 - eta)*lambda_2)*delta_mass)*chi_s*chi_a**2)*(np.pi*ff)**(2./3.))
+        psi_mult = 3./(128.*eta)*(P4*(np.pi*ff)**(-1./3.) +\
+                                  P6*(np.pi*ff)**(1./3.) +\
+                                  P7*(np.pi*ff)**(2./3.))
 
-        psi_EI = psi_TF2 + psi_k
+        psi_EI = psi_TF2 + psi_mult
 
         ################################################################################ 
         # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
@@ -348,77 +361,24 @@ class TaylorF2_mult(Inspiral_corr):
 
         f1 = 0.018
 
-        psi_k_f1 = 3./(128.*eta)*(((-50.*((1. - 2.*eta)*k_1 + delta_mass*k_2))*(chi_s**2 + chi_a**2) +\
-                (-100.*((1. - 2.*eta)*k_2 + delta_mass *k_1))*chi_s*chi_a)*(np.pi*f1)**(-1./3.) +\
-                (((75515./288. - 232415./504.*eta + 1255./9.*eta2)*chi_s**2 +\
-                  (75515./288. - 263245./252.*eta -480.*eta2)*chi_a**2)+\
-                ((26015./28. - 1495./6.*eta)*delta_mass*k_2 +\
-                 (26015./28. - 44255./21.*eta - 240.*eta**2)*k_1)*(chi_s**2 + chi_a**2) +\
-                ((75515./144. - 8225./18.*eta)*delta_mass +\
-                 (26015./14. - 1495./3.*eta)*delta_mass*k_1 +\
-                 (26015./14. - 88510./21.*eta - 480.*eta**2)*k_2)*chi_s*chi_a)*(np.pi*f1)**(1./3.) +\
-                ((14585./24. - 475./6.*eta + 100./3.*eta2)*chi_s**3 +\
-                 (25145./24. -2820.*eta)*delta_mass*chi_a**3 +\
-                 (14585/.8 - 215./2*eta)*delta_mass*chi_s**2*chi_a +\
-                 (14585./8. - 7270.*eta + 80*eta2)*chi_s*chi_a**2 +\
-                 ((3110./3. - 10250./3.*eta + 40*eta2)*k_1 +\
-                 ((3110./3. - 4030./3.*eta)*k_2 - 440.*(1 - eta)*lambda_2 - 440.*(1 - 3*eta)*lambda_1)*delta_mass)*chi_s**3 +\
-                 ((3110./3. - 8470./3.*eta)*k_2 - 440.*(1 - 3*eta)*lambda_2 +\
-                 ((3110./3. - 750.*eta)*k_1 - 440.*(1 - eta)*lambda_1)*delta_mass)*chi_a**3 +\
-                 ((3110./3. - 28970./3.*eta + 80.*eta2)*k_2 - 1320.*(1 - eta)*lambda_2 +\
-                 ((3110./3. - 10310./3.*eta)*k_1 - 1320.*(1 - eta)*lambda_1)*delta_mass)*chi_s**2*chi_a +\
-                 ((3110./3. - 27190./3.*eta + 40.*eta2)*k_1 - 1320.*(1 - 3*eta)*lambda_1 +\
-                 ((3110./3. - 8530./3.*eta)*k_2 - 1320.*(1 - eta)*lambda_2)*delta_mass)*chi_s*chi_a**2)*(np.pi*f1)**(2./3.))
+        psi_mult = 3./(128.*eta)*(P4*(np.pi*f1)**(-1./3.) +\
+                                  P6*(np.pi*f1)**(1./3.) +\
+                                  P7*(np.pi*f1)**(2./3.))
                 
-        psi_EI_f1 = psi_TF2_f1 + psi_k_f1        
+        psi_EI_f1 = psi_TF2_f1 + psi_mult_f1        
 
         # Analytical derivative 
-        psi_k_prime = 3./(128.*eta)*(((-50.*((1. - 2.*eta)*k_1 + delta_mass*k_2))*(chi_s**2 + chi_a**2) +\
-                        (-100.*((1. - 2.*eta)*k_2 + delta_mass *k_1))*chi_s*chi_a)*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
-                        (((75515./288. - 232415./504.*eta + 1255./9.*eta2)*chi_s**2 +\
-                        (75515./288. - 263245./252.*eta -480.*eta2)*chi_a**2)+\
-                        ((26015./28. - 1495./6.*eta)*delta_mass*k_2 +\
-                        (26015./28. - 44255./21.*eta - 240.*eta**2)*k_1)*(chi_s**2 + chi_a**2) +\
-                        ((75515./144. - 8225./18.*eta)*delta_mass +\
-                         (26015./14. - 1495./3.*eta)*delta_mass*k_1 +\
-                         (26015./14. - 88510./21.*eta - 480.*eta**2)*k_2)*chi_s*chi_a)*((np.pi)**(1./3.)*(1./3.*ff**(-2./3.))) +\
-                        ((14585./24. - 475./6.*eta + 100./3.*eta2)*chi_s**3 +\
-                         (25145./24. -2820.*eta)*delta_mass*chi_a**3 +\
-                         (14585/.8 - 215./2*eta)*delta_mass*chi_s**2*chi_a +\
-                         (14585./8. - 7270.*eta + 80*eta2)*chi_s*chi_a**2 +\
-                         ((3110./3. - 10250./3.*eta + 40*eta2)*k_1 +\
-                         ((3110./3. - 4030./3.*eta)*k_2 - 440.*(1 - eta)*lambda_2 - 440.*(1 - 3*eta)*lambda_1)*delta_mass)*chi_s**3 +\
-                         ((3110./3. - 8470./3.*eta)*k_2 - 440.*(1 - 3*eta)*lambda_2 +\
-                         ((3110./3. - 750.*eta)*k_1 - 440.*(1 - eta)*lambda_1)*delta_mass)*chi_a**3 +\
-                         ((3110./3. - 28970./3.*eta + 80.*eta2)*k_2 - 1320.*(1 - eta)*lambda_2 +\
-                         ((3110./3. - 10310./3.*eta)*k_1 - 1320.*(1 - eta)*lambda_1)*delta_mass)*chi_s**2*chi_a +\
-                         ((3110./3. - 27190./3.*eta + 40.*eta2)*k_1 - 1320.*(1 - 3*eta)*lambda_1 +\
-                         ((3110./3. - 8530./3.*eta)*k_2 - 1320.*(1 - eta)*lambda_2)*delta_mass)*chi_s*chi_a**2)*((np.pi)**(2./3.)*(2./3.*ff**(-1./3.))))
+        psi_mult_prime = 3./(128.*eta)*(P4*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
+                                        P6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
+                                        P7*((np.pi)**(2./3.)*(2./3.*ff**(-1./3.))))
 
-        psi_k_prime_f1 = 3./(128.*eta)*(((-50.*((1. - 2.*eta)*k_1 + delta_mass*k_2))*(chi_s**2 + chi_a**2) +\
-                        (-100.*((1. - 2.*eta)*k_2 + delta_mass *k_1))*chi_s*chi_a)*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
-                        (((75515./288. - 232415./504.*eta + 1255./9.*eta2)*chi_s**2 +\
-                        (75515./288. - 263245./252.*eta -480.*eta2)*chi_a**2)+\
-                        ((26015./28. - 1495./6.*eta)*delta_mass*k_2 +\
-                        (26015./28. - 44255./21.*eta - 240.*eta**2)*k_1)*(chi_s**2 + chi_a**2) +\
-                        ((75515./144. - 8225./18.*eta)*delta_mass +\
-                         (26015./14. - 1495./3.*eta)*delta_mass*k_1 +\
-                        (26015./14. - 88510./21.*eta - 480.*eta**2)*k_2)*chi_s*chi_a)*((np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
-                        ((14585./24. - 475./6.*eta + 100./3.*eta2)*chi_s**3 +\
-                         (25145./24. -2820.*eta)*delta_mass*chi_a**3 +\
-                         (14585/.8 - 215./2*eta)*delta_mass*chi_s**2*chi_a +\
-                         (14585./8. - 7270.*eta + 80*eta2)*chi_s*chi_a**2 +\
-                         ((3110./3. - 10250./3.*eta + 40*eta2)*k_1 +\
-                         ((3110./3. - 4030./3.*eta)*k_2 - 440.*(1 - eta)*lambda_2 - 440.*(1 - 3*eta)*lambda_1)*delta_mass)*chi_s**3 +\
-                         ((3110./3. - 8470./3.*eta)*k_2 - 440.*(1 - 3*eta)*lambda_2 +\
-                         ((3110./3. - 750.*eta)*k_1 - 440.*(1 - eta)*lambda_1)*delta_mass)*chi_a**3 +\
-                         ((3110./3. - 28970./3.*eta + 80.*eta2)*k_2 - 1320.*(1 - eta)*lambda_2 +\
-                         ((3110./3. - 10310./3.*eta)*k_1 - 1320.*(1 - eta)*lambda_1)*delta_mass)*chi_s**2*chi_a +\
-                         ((3110./3. - 27190./3.*eta + 40.*eta2)*k_1 - 1320.*(1 - 3*eta)*lambda_1 +\
-                         ((3110./3. - 8530./3.*eta)*k_2 - 1320.*(1 - eta)*lambda_2)*delta_mass)*chi_s*chi_a**2)*((np.pi)**(2./3.)*(2./3.*f1**(-1./3.))))
-
-        psi_EI_prime = psi_TF2_prime + psi_k_prime
-        psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_k_prime_f1
+        psi_mult_prime = 3./(128.*eta)*(P4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
+                                        P6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
+                                        P7*((np.pi)**(2./3.)*(2./3.*f1**(-1./3.))))
+         
+         
+        psi_EI_prime = psi_TF2_prime + psi_mult_prime
+        psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_k_mult_f1
          
         return psi_EI, psi_EI_prime, psi_EI_f1, psi_EI_prime_f1
 
