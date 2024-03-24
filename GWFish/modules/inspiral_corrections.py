@@ -361,9 +361,9 @@ class TaylorF2_mult(Inspiral_corr):
 
         f1 = 0.018
 
-        psi_mult = 3./(128.*eta)*(P4*(np.pi*f1)**(-1./3.) +\
-                                  P6*(np.pi*f1)**(1./3.) +\
-                                  P7*(np.pi*f1)**(2./3.))
+        psi_mult_f1 = 3./(128.*eta)*(P4*(np.pi*f1)**(-1./3.) +\
+                                     P6*(np.pi*f1)**(1./3.) +\
+                                     P7*(np.pi*f1)**(2./3.))
                 
         psi_EI_f1 = psi_TF2_f1 + psi_mult_f1        
 
@@ -372,9 +372,9 @@ class TaylorF2_mult(Inspiral_corr):
                                         P6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
                                         P7*((np.pi)**(2./3.)*(2./3.*ff**(-1./3.))))
 
-        psi_mult_prime = 3./(128.*eta)*(P4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
-                                        P6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
-                                        P7*((np.pi)**(2./3.)*(2./3.*f1**(-1./3.))))
+        psi_mult_prime_f1 = 3./(128.*eta)*(P4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
+                                           P6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
+                                           P7*((np.pi)**(2./3.)*(2./3.*f1**(-1./3.))))
          
          
         psi_EI_prime = psi_TF2_prime + psi_mult_prime
