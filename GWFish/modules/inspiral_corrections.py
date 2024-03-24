@@ -317,11 +317,12 @@ class TaylorF2_mult(Inspiral_corr):
         psi_k = 3./(128.*eta)*((((-50.)*((1. - 2.*eta) * k_1 + delta_mass * k_2))*(chi_s**2 + chi_a**2) +\
                 ((-100.)*((1. - 2.*eta) * k_2 + delta_mass * k_1))*chi_s*chi_a)*(np.pi*ff)**(-1./3.) +\
                 (((75515./288. - 232415./504.*eta + 1255./9.*eta2)*chi_s**2 +\
-                (75515./288. - 263245./252.*eta - 480.*eta2)*chi_a**2)+\
+                  (75515./288. - 263245./252.*eta - 480.*eta2)*chi_a**2)+\
                 ((26015./28. - 1495./6.*eta)*delta_mass * k_2 +\
-                (26015./28. - 44255./21.*eta - 240.*eta2)* k_1)*(chi_s**2 + chi_a**2) +\
-                ((26015./14. - 1495./3.*eta)*delta_mass * k_1 +\
-                (26015./14. - 88510./21.*eta - 480.*eta2)*k_2)*chi_s*chi_a)*(np.pi*ff)**(1./3.))
+                 (26015./28. - 44255./21.*eta - 240.*eta2)* k_1)*(chi_s**2 + chi_a**2) +\
+                ((75515./144. - 8225./18.*eta)*delta_mass +\
+                 (26015./14. - 1495./3.*eta)*delta_mass * k_1 +\
+                 (26015./14. - 88510./21.*eta - 480.*eta2)*k_2)*chi_s*chi_a)*(np.pi*ff)**(1./3.))
 
         psi_EI = psi_TF2 + psi_k
 
@@ -334,11 +335,12 @@ class TaylorF2_mult(Inspiral_corr):
         psi_k_f1 = 3./(128.*eta)*(((-50.*((1. - 2.*eta)*k_1 + delta_mass*k_2))*(chi_s**2 + chi_a**2) +\
                 (-100.*((1. - 2.*eta)*k_2 + delta_mass *k_1))*chi_s*chi_a)*(np.pi*f1)**(-1./3.) +\
                 (((75515./288. - 232415./504.*eta + 1255./9.*eta2)*chi_s**2 +\
-                (75515./288. - 263245./252.*eta -480.*eta2)*chi_a**2)+\
+                  (75515./288. - 263245./252.*eta -480.*eta2)*chi_a**2)+\
                 ((26015./28. - 1495./6.*eta)*delta_mass*k_2 +\
-                (26015./28. - 44255./21.*eta - 240.*eta**2)*k_1)*(chi_s**2 + chi_a**2) +\
-                ((26015./14. - 1495./3.*eta)*delta_mass*k_1 +\
-                (26015./14. - 88510./21.*eta - 480.*eta**2)*k_2)*chi_s*chi_a)*(np.pi*f1)**(1./3.))
+                 (26015./28. - 44255./21.*eta - 240.*eta**2)*k_1)*(chi_s**2 + chi_a**2) +\
+                ((75515./144. - 8225./18.*eta)*delta_mass +\
+                 (26015./14. - 1495./3.*eta)*delta_mass*k_1 +\
+                 (26015./14. - 88510./21.*eta - 480.*eta**2)*k_2)*chi_s*chi_a)*(np.pi*f1)**(1./3.))
                 
         psi_EI_f1 = psi_TF2_f1 + psi_k_f1        
 
@@ -349,8 +351,9 @@ class TaylorF2_mult(Inspiral_corr):
                         (75515./288. - 263245./252.*eta -480.*eta2)*chi_a**2)+\
                         ((26015./28. - 1495./6.*eta)*delta_mass*k_2 +\
                         (26015./28. - 44255./21.*eta - 240.*eta**2)*k_1)*(chi_s**2 + chi_a**2) +\
-                        ((26015./14. - 1495./3.*eta)*delta_mass*k_1 +\
-                        (26015./14. - 88510./21.*eta - 480.*eta**2)*k_2)*chi_s*chi_a)*\
+                        ((75515./144. - 8225./18.*eta)*delta_mass +\
+                         (26015./14. - 1495./3.*eta)*delta_mass*k_1 +\
+                         (26015./14. - 88510./21.*eta - 480.*eta**2)*k_2)*chi_s*chi_a)*\
                         ((np.pi)**(1./3.)*(1./3.*ff**(-2./3.))))
 
         psi_k_prime_f1 = 3./(128.*eta)*(((-50.*((1. - 2.*eta)*k_1 + delta_mass*k_2))*(chi_s**2 + chi_a**2) +\
@@ -359,7 +362,8 @@ class TaylorF2_mult(Inspiral_corr):
                         (75515./288. - 263245./252.*eta -480.*eta2)*chi_a**2)+\
                         ((26015./28. - 1495./6.*eta)*delta_mass*k_2 +\
                         (26015./28. - 44255./21.*eta - 240.*eta**2)*k_1)*(chi_s**2 + chi_a**2) +\
-                        ((26015./14. - 1495./3.*eta)*delta_mass*k_1 +\
+                        ((75515./144. - 8225./18.*eta)*delta_mass +\
+                         (26015./14. - 1495./3.*eta)*delta_mass*k_1 +\
                         (26015./14. - 88510./21.*eta - 480.*eta**2)*k_2)*chi_s*chi_a)*\
                         ((np.pi)**(1./3.)*(1./3.*f1**(-2./3.))))
 
@@ -375,7 +379,7 @@ class TaylorF2_mult(Inspiral_corr):
         f_isco = aux.fisco(self.gw_params)
 
         psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2_mult.calculate_phase(self)
-        hp, hc = wf.IMRPhenomD.calculate_amplitude(self)
+        hp, hc = wf.TaylorF2.calculate_amplitude(self)
          
         ############################### PHASE OUTPUT ###############################
 
