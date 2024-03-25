@@ -302,6 +302,9 @@ class TaylorF2_mult(Inspiral_corr):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
         k_1, k_2, lambda_1, lambda_2 = Inspiral_corr.get_mult_corr(self)
+         
+        #spin terms : up to quadratic at 2PN and 3PN and cubic at 3.5PN
+        #quadrupolar deviations at 2PN, 3PN and 3.5 PN and octupolar deviations at 3.5PN
 
         P4 = (-50.*((1. - 2*eta) * k_1 + delta_mass * k_2))*(chi_s**2 + chi_a**2) +\
              (-100.*((1. - 2*eta) * k_2 + delta_mass * k_1))*chi_s*chi_a
