@@ -331,7 +331,7 @@ class TaylorF2_mult(Inspiral_corr):
              ((3110./3. - 27190./3.*eta + 40.*eta2)*k_1 - 1320.*(1 - 3*eta)*lambda_1 +\
               ((3110 - 8530./3.*eta)*k_2 - 1320.*(1 - eta)*lambda_2)*delta_mass)*chi_s*chi_a**2
 
-         P8 = ((233915./68. - 99185./252.*eta)*delta_mass*chi_a +\
+        P8 = ((233915./68. - 99185./252.*eta)*delta_mass*chi_a +\
                (233915./68. - 3970375./2268.*eta + 19655./189.*eta2)*chi_s)*np.pi
          
 
