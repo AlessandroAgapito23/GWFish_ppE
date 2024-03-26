@@ -305,6 +305,7 @@ class TaylorF2_mult(Inspiral_corr):
          
         #spin terms : up to quadratic at 2PN and 3PN and cubic at 3.5PN
         #quadrupolar deviations at 2PN, 3PN and 3.5 PN and octupolar deviations at 3.5PN
+        #tail induced SO effect at 4PN
 
         P4 = (-50.*((1. - 2*eta) * k_1 + delta_mass * k_2))*(chi_s**2 + chi_a**2) +\
              (-100.*((1. - 2*eta) * k_2 + delta_mass * k_1))*chi_s*chi_a
@@ -330,6 +331,10 @@ class TaylorF2_mult(Inspiral_corr):
              ((3110./3. - 27190./3.*eta + 40.*eta2)*k_1 - 1320.*(1 - 3*eta)*lambda_1 +\
               ((3110 - 8530./3.*eta)*k_2 - 1320.*(1 - eta)*lambda_2)*delta_mass)*chi_s*chi_a**2
 
+         P8 = ((233915./68. - 99185./252.*eta)*delta_mass*chi_a +\
+               (233915./68. - 3970375./2268.*eta + 19655./189.*eta2)*chi_s)*np.pi
+         
+
         return P4, P6, P7
             
     
@@ -354,7 +359,8 @@ class TaylorF2_mult(Inspiral_corr):
 
         psi_mult = 3./(128.*eta)*(P4*(np.pi*ff)**(-1./3.) +\
                                   P6*(np.pi*ff)**(1./3.) +\
-                                  P7*(np.pi*ff)**(2./3.))
+                                  P7*(np.pi*ff)**(2./3.) +\
+                                  P8*(1-np.log(np.pi*ff))*(np.pi*ff)**(1.))
 
         psi_EI = psi_TF2 + psi_mult
 
