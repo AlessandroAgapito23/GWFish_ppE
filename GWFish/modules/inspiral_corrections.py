@@ -335,7 +335,7 @@ class TaylorF2_mult(Inspiral_corr):
                (233915./68. - 3970375./2268.*eta + 19655./189.*eta2)*chi_s)*np.pi
          
 
-        return P4, P6, P7
+        return P4, P6, P7, P8
             
     
     def calculate_phase(self): 
@@ -355,7 +355,7 @@ class TaylorF2_mult(Inspiral_corr):
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
 
         phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = wf.TaylorF2.EI_phase_coeff(self)
-        P4, P6, P7 = TaylorF2_mult.INS_mult_coeff(self)
+        P4, P6, P7, P8 = TaylorF2_mult.INS_mult_coeff(self)
 
         psi_mult = 3./(128.*eta)*(P4*(np.pi*ff)**(-1./3.) +\
                                   P6*(np.pi*ff)**(1./3.) +\
