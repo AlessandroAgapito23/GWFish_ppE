@@ -360,7 +360,7 @@ class TaylorF2_mult(Inspiral_corr):
         psi_mult = 3./(128.*eta)*(P4*(np.pi*ff)**(-1./3.) +\
                                   P6*(np.pi*ff)**(1./3.) +\
                                   P7*(np.pi*ff)**(2./3.) +\
-                                  P8*(1-np.log(np.pi*ff))*(np.pi*ff)**(1.))
+                                  P8*(1 - np.log(np.pi*ff))*(np.pi*ff)**(1.))
 
         psi_EI = psi_TF2 + psi_mult
 
@@ -408,9 +408,7 @@ class TaylorF2_mult(Inspiral_corr):
         amp_PN = a_0 +\
                  a_2*(np.pi*ff)**(2./3.) +\
                  a_3*(np.pi*ff) +\
-                 a_4*(np.pi*ff)**(4./3.) +\
-                 a_5*(np.pi*ff)**(5./3.) +\
-                 a_6*(np.pi*ff)**2.
+                 a_4*(np.pi*ff)**(4./3.)
 
         rho1, rho2, rho3 = wf.IMRPhenomD.INT_amp_coeff(self)
     
@@ -418,7 +416,7 @@ class TaylorF2_mult(Inspiral_corr):
                  rho2*(ff)**(8./3.) +\
                  rho3*(ff)**3.
          
-        amp_tot = (amp_PN + amp_LI)*A0
+        amp_tot = amp_PN*A0
          
         hp = amp_tot*0.5*(1 + np.cos(iota)**2.)
         hc = amp_tot*np.cos(iota)
