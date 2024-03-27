@@ -409,12 +409,6 @@ class TaylorF2_mult(Inspiral_corr):
                  a_2*(np.pi*ff)**(2./3.) +\
                  a_3*(np.pi*ff) +\
                  a_4*(np.pi*ff)**(4./3.)
-
-        rho1, rho2, rho3 = wf.IMRPhenomD.INT_amp_coeff(self)
-    
-        amp_LI = rho1*(ff)**(7./3.) +\
-                 rho2*(ff)**(8./3.) +\
-                 rho3*(ff)**3.
          
         amp_tot = amp_PN*A0
          
