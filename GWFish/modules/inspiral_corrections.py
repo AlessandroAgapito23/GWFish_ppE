@@ -409,9 +409,7 @@ class TaylorF2_mult(Inspiral_corr):
         amp_PN = a_0 +\
                  a_2*(np.pi*ff)**(2./3.) +\
                  a_3*(np.pi*ff) +\
-                 a_4*(np.pi*ff)**(4./3.) +\
-                 a_5*(np.pi*ff)**(5./3.) +\
-                 a_6*(np.pi*ff)**2.
+                 a_4*(np.pi*ff)**(4./3.)
          
         amp_tot = amp_PN*A0
          
