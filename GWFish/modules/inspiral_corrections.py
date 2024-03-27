@@ -306,6 +306,7 @@ class TaylorF2_mult(Inspiral_corr):
         #spin terms : up to quadratic at 2PN and 3PN and cubic at 3.5PN
         #quadrupolar deviations at 2PN, 3PN and 3.5 PN and octupolar deviations at 3.5PN
         #tail induced SO effect at 4PN
+        #Hadamard self-field regularisation at 3PN
 
         P4 = (-50.*((1. - 2*eta) * k_1 + delta_mass * k_2))*(chi_s**2 + chi_a**2) +\
              (-100.*((1. - 2*eta) * k_2 + delta_mass * k_1))*chi_s*chi_a
