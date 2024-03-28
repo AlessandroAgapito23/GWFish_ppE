@@ -544,7 +544,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
                                      phi_4*delta_phi_4*(np.pi*f1)**(-1./3.) +\
                                      phi_5*delta_phi_5 +\
                                      phi_5_l*delta_phi_8*np.log(np.pi*f1) +\
-                                     phi_6*delta_phi_6*np.log(np.pi*f1) +\
+                                     phi_6*delta_phi_6*(np.pi*f1)**(1./3.) +\
                                      phi_6_l*delta_phi_9*np.log(np.pi*f1)*(np.pi*f1)**(1./3.) +\
                                      phi_7*delta_phi_7*(np.pi*f1)**(2./3.))
                 
