@@ -1040,10 +1040,14 @@ class IMRPhenomD(Waveform):
                  4./3.*alpha3*f2**(3./4.) - alpha4*np.arctan((f2 - alpha5*ff_RD)/ff_damp) #psi_int_f2 = psi_MR_f2
 
         # Evaluate full merger-ringdown phase and its analytical derivative
-        psi_MR = 1./eta*(alpha0 + alpha1*ff - alpha2*ff**(-1.) + 4./3.*alpha3*ff**(3./4.) +\
+        psi_MR = 1./eta*(alpha0 +\
+                         alpha1*ff -\
+                         alpha2*ff**(-1.) +\
+                         4./3.*alpha3*ff**(3./4.) +\
                          alpha4*np.arctan((ff - alpha5*ff_RD)/ff_damp))
-        
-        psi_MR_prime = 1./eta*(alpha1 + alpha2*ff**(-2.) + alpha3*ff**(-1./4.) +\
+        psi_MR_prime = 1./eta*(alpha1 +\
+                               alpha2*ff**(-2.) +\
+                               alpha3*ff**(-1./4.) +\
                                alpha4*ff_damp/(ff_damp**2.(ff - alpha5*ff_RD)**2.))
 
         return psi_MR, psi_MR_prime
