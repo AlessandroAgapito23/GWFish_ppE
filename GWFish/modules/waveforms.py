@@ -602,15 +602,15 @@ class TaylorF2(Waveform):
         #EARLY INSPIRAL PART OF THE PHASE phi_EI(f)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         
         psi_TF2 = 2.*np.pi*ff*cst.c**3/(cst.G*M)*tc - phic*ones - np.pi/4.*ones +\
-                3./(128.*eta)*((np.pi*ff)**(-5./3.) +\
-                phi_2*(np.pi*ff)**(-1.) +\
-                phi_3*(np.pi*ff)**(-2./3.) +\
-                phi_4*(np.pi*ff)**(-1./3.) +\
-                phi_5 +\
-                phi_5_l*np.log(np.pi*ff) +\
-                phi_6*(np.pi*ff)**(1./3.) +\
-                phi_6_l*np.log(np.pi*ff)*(np.pi*ff)**(1./3.) +\
-                phi_7*(np.pi*ff)**(2./3.))
+                  3./(128.*eta)*(phi_0*(np.pi*ff)**(-5./3.) +\
+                                 phi_2*(np.pi*ff)**(-1.) +\
+                                 phi_3*(np.pi*ff)**(-2./3.) +\
+                                 phi_4*(np.pi*ff)**(-1./3.) +\
+                                 phi_5 +\
+                                 phi_5_l*np.log(np.pi*ff) +\
+                                 phi_6*(np.pi*ff)**(1./3.) +\
+                                 phi_6_l*np.log(np.pi*ff)*(np.pi*ff)**(1./3.) +\
+                                 phi_7*(np.pi*ff)**(2./3.))
 
         ################################################################################ 
         # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
@@ -619,37 +619,37 @@ class TaylorF2(Waveform):
         f1 = 0.018
         
         psi_TF2_f1 = 2.*np.pi*f1*cst.c**3/(cst.G*M)*tc - phic*ones - np.pi/4.*ones +\
-                3./(128.*eta)*((np.pi*f1)**(-5./3.) +\
-                phi_2*(np.pi*f1)**(-1.) +\
-                phi_3*(np.pi*f1)**(-2./3.) +\
-                phi_4*(np.pi*f1)**(-1./3.) +\
-                phi_5 +\
-                phi_5_l*np.log(np.pi*f1) +\
-                phi_6*(np.pi*f1)**(1./3.) +\
-                phi_6_l*np.log(np.pi*f1)*(np.pi*f1)**(1./3.) +\
-                phi_7*(np.pi*f1)**(2./3.))
+                     3./(128.*eta)*(phi_0*(np.pi*f1)**(-5./3.) +\
+                                    phi_2*(np.pi*f1)**(-1.) +\
+                                    phi_3*(np.pi*f1)**(-2./3.) +\
+                                    phi_4*(np.pi*f1)**(-1./3.) +\
+                                    phi_5 +\
+                                    phi_5_l*np.log(np.pi*f1) +\
+                                    phi_6*(np.pi*f1)**(1./3.) +\
+                                    phi_6_l*np.log(np.pi*f1)*(np.pi*f1)**(1./3.) +\
+                                    phi_7*(np.pi*f1)**(2./3.))
         
         psi_TF2_prime = 2.*np.pi*cst.c**3/(cst.G*M)*tc +\
-                3./(128.*eta)*((np.pi)**(-5./3.)*(-5./3.*ff**(-8./3.)) +\
-                phi_2*(np.pi)**(-1.)*(-1.*ff**(-2.)) +\
-                phi_3*(np.pi)**(-2./3.)*(-2./3.*ff**(-5./3.)) +\
-                phi_4*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
-                phi_5_l*ff**(-1.) +\
-                phi_6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
-                phi_6_l*(ff**(-1.)*(np.pi*ff)**(1./3.) +\
-                         np.log(np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.))) +\
-                phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.)))
+                        3./(128.*eta)*(phi_0*(np.pi)**(-5./3.)*(-5./3.*ff**(-8./3.)) +\
+                                       phi_2*(np.pi)**(-1.)*(-1.*ff**(-2.)) +\
+                                       phi_3*(np.pi)**(-2./3.)*(-2./3.*ff**(-5./3.)) +\
+                                       phi_4*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
+                                       phi_5_l*ff**(-1.) +\
+                                       phi_6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
+                                       phi_6_l*(ff**(-1.)*(np.pi*ff)**(1./3.) +\
+                                                np.log(np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.))) +\
+                                       phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.)))
         
         psi_TF2_prime_f1 = 2.*np.pi*cst.c**3/(cst.G*M)*tc +\
-                3./(128.*eta)*((np.pi)**(-5./3.)*(-5./3.*f1**(-8./3.)) +\
-                phi_2*(np.pi)**(-1.)*(-1.*f1**(-2.)) +\
-                phi_3*(np.pi)**(-2./3.)*(-2./3.*f1**(-5./3.)) +\
-                phi_4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
-                phi_5_l*f1**(-1.) +\
-                phi_6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
-                phi_6_l*(f1**(-1.)*(np.pi*f1)**(1./3.) +\
-                         np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
-                phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
+                           3./(128.*eta)*(phi_0*(np.pi)**(-5./3.)*(-5./3.*f1**(-8./3.)) +\
+                                          phi_2*(np.pi)**(-1.)*(-1.*f1**(-2.)) +\
+                                          phi_3*(np.pi)**(-2./3.)*(-2./3.*f1**(-5./3.)) +\
+                                          phi_4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
+                                          phi_5_l*f1**(-1.) +\
+                                          phi_6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
+                                          phi_6_l*(f1**(-1.)*(np.pi*f1)**(1./3.) +\
+                                                   np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
+                                          phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
         
         return psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1
         
@@ -878,13 +878,13 @@ class IMRPhenomD(Waveform):
         a_2 = -323./224. + 451./168.*eta
         a_3 = 27./8.*delta_mass*chi_a + (27./8. - 11./6.*eta)*chi_s
         a_4 = 105271./24192.*eta2 - 1975055./338688.*eta - 27312085./8128512. + (-(81./32.) + 8.*eta)*chi_a**2. -\
-            81./16.*delta_mass*chi_a*chi_s + (-(81./32.) + 17./8.*eta)*chi_s**2.
+              81./16.*delta_mass*chi_a*chi_s + (-(81./32.) + 17./8.*eta)*chi_s**2.
         a_5 = (85.*np.pi)/64.*(4*eta - 1.) + delta_mass*(285197./16128. - 1579./4032.*eta)*chi_a +\
-            (285197./16128. - 15317./672.*eta - 2227./1008.*eta2)*chi_s
+              (285197./16128. - 15317./672.*eta - 2227./1008.*eta2)*chi_s
         a_6 = 34473079./6386688.*eta3 - 3248849057./178827264.*eta2 + 545384828789./5007163392.*eta - 205./48.*eta*np.pi**2. -\
-            177520268561./8583708672. + (1614569./64512. - 1873643./16128.*eta + 2167./42.*eta2)*chi_a**2. +\
-            (31./12.*np.pi - 7./3.*np.pi*eta)*chi_s + (1614569./64512. - 61391./1344.*eta + 57451./4032.*eta2)*chi_s**2. +\
-            delta_mass*chi_a*(31./12.*np.pi + (1614569./32256. - 165961./2688.*eta)*chi_s)
+              177520268561./8583708672. + (1614569./64512. - 1873643./16128.*eta + 2167./42.*eta2)*chi_a**2. +\
+              (31./12.*np.pi - 7./3.*np.pi*eta)*chi_s + (1614569./64512. - 61391./1344.*eta + 57451./4032.*eta2)*chi_s**2. +\
+              delta_mass*chi_a*(31./12.*np.pi + (1614569./32256. - 165961./2688.*eta)*chi_s)
 
         return a_0, a_1, a_2, a_2, a_3, a_4, a_5, a_6
 
@@ -1035,16 +1035,16 @@ class IMRPhenomD(Waveform):
         ####################### IN-MERG PHASE CONTINUITY CONDITIONS ###################
         
         alpha1 = eta*psi_int_prime_f2 - alpha2*f2**(-2.) - alpha3*f2**(-1./4.) -\
-                (alpha4*ff_damp)/(ff_damp**2. + (f2 - alpha5*ff_RD)**2.) # psi_int_prime_f2 = psi_MR_prime_f2
+                 (alpha4*ff_damp)/(ff_damp**2. + (f2 - alpha5*ff_RD)**2.) # psi_int_prime_f2 = psi_MR_prime_f2
         alpha0 = eta*psi_int_f2 - alpha1*f2 + alpha2*f2**(-1.) -\
-                4./3.*alpha3*f2**(3./4.) - alpha4*np.arctan((f2 - alpha5*ff_RD)/ff_damp) #psi_int_f2 = psi_MR_f2
+                 4./3.*alpha3*f2**(3./4.) - alpha4*np.arctan((f2 - alpha5*ff_RD)/ff_damp) #psi_int_f2 = psi_MR_f2
 
         # Evaluate full merger-ringdown phase and its analytical derivative
         psi_MR = 1./eta*(alpha0 + alpha1*ff - alpha2*ff**(-1.) + 4./3.*alpha3*ff**(3./4.) +\
-                                alpha4*np.arctan((ff - alpha5*ff_RD)/ff_damp))
+                         alpha4*np.arctan((ff - alpha5*ff_RD)/ff_damp))
         
-        psi_MR_prime = 1./eta*(alpha1 + alpha2*ff**(-2.) + alpha3*ff**(-1./4.) + alpha4*ff_damp/(ff_damp**2. +\
-                        (ff - alpha5*ff_RD)**2.))
+        psi_MR_prime = 1./eta*(alpha1 + alpha2*ff**(-2.) + alpha3*ff**(-1./4.) +\
+                               alpha4*ff_damp/(ff_damp**2.(ff - alpha5*ff_RD)**2.))
 
         return psi_MR, psi_MR_prime
 
@@ -1113,9 +1113,9 @@ class IMRPhenomD(Waveform):
     
         # Intermediate part 
         v2 = 0.8149838730507785 + 2.5747553517454658*eta\
-                + (chi_PN - 1)*(1.1610198035496786 - 2.3627771785551537*eta + 6.771038707057573*eta2)\
-                + (chi_PN - 1)**2*(0.7570782938606834 - 2.7256896890432474*eta + 7.1140380397149965*eta2)\
-                + (chi_PN - 1)**3*(0.1766934149293479 - 0.7978690983168183*eta + 2.1162391502005153*eta2)
+             + (chi_PN - 1)*(1.1610198035496786 - 2.3627771785551537*eta + 6.771038707057573*eta2)\
+             + (chi_PN - 1)**2*(0.7570782938606834 - 2.7256896890432474*eta + 7.1140380397149965*eta2)\
+             + (chi_PN - 1)**3*(0.1766934149293479 - 0.7978690983168183*eta + 2.1162391502005153*eta2)
         
         ff_RD, ff_damp = IMRPhenomD.RD_damping(self)
 
@@ -1130,13 +1130,23 @@ class IMRPhenomD(Waveform):
         f2_amp = (f1_amp + f3_amp)/2.
     
     
-        amp_ins_f1 = a_0 + a_2*(np.pi*f1_amp)**(2./3.) + a_3*(np.pi*f1_amp) + a_4*(np.pi*f1_amp)**(4./3.) +\
-                a_5*(np.pi*f1_amp)**(5./3.) + a_6*(np.pi*f1_amp)**2. + rho1*f1_amp**(7./3.) +\
-                rho2*f1_amp**(8./3.) + rho3*f1_amp**3.
+        amp_ins_f1 = a_0 +\
+                     a_2*(np.pi*f1_amp)**(2./3.) +\
+                     a_3*(np.pi*f1_amp) +\
+                     a_4*(np.pi*f1_amp)**(4./3.) +\
+                     a_5*(np.pi*f1_amp)**(5./3.) +\
+                     a_6*(np.pi*f1_amp)**2. +\
+                     rho1*f1_amp**(7./3.) +\
+                     rho2*f1_amp**(8./3.) + rho3*f1_amp**3.
     
-        amp_ins_prime_f1 = 2./3.*a_2*np.pi**(2./3.)*f1_amp**(-1./3.) + a_3*np.pi + 4./3.*a_4*np.pi**(4./3.)*f1_amp**(1./3.) +\
-                            5./3.*a_5*np.pi**(5./3.)*f1_amp**(2./3.) + 2*a_6*np.pi**2.*f1_amp + 7./3.*rho1*f1_amp**(4./3.) +\
-                            8./3.*rho2*f1_amp**(5./3.) + 3.*rho3*f1_amp**2.
+        amp_ins_prime_f1 = 2./3.*a_2*np.pi**(2./3.)*f1_amp**(-1./3.) +\
+                           a_3*np.pi +\
+                           4./3.*a_4*np.pi**(4./3.)*f1_amp**(1./3.) +\
+                           5./3.*a_5*np.pi**(5./3.)*f1_amp**(2./3.) +\
+                           2*a_6*np.pi**2.*f1_amp +\
+                           7./3.*rho1*f1_amp**(4./3.) +\
+                           8./3.*rho2*f1_amp**(5./3.) +\
+                           3.*rho3*f1_amp**2.
     
         amp_MR_f3, amp_MR_prime_f3 = phenomD_amp_MR(f3_amp, self.gw_params, ff_damp, ff_RD, gamma1, gamma2, gamma3)
         amp_MR_f3 = float(amp_MR_f3)
