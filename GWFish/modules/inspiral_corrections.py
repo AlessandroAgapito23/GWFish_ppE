@@ -308,16 +308,16 @@ class TaylorF2_mult(Inspiral_corr):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
         k_1, k_2, lambda_1, lambda_2 = Inspiral_corr.get_mult_corr(self)
-         
+
+        #Hadamard self-field regularisation at 3PN
         #spin terms : up to quadratic at 2PN and 3PN and cubic at 3.5PN
         #quadrupolar deviations at 2PN, 3PN and 3.5 PN and octupolar deviations at 3.5PN
         #tail induced SO effect at 4PN
-        #Hadamard self-field regularisation at 3PN
 
         P4 = (-50.*((1. - 2*eta) * k_1 + delta_mass * k_2))*(chi_s**2 + chi_a**2) +\
              (-100.*((1. - 2*eta) * k_2 + delta_mass * k_1))*chi_s*chi_a
          
-        P6 = (1760./3.*-11831./9240. - 12320./9.*1987./3080.)*eta +\
+        P6 = (1760./3.*(11831./9240.) + 12320./9.*(-1987./3080.))*eta +\
              ((75515./288. - 232415./504.*eta + 1255./9.*eta2)*chi_s**2 +\
               (75515./288. - 263245./252.*eta - 480.*eta2)*chi_a**2)+\
              ((26015./28. - 1495./6.*eta)*delta_mass * k_2 +\
