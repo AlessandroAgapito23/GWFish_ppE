@@ -155,7 +155,7 @@ class TaylorF2_PPE(Inspiral_corr):
 
         f1 = 0.018
 
-        psi_gIMR = 3./(128.*eta)*(phi_0*delta_phi_0*(np.pi*f1)**(-5./3.) +\
+        psi_gIMR_f1 = 3./(128.*eta)*(phi_0*delta_phi_0*(np.pi*f1)**(-5./3.) +\
                                   delta_phi_1*(np.pi*f1)**(-4./3.)+\
                                   phi_2*delta_phi_2*(np.pi*f1)**(-1.) +\
                                   phi_3*delta_phi_3*(np.pi*f1)**(-2./3.) +\
