@@ -418,6 +418,8 @@ class TaylorF2_mult(Inspiral_corr):
                  a_5*(np.pi*ff)**(5./3.) +\
                  a_6*(np.pi*ff)**(2.)
          
+        amp_PN = 1.
+         
         amp_tot = amp_PN*A0
          
         hp = amp_tot*0.5*(1 + np.cos(iota)**2.)
