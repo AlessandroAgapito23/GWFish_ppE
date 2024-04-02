@@ -83,6 +83,8 @@ class Inspiral_corr(Waveform):
         #quadrupole deviations
         k_1 = self.gw_params['k_1']
         k_2 = self.gw_params['k_2']
+
+        #octupole deviations
         lambda_1 = self.gw_params['lambda_1']
         lambda_2 = self.gw_params['lambda_2']
           
@@ -340,7 +342,6 @@ class TaylorF2_mult(Inspiral_corr):
         P8 = ((233915./68. - 99185./252.*eta)*delta_mass*chi_a +\
               (233915./68. - 3970375./2268.*eta + 19655./189.*eta2)*chi_s)*np.pi
          
-
         return P4, P6, P7, P8
             
     
@@ -376,7 +377,8 @@ class TaylorF2_mult(Inspiral_corr):
 
         psi_mult_f1 = 3./(128.*eta)*(P4*(np.pi*f1)**(-1./3.) +\
                                      P6*(np.pi*f1)**(1./3.) +\
-                                     P7*(np.pi*f1)**(2./3.))
+                                     P7*(np.pi*f1)**(2./3.) +\
+                                     P8*(1 - np.log(np.pi*f1))*(np.pi*f1)**(1.)))
                 
         psi_EI_f1 = psi_TF2_f1 + psi_mult_f1        
 
@@ -408,15 +410,12 @@ class TaylorF2_mult(Inspiral_corr):
         A0 = 1./(np.pi**(2./3.))*(5./24.)**(0.5)*cst.c/r*Mc**(5./6.)*(ff*cst.c**3/(cst.G*M))**(-7./6.)
          
         a_0, a_1, a_2, a_2, a_3, a_4, a_5, a_6 = wf.IMRPhenomD.INS_amp_coeff(self)
-        a_5 = a_6 = 0.
          
         amp_PN = a_0 +\
                  a_2*(np.pi*ff)**(2./3.) +\
                  a_3*(np.pi*ff) +\
                  a_4*(np.pi*ff)**(4./3.) +\
-                 a_5*(np.pi*ff)**(5./3.) +\
-                 a_6*(np.pi*ff)**(2.)
-         
+
         amp_tot = amp_PN*A0
          
         hp = amp_tot*0.5*(1 + np.cos(iota)**2.)
