@@ -361,8 +361,6 @@ class TaylorF2_mult(Inspiral_corr):
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
         P4, P6, P7, P8 = TaylorF2_mult.INS_mult_coeff(self)
 
-        P8 = 0.
-
         psi_mult = 3./(128.*eta)*(P4*(np.pi*ff)**(-1./3.) +\
                                   P6*(np.pi*ff)**(1./3.) +\
                                   P7*(np.pi*ff)**(2./3.) +\
@@ -410,6 +408,7 @@ class TaylorF2_mult(Inspiral_corr):
         A0 = 1./(np.pi**(2./3.))*(5./24.)**(0.5)*cst.c/r*Mc**(5./6.)*(ff*cst.c**3/(cst.G*M))**(-7./6.)
          
         a_0, a_1, a_2, a_2, a_3, a_4, a_5, a_6 = wf.IMRPhenomD.INS_amp_coeff(self)
+        a_5 = a_6 = 0.
          
         amp_PN = a_0 +\
                  a_2*(np.pi*ff)**(2./3.) +\
@@ -417,8 +416,6 @@ class TaylorF2_mult(Inspiral_corr):
                  a_4*(np.pi*ff)**(4./3.) +\
                  a_5*(np.pi*ff)**(5./3.) +\
                  a_6*(np.pi*ff)**(2.)
-         
-        amp_PN = 1.
          
         amp_tot = amp_PN*A0
          
