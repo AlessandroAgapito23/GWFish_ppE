@@ -125,7 +125,7 @@ def t_of_f_PN(parameters, frequencyvector):
 
     t_of_f = -5./(256.*np.pi**(8/3))/Mc**(5/3)/frequencyvector**(8/3)
 
-    return t_of_f+local_params['geocent_time']
+    return t_of_f
 
 
 class Waveform:
