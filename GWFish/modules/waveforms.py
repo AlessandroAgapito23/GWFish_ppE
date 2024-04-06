@@ -180,7 +180,7 @@ class Waveform:
             'mass_1': 0., 'mass_2': 0., 'luminosity_distance': 0., 
             'redshift': 0., 'theta_jn': 0., 'phase': 0., 'geocent_time': 0., 
             'a_1': 0., 'tilt_1': 0., 'phi_12': 0., 'a_2': 0., 'tilt_2': 0., 
-            'phi_jl': 0., 'lambda_1': 0., 'lambda_2': 0., 'cut': 4.
+            'phi_jl': 0., 'lambda_1': 0., 'lambda_2': 0., 'cut': 2.
         }
         
     def update_gw_params(self, new_gw_params):
@@ -686,7 +686,7 @@ class TaylorF2(Waveform):
         
         polarizations = np.hstack((hp * phase, hc * 1.j * phase))
 
-        # Very crude high-f cut-off which can be an input parameter 'cut', default = 4*f_isco
+        # Very crude high-f cut-off which can be an input parameter 'cut', default = 2*f_isco
         f_cut = cut*f_isco*cst.G*M/cst.c**3
         
         polarizations[np.where(ff[:,0] > f_cut), :] = 0.j
