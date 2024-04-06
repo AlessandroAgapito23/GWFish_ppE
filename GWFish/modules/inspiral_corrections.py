@@ -26,7 +26,7 @@ class Inspiral_corr(Waveform):
         self.gw_params = {
             'mass_1': 0., 'mass_2': 0., 'luminosity_distance': 0., 
             'redshift': 0., 'theta_jn': 0., 'phase': 0., 'geocent_time': 0., 
-            'a_1': 0., 'a_2': 0.,'cut': 4.,
+            'a_1': 0., 'a_2': 0.,'cut': 2.,
             #ppE parameters
             'beta':0., 'PN':0.,
             #gIMR
@@ -222,7 +222,7 @@ class TaylorF2_PPE(Inspiral_corr):
         
         polarizations = np.hstack((hp * phase, hc * 1.j * phase))
 
-        # Very crude high-f cut-off which can be an input parameter 'cut', default = 4*f_isco
+        # Very crude high-f cut-off which can be an input parameter 'cut', default = 2*f_isco
         f_cut = cut*f_isco*cst.G*M/cst.c**3
  
         polarizations[np.where(ff[:,0] > f_cut), :] = 0.j
