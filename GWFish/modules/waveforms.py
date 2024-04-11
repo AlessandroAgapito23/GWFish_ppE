@@ -594,10 +594,10 @@ class TaylorF2(Waveform):
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
         ones = np.ones((len(ff), 1))
         phic = self.gw_params['phase']
-        #tc = self.gw_params['geocent_time']
+        tc = self.gw_params['geocent_time']
 
         phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = TaylorF2.EI_phase_coeff(self)
-        tc = 0.
+        #tc = 0.
         
         #EARLY INSPIRAL PART OF THE PHASE phi_EI(f)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         
