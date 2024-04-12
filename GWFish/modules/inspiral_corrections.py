@@ -439,7 +439,7 @@ class TaylorF2_mult(Inspiral_corr):
         
         polarizations = np.hstack((hp * phase, hc * 1.j * phase))
 
-        # Very crude high-f cut-off which can be an input parameter 'cut', default = 4*f_isco
+        # Very crude high-f cut-off which can be an input parameter 'cut', default = 2*f_isco
         f_cut = cut*f_isco*cst.G*M/cst.c**3
  
         polarizations[np.where(ff[:,0] > f_cut), :] = 0.j
