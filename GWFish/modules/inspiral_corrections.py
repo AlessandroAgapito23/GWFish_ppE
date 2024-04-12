@@ -357,7 +357,7 @@ class TaylorF2_mult(Inspiral_corr):
         cut = self.gw_params['cut']
 
         #t_c = t_0
-        t_0 = self.gw_params['t_0']
+        t_0 = self.gw_params['geocent_time']
      
         ################################################################################ 
         ############################## PHASE CORRECTIONS ###############################
