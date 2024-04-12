@@ -355,9 +355,6 @@ class TaylorF2_mult(Inspiral_corr):
         
         #f_cut = cut_order * f_isco
         cut = self.gw_params['cut']
-
-        #t_c = t_0
-        t_0 = self.gw_params['geocent_time']
      
         ################################################################################ 
         ############################## PHASE CORRECTIONS ###############################
@@ -367,13 +364,12 @@ class TaylorF2_mult(Inspiral_corr):
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
         P4, P6, P7, P8 = TaylorF2_mult.INS_mult_coeff(self)
 
-        psi_0 = - 2.*np.pi*ff*cst.c**3/(cst.G*M)*t_0
         psi_mult = + 3./(128.*eta)*(P4*(np.pi*ff)**(-1./3.) +\
                                   P6*(np.pi*ff)**(1./3.) +\
                                   P7*(np.pi*ff)**(2./3.) +\
                                   P8*(1 - np.log(np.pi*ff))*(np.pi*ff)**(1.))
 
-        psi_EI = psi_TF2 + psi_mult + psi_0
+        psi_EI = psi_TF2 + psi_mult 
 
         ################################################################################ 
         # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
