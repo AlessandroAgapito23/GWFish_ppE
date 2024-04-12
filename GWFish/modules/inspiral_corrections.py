@@ -43,7 +43,9 @@ class Inspiral_corr(Waveform):
             #quadrupole deviations
             'k_1':0., 'k_2':0.,
             #octupole deviations
-            'lambda_1':0., 'lambda_2':0.
+            'lambda_1':0., 'lambda_2':0.,
+            #temporal translation
+             't_0':0.
         }
 
      def update_gw_params(self, new_gw_params):
@@ -354,6 +356,9 @@ class TaylorF2_mult(Inspiral_corr):
         #f_cut = cut_order * f_isco
         cut = self.gw_params['cut']
 
+        #t_c = t_0
+        t_0 = self.gw_params['t_0']
+     
         ################################################################################ 
         ############################## PHASE CORRECTIONS ###############################
         ############################# multipolar deviations ############################
@@ -363,7 +368,8 @@ class TaylorF2_mult(Inspiral_corr):
         P4, P6, P7, P8 = TaylorF2_mult.INS_mult_coeff(self)
         #P8 = 0.
 
-        psi_mult = 3./(128.*eta)*(P4*(np.pi*ff)**(-1./3.) +\
+        psi_0 = - 2.*np.pi*ff*cst.c**3/(cst.G*M)*t_0
+        psi_mult = psi_0 + 3./(128.*eta)*(P4*(np.pi*ff)**(-1./3.) +\
                                   P6*(np.pi*ff)**(1./3.) +\
                                   P7*(np.pi*ff)**(2./3.) +\
                                   P8*(1 - np.log(np.pi*ff))*(np.pi*ff)**(1.))
