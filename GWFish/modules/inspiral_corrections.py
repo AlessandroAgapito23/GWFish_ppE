@@ -40,6 +40,7 @@ class Inspiral_corr(Waveform):
             'delta_phi_7':0.,
             'delta_phi_8':0.,
             'delta_phi_9':0.,
+            'delta_phi_10':0., 
             #quadrupole deviations
             'k_1':0., 'k_2':0.,
             #octupole deviations
@@ -76,9 +77,10 @@ class Inspiral_corr(Waveform):
         delta_phi_7 = self.gw_params['delta_phi_7']
         delta_phi_8 = self.gw_params['delta_phi_8']
         delta_phi_9 = self.gw_params['delta_phi_9']
+        delta_phi_10 = self.gw_params['delta_phi_10']
      
         return PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
-        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9
+        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9, delta_phi_10
 
      def get_mult_corr(self):
           
@@ -126,7 +128,7 @@ class TaylorF2_PPE(Inspiral_corr):
         ones = np.ones((len(ff), 1)) 
 
         PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
-        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9 = Inspiral_corr.get_phase_corr(self)
+        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9, delta_phi_10 = Inspiral_corr.get_phase_corr(self)
         
         #f_cut = cut_order * f_isco
         cut = self.gw_params['cut']
@@ -138,7 +140,8 @@ class TaylorF2_PPE(Inspiral_corr):
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
         phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = wf.TaylorF2.EI_phase_coeff(self)
 
-        psi_gIMR = 3./(128.*eta)*(phi_0*delta_phi_0*(np.pi*ff)**(-5./3.) +\
+        psi_gIMR = 3./(128.*eta)*(delta_phi_10*(np.pi*ff)**(-2.) +\
+                                  phi_0*delta_phi_0*(np.pi*ff)**(-5./3.) +\
                                   delta_phi_1*(np.pi*ff)**(-4./3.)+\
                                   phi_2*delta_phi_2*(np.pi*ff)**(-1.) +\
                                   phi_3*delta_phi_3*(np.pi*ff)**(-2./3.) +\
@@ -159,16 +162,17 @@ class TaylorF2_PPE(Inspiral_corr):
 
         f1 = 0.018
 
-        psi_gIMR_f1 = 3./(128.*eta)*(phi_0*delta_phi_0*(np.pi*f1)**(-5./3.) +\
-                                  delta_phi_1*(np.pi*f1)**(-4./3.)+\
-                                  phi_2*delta_phi_2*(np.pi*f1)**(-1.) +\
-                                  phi_3*delta_phi_3*(np.pi*f1)**(-2./3.) +\
-                                  phi_4*delta_phi_4*(np.pi*f1)**(-1./3.) +\
-                                  phi_5*delta_phi_5 +\
-                                  phi_5_l*delta_phi_8*np.log(np.pi*f1) +\
-                                  phi_6*delta_phi_6*(np.pi*f1)**(1./3.) +\
-                                  phi_6_l*delta_phi_9*np.log(np.pi*f1)*(np.pi*f1)**(1./3.) +\
-                                  phi_7*delta_phi_7*(np.pi*f1)**(2./3.)) 
+        psi_gIMR_f1 = 3./(128.*eta)*(delta_phi_10*(np.pi*f1)**(-2.) +\
+                                     phi_0*delta_phi_0*(np.pi*f1)**(-5./3.) +\
+                                     delta_phi_1*(np.pi*f1)**(-4./3.)+\
+                                     phi_2*delta_phi_2*(np.pi*f1)**(-1.) +\
+                                     phi_3*delta_phi_3*(np.pi*f1)**(-2./3.) +\
+                                     phi_4*delta_phi_4*(np.pi*f1)**(-1./3.) +\
+                                     phi_5*delta_phi_5 +\
+                                     phi_5_l*delta_phi_8*np.log(np.pi*f1) +\
+                                     phi_6*delta_phi_6*(np.pi*f1)**(1./3.) +\
+                                     phi_6_l*delta_phi_9*np.log(np.pi*f1)*(np.pi*f1)**(1./3.) +\
+                                     phi_7*delta_phi_7*(np.pi*f1)**(2./3.)) 
                 
         psi_ppe_f1 = eta**((2*PN-5.)/5.)*beta*(np.pi*f1)**((2*PN-5.)/3.)
 
@@ -176,7 +180,8 @@ class TaylorF2_PPE(Inspiral_corr):
         
 
         # Analytical derivative 
-        psi_gIMR_prime = 3./(128.*eta)*(phi_0*delta_phi_0*(np.pi)**(-5./3.)*(-5./3.*ff**(-8./3.)) +\
+        psi_gIMR_prime = 3./(128.*eta)*(delta_phi_10*(np.pi)**(-2.)*(-2.*(np.pi*ff)**(-3.)) +\
+                                        phi_0*delta_phi_0*(np.pi)**(-5./3.)*(-5./3.*ff**(-8./3.)) +\
                                         delta_phi_1*(np.pi)**(-4./3.)*(-4./3.*ff**(-7./3.)) +\
                                         phi_2*delta_phi_2*(np.pi)**(-1.)*(-1.*ff**(-2.)) +\
                                         phi_3*delta_phi_3*(np.pi)**(-2./3.)*(-2./3.*ff**(-5./3.)) +\
@@ -187,7 +192,8 @@ class TaylorF2_PPE(Inspiral_corr):
                                                                np.log(np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.))) +\
                                         phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.)))
 
-        psi_gIMR_prime_f1 = 3./(128.*eta)*(phi_0*delta_phi_0*(np.pi)**(-5./3.)*(-5./3.*f1**(-8./3.)) +\
+        psi_gIMR_prime_f1 = 3./(128.*eta)*(delta_phi_10*(np.pi)**(-2.)*(-2.*(np.pi*f1)**(-3.)) +\
+                                           phi_0*delta_phi_0*(np.pi)**(-5./3.)*(-5./3.*f1**(-8./3.)) +\
                                            delta_phi_1*(np.pi)**(-4./3.)*(-4./3.*f1**(-7./3.)) +\
                                            phi_2*delta_phi_2*(np.pi)**(-1.)*(-1.*f1**(-2.)) +\
                                            phi_3*delta_phi_3*(np.pi)**(-2./3.)*(-2./3.*f1**(-5./3.)) +\
@@ -519,7 +525,8 @@ class IMRPhenomD_PPE(Inspiral_corr):
         PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
         delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9 = Inspiral_corr.get_phase_corr(self)
 
-        psi_gIMR = 3./(128.*eta)*(phi_0*delta_phi_0*(np.pi*ff)**(-5./3.) +\
+        psi_gIMR = 3./(128.*eta)*(delta_phi_10*(np.pi*ff)**(-2.) +\
+                                  phi_0*delta_phi_0*(np.pi*ff)**(-5./3.) +\
                                   delta_phi_1*(np.pi*ff)**(-4./3.)+\
                                   phi_2*delta_phi_2*(np.pi*ff)**(-1.) +\
                                   phi_3*delta_phi_3*(np.pi*ff)**(-2./3.) +\
@@ -544,7 +551,8 @@ class IMRPhenomD_PPE(Inspiral_corr):
 
         f1 = 0.018
             
-        psi_gIMR_f1 = 3./(128.*eta)*(phi_0*delta_phi_0*(np.pi*f1)**(-5./3.) +\
+        psi_gIMR_f1 = 3./(128.*eta)*(delta_phi_10*(np.pi*f1)**(-2.) +\
+                                     phi_0*delta_phi_0*(np.pi*f1)**(-5./3.) +\
                                      delta_phi_1*(np.pi*f1)**(-4./3.)+\
                                      phi_2*delta_phi_2*(np.pi*f1)**(-1.) +\
                                      phi_3*delta_phi_3*(np.pi*f1)**(-2./3.) +\
@@ -559,7 +567,8 @@ class IMRPhenomD_PPE(Inspiral_corr):
          
         psi_EI_f1 = psi_TF2_f1 + psi_ppe_f1 + psi_gIMR_f1
 
-        psi_gIMR_prime_f1 = 3./(128.*eta)*(phi_0*delta_phi_0*(np.pi)**(-5./3.)*(-5./3.*f1**(-8./3.)) +\
+        psi_gIMR_prime_f1 = 3./(128.*eta)*(delta_phi_10*(np.pi)**(-2.)*(-2.*(np.pi*f1)**(-3.)) +\
+                                           phi_0*delta_phi_0*(np.pi)**(-5./3.)*(-5./3.*f1**(-8./3.)) +\
                                            delta_phi_1*(np.pi)**(-4./3.)*(-4./3.*f1**(-7./3.)) +\
                                            phi_2*delta_phi_2*(np.pi)**(-1.)*(-1.*f1**(-2.)) +\
                                            phi_3*delta_phi_3*(np.pi)**(-2./3.)*(-2./3.*f1**(-5./3.)) +\
