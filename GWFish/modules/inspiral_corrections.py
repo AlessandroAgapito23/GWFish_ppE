@@ -523,7 +523,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
         phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = wf.TaylorF2.EI_phase_coeff(self) 
         PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
-        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9 = Inspiral_corr.get_phase_corr(self)
+        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9, delta_phi_10 = Inspiral_corr.get_phase_corr(self)
 
         psi_gIMR = 3./(128.*eta)*(delta_phi_10*(np.pi*ff)**(-2.) +\
                                   phi_0*delta_phi_0*(np.pi*ff)**(-5./3.) +\
