@@ -1,5 +1,5 @@
 # I break the standard code waveforms.py into more functions and attributes inside the Waveform class:
-# - get_param_comb(self) returns a few quantities (related to masses, spins, frequency) which are present in TaylorF2 and IMRPhenomD
+# - get_param_comb(self) returns a few quantities (related to masses, spins, frequency), which are present in TaylorF2 and IMRPhenomD approximants
 
 # TaylorF2 >>>
 # - EI_phase_coeff(self) returns the early-inspiral phase coefficients phi_i
@@ -663,9 +663,9 @@ class TaylorF2(Waveform):
         ################################# AMPLITUDE ####################################
         ########################### without PN corrections #############################
 
-        A0 = cst.c / (2.*r) * np.sqrt(5.*np.pi/24.)*Mc**(5./6.)*(np.pi*ff*cst.c**3/(cst.G*M)) ** (-7./6.)
-        hp = A0 * (1. + np.cos(iota) ** 2.)
-        hc = A0 * 2.*np.cos(iota)
+        A0 = 1./(np.pi**(2./3.))*(5./24.)**(0.5)*cst.c/r*Mc**(5./6.)*(ff*cst.c**3/(cst.G*M))**(-7./6.)
+        hp = A0 * 0.5* (1. + np.cos(iota) ** 2.)
+        hc = A0 *np.cos(iota)
 
         return hp, hc
     
