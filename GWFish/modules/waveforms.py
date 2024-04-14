@@ -701,7 +701,7 @@ class TaylorF2(Waveform):
         psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2.calculate_phase(self)   
         phase = np.exp(1.j * psi)
 
-        hfp, hfc = LALFD_Waveform._fd_phase_correction_geocent_time(self)
+        hfp, hfc = Waveform.LALFD_Waveform._fd_phase_correction_geocent_time(self)
         
         plt.figure()
         plt.loglog(self.frequencyvector, \
