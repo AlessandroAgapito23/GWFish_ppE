@@ -700,18 +700,13 @@ class TaylorF2(Waveform):
 
         psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2.calculate_phase(self)   
         phase = np.exp(1.j * psi)
-
-        hfp, hfc = Waveform.LALFD_Waveform._fd_phase_correction_geocent_time(self)
         
         plt.figure()
         plt.loglog(self.frequencyvector, \
                    np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+$')
         plt.loglog(self.frequencyvector, \
                    np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times$')
-        plt.loglog(self.frequencyvector, \
-                   np.abs(hfp), label=r'$h_+$')
-        plt.loglog(self.frequencyvector, \
-                   np.abs(hfc), label=r'$h_\times$')
+        
         plt.xlabel('Frequency [Hz]')
         plt.ylabel(r'Fourier amplitude [$Hz^{-1}$]')
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
@@ -723,6 +718,7 @@ class TaylorF2(Waveform):
 
         plt.figure()
         plt.semilogx(self.frequencyvector, psi)
+        
         plt.xlabel('Frequency [Hz]')
         plt.ylabel('Phase [rad]')
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
