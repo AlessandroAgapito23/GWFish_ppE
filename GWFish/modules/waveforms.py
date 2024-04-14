@@ -701,18 +701,24 @@ class TaylorF2(Waveform):
         psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2.calculate_phase(self)   
         phase = np.exp(1.j * psi)
 
+        hfp, hfc = LALFD_Waveform._fd_phase_correction_geocent_time()
+        
         plt.figure()
         plt.loglog(self.frequencyvector, \
                    np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+$')
         plt.loglog(self.frequencyvector, \
                    np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times$')
+        plt.loglog(self.frequencyvector, \
+                   np.abs(hfp), label=r'$h_+$')
+        plt.loglog(self.frequencyvector, \
+                   np.abs(hfc), label=r'$h_\times$')
         plt.xlabel('Frequency [Hz]')
         plt.ylabel(r'Fourier amplitude [$Hz^{-1}$]')
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         #plt.axis(axis)
         plt.legend()
         plt.tight_layout()
-        plt.savefig(output_folder + 'amp_tot_TF2.png')
+        plt.savefig(output_folder + 'TF2_polarizations.png')
         plt.close()
 
         plt.figure()
@@ -721,7 +727,7 @@ class TaylorF2(Waveform):
         plt.ylabel('Phase [rad]')
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.tight_layout()
-        plt.savefig(output_folder + 'phase_tot_TF2.png')
+        plt.savefig(output_folder + 'TF2_phase.png')
         plt.close()
 
 ######################################################################################
