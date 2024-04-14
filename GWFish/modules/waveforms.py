@@ -1143,7 +1143,8 @@ class IMRPhenomD(Waveform):
                      a_5*(np.pi*f1_amp)**(5./3.) +\
                      a_6*(np.pi*f1_amp)**2. +\
                      rho1*f1_amp**(7./3.) +\
-                     rho2*f1_amp**(8./3.) + rho3*f1_amp**3.
+                     rho2*f1_amp**(8./3.) +\
+                     rho3*f1_amp**3.
     
         amp_ins_prime_f1 = 2./3.*a_2*np.pi**(2./3.)*f1_amp**(-1./3.) +\
                            a_3*np.pi +\
@@ -1169,8 +1170,11 @@ class IMRPhenomD(Waveform):
         delta = np.linalg.solve(A, b)
     
         # Full intermediate amplitude
-        amp_int = (delta[0] + delta[1]*(ff) + delta[2]*(ff)**2. + delta[3]*(ff)**3. +\
-                delta[4]*(ff)**4.)
+        amp_int = (delta[0] +\
+                   delta[1]*(ff) +\
+                   delta[2]*(ff)**2. +\
+                   delta[3]*(ff)**3. +\
+                   delta[4]*(ff)**4.)
       
         ff1_amp = f1_amp*ones
         ff3_amp = f3_amp*ones
