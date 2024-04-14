@@ -58,7 +58,7 @@ class Inspiral_corr(Waveform):
 
         # We have to add delta_phi_i as in gIMRPhenomD (arXiv:1603.08955)
         # phi ---> phi*(1+delta_phi_i)
-        # phi is a combination of phi_i, i=0,....,7 and i=2PN
+        # phi is a combination of phi_i, i=-1,0,....,7 and i=2PN
         # We want to modify phi for each b one by one and b = i-5 
         # beta is a function of delta_phi_i, phi_i and eta
 
