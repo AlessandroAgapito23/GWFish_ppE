@@ -664,6 +664,8 @@ class IMRPhenomD_PPE(Inspiral_corr):
         
     def calculate_frequency_domain_strain(self): 
 
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+
         psi = IMRPhenomD_PPE.calculate_phase(self)
         hp, hc = wf.IMRPhenomD.calculate_amplitude(self)
          
