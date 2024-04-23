@@ -156,62 +156,7 @@ class TaylorF2_PPE(Inspiral_corr):
 
         psi_EI = psi_TF2 + psi_ppe + psi_gIMR
 
-        ################################################################################ 
-        # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
-        ################################################################################ 
-
-        f1 = 0.018
-
-        psi_gIMR_f1 = 3./(128.*eta)*(delta_phi_10*(np.pi*f1)**(-7./3.) +\
-                                     phi_0*delta_phi_0*(np.pi*f1)**(-5./3.) +\
-                                     delta_phi_1*(np.pi*f1)**(-4./3.)+\
-                                     phi_2*delta_phi_2*(np.pi*f1)**(-1.) +\
-                                     phi_3*delta_phi_3*(np.pi*f1)**(-2./3.) +\
-                                     phi_4*delta_phi_4*(np.pi*f1)**(-1./3.) +\
-                                     phi_5*delta_phi_5 +\
-                                     phi_5_l*delta_phi_8*np.log(np.pi*f1) +\
-                                     phi_6*delta_phi_6*(np.pi*f1)**(1./3.) +\
-                                     phi_6_l*delta_phi_9*np.log(np.pi*f1)*(np.pi*f1)**(1./3.) +\
-                                     phi_7*delta_phi_7*(np.pi*f1)**(2./3.)) 
-                
-        psi_ppe_f1 = eta**((2*PN-5.)/5.)*beta*(np.pi*f1)**((2*PN-5.)/3.)
-
-        psi_EI_f1 = psi_TF2_f1 + psi_ppe_f1 + psi_gIMR_f1
-        
-
-        # Analytical derivative 
-        psi_gIMR_prime = 3./(128.*eta)*(delta_phi_10*(np.pi)**(-7./3.)*(-7./3.*(np.pi*ff)**(-10./3.)) +\
-                                        phi_0*delta_phi_0*(np.pi)**(-5./3.)*(-5./3.*ff**(-8./3.)) +\
-                                        delta_phi_1*(np.pi)**(-4./3.)*(-4./3.*ff**(-7./3.)) +\
-                                        phi_2*delta_phi_2*(np.pi)**(-1.)*(-1.*ff**(-2.)) +\
-                                        phi_3*delta_phi_3*(np.pi)**(-2./3.)*(-2./3.*ff**(-5./3.)) +\
-                                        phi_4*delta_phi_4*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
-                                        phi_5_l*delta_phi_8*ff**(-1.) +\
-                                        phi_6*delta_phi_6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
-                                        phi_6_l*delta_phi_9*(((np.pi*ff)**(1./3.))*(ff**(-1.)) +\
-                                                               np.log(np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.))) +\
-                                        phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.)))
-
-        psi_gIMR_prime_f1 = 3./(128.*eta)*(delta_phi_10*(np.pi)**(-7./3.)*(-7./3.*(np.pi*f1)**(-10./3.)) +\
-                                           phi_0*delta_phi_0*(np.pi)**(-5./3.)*(-5./3.*f1**(-8./3.)) +\
-                                           delta_phi_1*(np.pi)**(-4./3.)*(-4./3.*f1**(-7./3.)) +\
-                                           phi_2*delta_phi_2*(np.pi)**(-1.)*(-1.*f1**(-2.)) +\
-                                           phi_3*delta_phi_3*(np.pi)**(-2./3.)*(-2./3.*f1**(-5./3.)) +\
-                                           phi_4*delta_phi_4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
-                                           phi_5_l*delta_phi_8*f1**(-1.) +\
-                                           phi_6*delta_phi_6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
-                                           phi_6_l*delta_phi_9*(((np.pi*f1)**(1./3.))*(f1**(-1.)) +\
-                                                                  np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
-                                           phi_7*delta_phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
-
-        psi_ppe_prime = eta**((2*PN-5.)/5.)*beta*((2*PN-5.)/3.)*(np.pi*ff)**((2*PN-8.)/3.)
-                                           
-        psi_ppe_prime_f1 = eta**((2*PN-5.)/5.)*beta*((2*PN-5.)/3.)*(np.pi*f1)**((2*PN-8.)/3.)
-        
-        psi_EI_prime = psi_TF2_prime + psi_gIMR_prime + psi_ppe_prime
-        psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_gIMR_prime_f1 + psi_ppe_prime_f1
-
-        return psi_EI, psi_EI_prime, psi_EI_f1, psi_EI_prime_f1
+        return psi_EI
 
     def calculate_frequency_domain_strain(self):
 
@@ -219,7 +164,7 @@ class TaylorF2_PPE(Inspiral_corr):
         cut = self.gw_params['cut']
         f_isco = aux.fisco(self.gw_params)
 
-        psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2_PPE.calculate_phase(self)
+        psi = TaylorF2_PPE.calculate_phase(self)
         hp, hc = wf.TaylorF2.calculate_amplitude(self)
          
         ############################### PHASE OUTPUT ###############################
@@ -247,7 +192,7 @@ class TaylorF2_PPE(Inspiral_corr):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
-        psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2_PPE.calculate_phase(self)
+        psi = TaylorF2_PPE.calculate_phase(self)
         
         phase = psi
         delta_phase = psi - psi_TF2
@@ -375,35 +320,9 @@ class TaylorF2_mult(Inspiral_corr):
                                   P7*(np.pi*ff)**(2./3.) +\
                                   P8*(1 - np.log(np.pi*ff))*(np.pi*ff)**(1.))
 
-        psi_EI = psi_TF2 + psi_mult 
-
-        ################################################################################ 
-        # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
-        ################################################################################ 
-
-        f1 = 0.018
-
-        psi_mult_f1 = 3./(128.*eta)*(P4*(np.pi*f1)**(-1./3.) +\
-                                     P6*(np.pi*f1)**(1./3.) +\
-                                     P7*(np.pi*f1)**(2./3.) +\
-                                     P8*(1 - np.log(np.pi*f1))*(np.pi*f1)**(1.))
-                
-        psi_EI_f1 = psi_TF2_f1 + psi_mult_f1        
-
-        # Analytical derivative 
-        psi_mult_prime = 3./(128.*eta)*(P4*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
-                                        P6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
-                                        P7*((np.pi)**(2./3.)*(2./3.*ff**(-1./3.))))
-
-        psi_mult_prime_f1 = 3./(128.*eta)*(P4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
-                                           P6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
-                                           P7*((np.pi)**(2./3.)*(2./3.*f1**(-1./3.))))
+        psi_EI = psi_TF2 + psi_mult     
          
-         
-        psi_EI_prime = psi_TF2_prime + psi_mult_prime
-        psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_mult_prime_f1
-         
-        return psi_EI, psi_EI_prime, psi_EI_f1, psi_EI_prime_f1
+        return psi_EI
 
     def calculate_frequency_domain_strain(self):
 
