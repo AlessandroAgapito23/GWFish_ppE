@@ -682,6 +682,179 @@ class IMRPhenomD_PPE(Inspiral_corr):
         self._frequency_domain_strain = polarizations
 
         ########################################################################
+
+################################################################################
+############################## IMRPhenomD_mult ##################################
+################################################################################
+
+class IMRPhenomD_mult(Inspiral_corr):
+    
+    """ GWFish implementation of IMRPhenomD_PPE """
+    def __init__(self, name, gw_params, data_params):
+        super().__init__(name, gw_params, data_params)
+        self._maxn = None
+        self.psi = None
+        if self.name != 'IMRPhenomD_mult':
+            logging.warning('Different waveform name passed to IMRPhenomD_mult: '+\
+                             self.name)
+
+    # Here we add the phase deviations, which satisfy the continuity conditions of the phase and its derivative at the inferface
+
+    def calculate_phase(self): 
+
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
+        f_isco = aux.fisco(self.gw_params)  #inner stable circular orbit 
+        ones = np.ones((len(ff), 1)) 
+
+         
+        ################################################################################ 
+        ############################## PHASE CORRECTIONS ###############################
+        ############################# multipolar deviations ############################
+        # with quadratic spin corrections at 3PN and cubic spin corrections at 3.5PN
+
+        psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
+        P4, P6, P7, P8 = TaylorF2_mult.INS_mult_coeff(self)
+
+        psi_mult = + 3./(128.*eta)*(P4*(np.pi*ff)**(-1./3.) +\
+                                  P6*(np.pi*ff)**(1./3.) +\
+                                  P7*(np.pi*ff)**(2./3.) +\
+                                  P8*(1 - np.log(np.pi*ff))*(np.pi*ff)**(1.))
+
+        psi_EI = psi_TF2 + psi_mult 
+
+        ################################################################################ 
+        # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
+        ################################################################################ 
+
+        f1 = 0.018
+
+        psi_mult_f1 = 3./(128.*eta)*(P4*(np.pi*f1)**(-1./3.) +\
+                                     P6*(np.pi*f1)**(1./3.) +\
+                                     P7*(np.pi*f1)**(2./3.) +\
+                                     P8*(1 - np.log(np.pi*f1))*(np.pi*f1)**(1.))
+                
+        psi_EI_f1 = psi_TF2_f1 + psi_mult_f1        
+
+        # Analytical derivative 
+        psi_mult_prime = 3./(128.*eta)*(P4*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
+                                        P6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
+                                        P7*((np.pi)**(2./3.)*(2./3.*ff**(-1./3.))) +\
+                                        P8*((np.pi)*(1 - np.log(np.pi*ff)) +\
+                                            (np.pi*ff)**(1.)*(-ff**(-1.))))
+
+        psi_mult_prime_f1 = 3./(128.*eta)*(P4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
+                                           P6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
+                                           P7*((np.pi)**(2./3.)*(2./3.*f1**(-1./3.))) +\
+                                           P8*((np.pi)*(1 - np.log(np.pi*f1)) +\
+                                               (np.pi*f1)**(1.)*(-f1**(-1.))))
+         
+         
+        psi_EI_prime = psi_TF2_prime + psi_mult_prime
+        psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_mult_prime_f1
+
+        sigma2, sigma3, sigma4 = wf.IMRPhenomD.LI_phase_coeff(self)
+
+        psi_late_ins = + 1./eta*(3./4.*sigma2*ff**(4./3.) + 3./5.*sigma3*ff**(5./3.) + 1./2.*sigma4*ff**2)
+        psi_late_ins_f1 = 1./eta*(3./4.*sigma2*f1**(4./3.) + 3./5.*sigma3*f1**(5./3.) + 1./2.*sigma4*f1**2)
+     
+        psi_late_ins_prime = 1./eta*(sigma2*ff**(1./3.) + sigma3*ff**(2./3.) + sigma4*ff)
+        psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) + sigma3*f1**(2./3.) + sigma4*f1)
+
+        #sigma1 = eta*psi_EI_prime_f1 - psi_late_ins_prime_f1
+        #sigma0 = eta*psi_EI_f1 - psi_late_ins_f1
+
+        psi_late_ins = 1./eta*(3./4.*sigma2*ff**(4./3.) + 3./5.*sigma3*ff**(5./3.) + 1./2.*sigma4*ff**2)
+        psi_late_ins_f1 = 1./eta*(3./4.*sigma2*f1**(4./3.) + 3./5.*sigma3*f1**(5./3.) + 1./2.*sigma4*f1**2)
+        psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) + sigma3*f1**(2./3.) + sigma4*f1)
+        
+        #Total INSPIRAL PART OF THE PHASE (and its DERIVATIVE), with also late inspiral terms
+        ################################################################################ 
+        
+        psi_ins = psi_EI + psi_late_ins
+        psi_ins_f1 = psi_EI_f1 + psi_late_ins_f1
+        psi_ins_prime_f1 = psi_EI_prime_f1 + psi_late_ins_prime_f1
+        
+        ####################### INS-INT PHASE CONTINUITY CONDITIONS ###################
+        # Impose C1 conditions at the interface (same conditions as in IMRPhenomD but with different psi_ins & psi_ins_prime)
+
+        beta2, beta3 = wf.IMRPhenomD.INT_phase_coeff(self)
+
+        beta1 = eta*psi_ins_prime_f1 - beta2*f1**(-1.) - beta3*f1**(-4.)  # psi_ins_prime_f1 = psi_int_prime_f1
+        beta0 = eta*psi_ins_f1 - beta1*f1 - beta2*np.log(f1) + beta3/3.*f1**(-3.) #psi_ins_f1 = psi_int_f1
+      
+        # Evaluate full psi intermediate and its analytical derivative
+        psi_int = 1./eta*(beta0 + beta1*ff + beta2*np.log(ff) - 1./3.*beta3*ff**(-3.))
+        psi_int_prime = 1./eta*(beta1 + beta2*ff**(-1.) + beta3*ff**(-4.))
+
+        # Frequency at the interface between intermediate and merger-ringdown phases
+        ff_RD, ff_damp = wf.IMRPhenomD.RD_damping(self)
+        f2 = 0.5*ff_RD
+
+        psi_int_f2 = 1./eta*(beta0 + beta1*f2 + beta2*np.log(f2) - 1./3.*beta3*f2**(-3.))
+        psi_int_prime_f2 = 1./eta*(beta1 + beta2*f2**(-1.) + beta3*f2**(-4.))
+        
+        ####################### INT-MERG PHASE CONTINUITY CONDITIONS ###################
+
+        alpha2, alpha3, alpha4, alpha5 = wf.IMRPhenomD.MR_phase_coeff(self)
+        
+        alpha1 = eta*psi_int_prime_f2 - alpha2*f2**(-2.) - alpha3*f2**(-1./4.) -\
+                (alpha4*ff_damp)/(ff_damp**2. + (f2 - alpha5*ff_RD)**2.) # psi_int_prime_f2 = psi_MR_prime_f2
+        alpha0 = eta*psi_int_f2 - alpha1*f2 + alpha2*f2**(-1.) -\
+                 4./3.*alpha3*f2**(3./4.) - alpha4*np.arctan((f2 - alpha5*ff_RD)/ff_damp) #psi_int_f2 = psi_MR_f2
+
+        # Evaluate full merger-ringdown phase and its analytical derivative
+        psi_MR = 1./eta*(alpha0 +\
+                         alpha1*ff -\
+                         alpha2*ff**(-1.) +\
+                         4./3.*alpha3*ff**(3./4.) +\
+                         alpha4*np.arctan((ff - alpha5*ff_RD)/ff_damp))
+        psi_MR_prime = 1./eta*(alpha1 +\
+                               alpha2*ff**(-2.) +\
+                               alpha3*ff**(-1./4.) +\
+                               alpha4*ff_damp/(ff_damp**2. + (ff - alpha5*ff_RD)**2.))
+
+        # Conjunction functions
+        ff1 = 0.018*ones
+        ff2 = 0.5*ff_RD*ones
+
+        theta_minus1 = 0.5*(1*ones - wf.step_function(ff,ff1))
+        theta_minus2 = 0.5*(1*ones - wf.step_function(ff,ff2))
+    
+        theta_plus1 = 0.5*(1*ones + wf.step_function(ff,ff1))
+        theta_plus2 = 0.5*(1*ones + wf.step_function(ff,ff2))
+
+        ########################### PHASE COMPONENTS ############################
+        ###################### written continuosly in frequency #################
+
+        psi_ins = psi_ins*theta_minus1
+        psi_int = theta_plus1*psi_int*theta_minus2
+        psi_MR = psi_MR*theta_plus2
+
+        psi_tot = psi_ins + psi_int + psi_MR
+
+        return psi_tot
+
+        
+    def calculate_frequency_domain_strain(self): 
+
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+
+        psi = IMRPhenomD_mult.calculate_phase(self)
+        hp, hc = wf.IMRPhenomD.calculate_amplitude(self)
+         
+        ########################### PHASE OUTPUT ###############################
+         
+        phase = np.exp(1.j * psi)
+ 
+        ########################################################################
+
+        polarizations = np.hstack((hp * phase, hc * 1.j * phase))
+
+        ############################### OUTPUT #################################
+
+        self._frequency_domain_strain = polarizations
+
+        ########################################################################
        
 #GWFISH
 
