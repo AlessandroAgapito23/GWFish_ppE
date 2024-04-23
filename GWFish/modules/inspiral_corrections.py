@@ -332,7 +332,7 @@ class TaylorF2_mult(Inspiral_corr):
         cut = self.gw_params['cut']
         f_isco = aux.fisco(self.gw_params)
 
-        psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2_mult.calculate_phase(self)
+        psi = TaylorF2_mult.calculate_phase(self)
 
         A0 = 1./(np.pi**(2./3.))*(5./24.)**(0.5)*cst.c/r*Mc**(5./6.)*(ff*cst.c**3/(cst.G*M))**(-7./6.)
          
