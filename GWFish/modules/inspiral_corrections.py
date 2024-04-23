@@ -24,9 +24,11 @@ class Inspiral_corr(Waveform):
 
      def _set_default_gw_params(self):
         self.gw_params = {
-            'mass_1': 0., 'mass_2': 0., 'luminosity_distance': 0., 
-            'redshift': 0., 'theta_jn': 0., 'phase': 0., 'geocent_time': 0., 
-            'a_1': 0., 'a_2': 0.,'cut': 2.,
+            #intrinsic paramaters
+            'mass_1': 0., 'mass_2': 0., 'a_1': 0., 'a_2': 0.,
+            #extrinsic parameters
+            'redshift': 0., 'luminosity_distance': 0., 'theta_jn': 0., 
+            'phase': 0., 'geocent_time': 0., 'cut': 2.,
             #ppE parameters
             'beta':0., 'PN':0.,
             #gIMR
@@ -44,9 +46,7 @@ class Inspiral_corr(Waveform):
             #quadrupole deviations
             'k_1':0., 'k_2':0.,
             #octupole deviations
-            'lambda_1':0., 'lambda_2':0.,
-            #temporal translation
-             't_0':0.
+            'lambda_1':0., 'lambda_2':0.
         }
 
      def update_gw_params(self, new_gw_params):
@@ -54,7 +54,7 @@ class Inspiral_corr(Waveform):
         self._frequency_domain_strain = None
         self._time_domain_strain = None
           
-     def get_phase_corr(self):
+     def get_ppe_corr(self):
 
         # We have to add delta_phi_i as in gIMRPhenomD (arXiv:1603.08955)
         # phi ---> phi*(1+delta_phi_i)
@@ -128,7 +128,7 @@ class TaylorF2_PPE(Inspiral_corr):
         ones = np.ones((len(ff), 1)) 
 
         PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
-        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9, delta_phi_10 = Inspiral_corr.get_phase_corr(self)
+        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9, delta_phi_10 = Inspiral_corr.get_ppe_corr(self)
         
         #f_cut = cut_order * f_isco
         cut = self.gw_params['cut']
@@ -523,7 +523,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
         phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = wf.TaylorF2.EI_phase_coeff(self) 
         PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
-        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9, delta_phi_10 = Inspiral_corr.get_phase_corr(self)
+        delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9, delta_phi_10 = Inspiral_corr.get_ppe_corr(self)
 
         psi_gIMR = 3./(128.*eta)*(delta_phi_10*(np.pi*ff)**(-7./3.) +\
                                   phi_0*delta_phi_0*(np.pi*ff)**(-5./3.) +\
