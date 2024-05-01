@@ -328,8 +328,7 @@ class TaylorF2_mult(Inspiral_corr):
                                   P6*(np.pi*ff)**(1./3.) +\
                                   P7*(np.pi*ff)**(2./3.) +\
                                   P8*(1 - np.log(np.pi*ff))*(np.pi*ff)**(1.) +\
-                                  P10*(np.pi*ff)**(5./3.) +\
-                                  P12*(np.pi*ff)**(7./3.))
+                                  P10*(np.pi*ff)**(5./3.))
 
         psi_EI = psi_TF2 + psi_mult     
          
