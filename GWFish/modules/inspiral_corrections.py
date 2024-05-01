@@ -46,7 +46,9 @@ class Inspiral_corr(Waveform):
             #quadrupole deviations
             'k_1':0., 'k_2':0.,
             #octupole deviations
-            'lambda_1':0., 'lambda_2':0.
+            'lambda_1':0., 'lambda_2':0.,
+            #tidal deviations
+            'tilde':0.
         }
 
      def update_gw_params(self, new_gw_params):
@@ -91,8 +93,11 @@ class Inspiral_corr(Waveform):
         #octupole deviations
         lambda_1 = self.gw_params['lambda_1']
         lambda_2 = self.gw_params['lambda_2']
+
+        #tidal deivations
+        tilde = self.gw_params['tilde']
           
-        return k_1, k_2, lambda_1, lambda_2
+        return k_1, k_2, lambda_1, lambda_2, tilde
      
          
 ################################################################################
@@ -260,12 +265,13 @@ class TaylorF2_mult(Inspiral_corr):
     def INS_mult_coeff(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
-        k_1, k_2, lambda_1, lambda_2 = Inspiral_corr.get_mult_corr(self)
+        k_1, k_2, lambda_1, lambda_2, tilde = Inspiral_corr.get_mult_corr(self)
 
         #Hadamard self-field regularisation at 3PN
         #spin terms : up to quadratic at 2PN and 3PN and cubic at 3.5PN
         #quadrupolar deviations at 2PN, 3PN and 3.5 PN and octupolar deviations at 3.5PN
         #tail induced SO effect at 4PN
+        #tidal deviations at 5PN
 
         P4 = (-50.*((1. - 2*eta) * k_1 + delta_mass * k_2))*(chi_s**2 + chi_a**2) +\
              (-100.*((1. - 2*eta) * k_2 + delta_mass * k_1))*chi_s*chi_a
@@ -295,7 +301,9 @@ class TaylorF2_mult(Inspiral_corr):
         P8 = ((233915./68. - 99185./252.*eta)*delta_mass*chi_a +\
               (233915./68. - 3970375./2268.*eta + 19655./189.*eta2)*chi_s)*np.pi
          
-        return P4, P6, P7, P8
+        P10 = -39./2.*tilde
+         
+        return P4, P6, P7, P8 , P10
             
     
     def calculate_phase(self): 
@@ -313,12 +321,13 @@ class TaylorF2_mult(Inspiral_corr):
         # with quadratic spin corrections at 3PN and cubic spin corrections at 3.5PN
 
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
-        P4, P6, P7, P8 = TaylorF2_mult.INS_mult_coeff(self)
+        P4, P6, P7, P8, P10 = TaylorF2_mult.INS_mult_coeff(self)
 
         psi_mult = + 3./(128.*eta)*(P4*(np.pi*ff)**(-1./3.) +\
                                   P6*(np.pi*ff)**(1./3.) +\
                                   P7*(np.pi*ff)**(2./3.) +\
-                                  P8*(1 - np.log(np.pi*ff))*(np.pi*ff)**(1.))
+                                  P8*(1 - np.log(np.pi*ff))*(np.pi*ff)**(1.) +\
+                                  P10*(np.pi*ff)**(5./2.))
 
         psi_EI = psi_TF2 + psi_mult     
          
@@ -632,7 +641,7 @@ class IMRPhenomD_mult(Inspiral_corr):
         # with quadratic spin corrections at 3PN and cubic spin corrections at 3.5PN
 
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
-        P4, P6, P7, P8 = TaylorF2_mult.INS_mult_coeff(self)
+        P4, P6, P7, P8, P10 = TaylorF2_mult.INS_mult_coeff(self)
 
         psi_mult = + 3./(128.*eta)*(P4*(np.pi*ff)**(-1./3.) +\
                                   P6*(np.pi*ff)**(1./3.) +\
