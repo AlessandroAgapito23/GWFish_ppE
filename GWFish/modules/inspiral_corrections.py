@@ -324,6 +324,7 @@ class TaylorF2_mult(Inspiral_corr):
 
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
         P4, P6, P7, P8, P10 , P12 = TaylorF2_mult.INS_mult_coeff(self)
+        P12 = 0.
 
         psi_mult = + 3./(128.*eta)*(P4*(np.pi*ff)**(-1./3.) +\
                                   P6*(np.pi*ff)**(1./3.) +\
