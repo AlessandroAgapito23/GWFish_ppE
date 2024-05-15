@@ -701,10 +701,10 @@ class TaylorF2(Waveform):
         psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2.calculate_phase(self)
         phase = np.exp(1.j * psi)
 
-        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 7))
+        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(9, 7))
 
         # Fourier amplitude
-        ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+(f)$')
+        ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+(f)$', color='red')
         #ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times(f)$')
         ax1.set_xlabel('f [Hz]')
         ax1.set_ylabel(r'Polarization amplitude [$Hz^{-1}$]')
@@ -712,15 +712,16 @@ class TaylorF2(Waveform):
         ax1.legend()
 
         # Phase
-        ax2.semilogx(self.frequencyvector, psi, label=r'$\Phi(f)$')
+        ax2.semilogx(self.frequencyvector, psi, label=r'$\Phi(f)$', color='red')
         ax2.set_xlabel('f [Hz]')
         ax2.set_ylabel('Phase [rad]')
+        ax2.legend()
         ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
 
         # Cosine
-        ax3.semilogx(self.frequencyvector, np.cos(psi), label=r'$\cos{(Phi(f))}$')
+        ax3.semilogx(self.frequencyvector, np.cos(psi), label=r'$\cos{(Phi(f))}$', color='red')
         ax3.set_xlabel('f [Hz]')
-        ax3.set_ylabel(r'$\cos{\Phi}$ [rad]')
+        ax3.set_ylabel(r'$\cos{(\Phi)}$ [rad]')
         ax3.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
 
         plt.tight_layout()
