@@ -1233,7 +1233,7 @@ class IMRPhenomD(Waveform):
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 7))
 
         # Fourier amplitude
-        ax1.loglog(self.frequencyvector, np.abs(self._frequency_domain_strain[:, 0]), linewidth=2, color='blue', label=r'$h_+$')
+        ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), linewidth=2, color='blue', label=r'$h_+$')
         #ax1.loglog(frequencyvector, np.abs(polarizations[:, 1]), linewidth=2, color='blue', label=r'$h_\times$')
         #ax1.axvline(x=f1_amp*cst.c**3/(M*cst.G), color='orange', linestyle='--', linewidth=2)
         #ax1.axvline(x=f2_amp*cst.c**3/(M*cst.G), color='orange', linestyle='--', linewidth=2)
