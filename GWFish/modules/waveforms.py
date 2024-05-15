@@ -1235,12 +1235,12 @@ class IMRPhenomD(Waveform):
         # Fourier amplitude
         ax1.loglog(self.frequencyvector, np.abs(self._frequency_domain_strain[:, 0]), linewidth=2, color='blue', label=r'$h_+$')
         #ax1.loglog(frequencyvector, np.abs(polarizations[:, 1]), linewidth=2, color='blue', label=r'$h_\times$')
-        ax1.axvline(x=f1_amp*cst.c**3/(M*cst.G), color='orange', linestyle='--', linewidth=2)
-        ax1.axvline(x=f2_amp*cst.c**3/(M*cst.G), color='orange', linestyle='--', linewidth=2)
-        ax1.axvline(x=f3_amp*cst.c**3/(M*cst.G), color='orange', linestyle='--', linewidth=2)
-        ax1.text(1.05*f1_amp*cst.c**3/(M*cst.G), 0.1, 'f1_match', rotation=90, fontsize=10, color='orange')
-        ax1.text(1.05*f3_amp*cst.c**3/(M*cst.G), 0.1, 'f3_match', rotation=90, fontsize=10, color='orange')
-        ax1.text(1.05*f2_amp*cst.c**3/(M*cst.G), 0.1, 'f2_match', rotation=90, fontsize=10, color='orange')
+        #ax1.axvline(x=f1_amp*cst.c**3/(M*cst.G), color='orange', linestyle='--', linewidth=2)
+        #ax1.axvline(x=f2_amp*cst.c**3/(M*cst.G), color='orange', linestyle='--', linewidth=2)
+        #ax1.axvline(x=f3_amp*cst.c**3/(M*cst.G), color='orange', linestyle='--', linewidth=2)
+        #ax1.text(1.05*f1_amp*cst.c**3/(M*cst.G), 0.1, 'f1_match', rotation=90, fontsize=10, color='orange')
+        #ax1.text(1.05*f3_amp*cst.c**3/(M*cst.G), 0.1, 'f3_match', rotation=90, fontsize=10, color='orange')
+        #ax1.text(1.05*f2_amp*cst.c**3/(M*cst.G), 0.1, 'f2_match', rotation=90, fontsize=10, color='orange')
         ax1.legend(fontsize=15)
         ax1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         #ax1.set_xlabel('f [Hz]')
@@ -1249,11 +1249,11 @@ class IMRPhenomD(Waveform):
 
         # Phase
         ax2.semilogx(self.frequencyvector, psi, linewidth=2, color='blue', label='PhenomD')
-        y_loc = (1 + 1e-9) * psi_tot[0, 0]
-        ax2.axvline(x=0.018 * cst.c**3 / (cst.G * M), color='orange', linestyle='--', linewidth=2)
-        ax2.axvline(x=ff_RD * cst.c**3 / (cst.G * M), color='orange', linestyle='--', linewidth=2)
-        ax2.text(1.05 * 0.018 * cst.c**3 / (cst.G * M), y_loc, '$Mf = 0.018$', rotation=90, fontsize=12, color='orange')
-        ax2.text(1.05 * ff_RD * cst.c**3 / (cst.G * M), y_loc, '$f_{RD}$', rotation=90, fontsize=12, color='orange')
+        #y_loc = (1 + 1e-9) * psi_tot[0, 0]
+        #ax2.axvline(x=0.018 * cst.c**3 / (cst.G * M), color='orange', linestyle='--', linewidth=2)
+        #ax2.axvline(x=ff_RD * cst.c**3 / (cst.G * M), color='orange', linestyle='--', linewidth=2)
+        #ax2.text(1.05 * 0.018 * cst.c**3 / (cst.G * M), y_loc, '$Mf = 0.018$', rotation=90, fontsize=12, color='orange')
+        #ax2.text(1.05 * ff_RD * cst.c**3 / (cst.G * M), y_loc, '$f_{RD}$', rotation=90, fontsize=12, color='orange')
         ax2.legend(fontsize=15)
         ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         ax2.set_xlabel('f [Hz]', fontsize=17)
