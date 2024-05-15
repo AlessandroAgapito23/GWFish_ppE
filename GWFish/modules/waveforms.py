@@ -710,19 +710,19 @@ class TaylorF2(Waveform):
         ax1.set_ylabel(r'Amplitude [$Hz^{-1}$]',  fontsize = 13)
         ax1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
         ax1.legend()
-        ax1.set_title('TaylorF2', fontsize = 15)
+        ax1.set_title('TaylorF2', fontsize = 17)
 
         # Phase
         ax2.semilogx(self.frequencyvector, psi, label=r'$\Phi(f)$', color='red')
         #ax2.set_xlabel('f [Hz]')
-        ax2.set_ylabel('Phase [rad]',  fontsize = 13)
+        ax2.set_ylabel('Phase [rad]',  fontsize = 15)
         ax2.legend()
         ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
 
         # Cosine
         ax3.semilogx(self.frequencyvector, np.cos(psi), label=r'$\cos{(Phi(f))}$', color='red')
-        ax3.set_xlabel('f [Hz]',  fontsize = 13)
-        ax3.set_ylabel(r'$\cos{(\Phi)}$',  fontsize = 13)
+        ax3.set_xlabel('f [Hz]',  fontsize = 15)
+        ax3.set_ylabel(r'$\cos{(\Phi)}$',  fontsize = 15)
         ax3.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
 
         plt.tight_layout()
@@ -1233,7 +1233,7 @@ class IMRPhenomD(Waveform):
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 7))
 
         # Fourier amplitude
-        ax1.loglog(frequencyvector, np.abs(polarizations[:, 0]), linewidth=2, color='blue', label=r'$h_+$')
+        ax1.loglog(self.frequencyvector, np.abs(polarizations[:, 0]), linewidth=2, color='blue', label=r'$h_+$')
         #ax1.loglog(frequencyvector, np.abs(polarizations[:, 1]), linewidth=2, color='blue', label=r'$h_\times$')
         ax1.axvline(x=f1_amp*cst.c**3/(M*cst.G), color='orange', linestyle='--', linewidth=2)
         ax1.axvline(x=f2_amp*cst.c**3/(M*cst.G), color='orange', linestyle='--', linewidth=2)
@@ -1247,7 +1247,7 @@ class IMRPhenomD(Waveform):
         ax1.set_ylabel(r'Amplitude [$Hz^{-1}$]',fontsize=13)
 
         # Phase
-        ax2.semilogx(frequencyvector, psi, linewidth=2, color='blue', label='PhenomD')
+        ax2.semilogx(self.frequencyvector, psi, linewidth=2, color='blue', label='PhenomD')
         y_loc = (1 + 1e-9) * psi_tot[0, 0]
         ax2.axvline(x=0.018 * cst.c**3 / (cst.G * M), color='orange', linestyle='--', linewidth=2)
         ax2.axvline(x=ff_RD * cst.c**3 / (cst.G * M), color='orange', linestyle='--', linewidth=2)
