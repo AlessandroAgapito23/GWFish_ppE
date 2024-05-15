@@ -707,7 +707,7 @@ class TaylorF2(Waveform):
         ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+(f)$', color='red')
         #ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times(f)$')
         ax1.set_xlabel('f [Hz]')
-        ax1.set_ylabel(r'Polarization amplitude [$Hz^{-1}$]')
+        ax1.set_ylabel(r'Amplitude [$Hz^{-1}$]')
         ax1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
         ax1.legend()
 
@@ -721,7 +721,7 @@ class TaylorF2(Waveform):
         # Cosine
         ax3.semilogx(self.frequencyvector, np.cos(psi), label=r'$\cos{(Phi(f))}$', color='red')
         ax3.set_xlabel('f [Hz]')
-        ax3.set_ylabel(r'$\cos{(\Phi)}$ [rad]')
+        ax3.set_ylabel(r'$\cos{(\Phi)}$')
         ax3.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
 
         plt.tight_layout()
