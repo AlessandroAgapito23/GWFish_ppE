@@ -706,14 +706,14 @@ class TaylorF2(Waveform):
         # Fourier amplitude
         ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+(f)$', color='red')
         #ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times(f)$')
-        ax1.set_xlabel('f [Hz]')
+        #ax1.set_xlabel('f [Hz]')
         ax1.set_ylabel(r'Amplitude [$Hz^{-1}$]')
         ax1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
         ax1.legend()
 
         # Phase
         ax2.semilogx(self.frequencyvector, psi, label=r'$\Phi(f)$', color='red')
-        ax2.set_xlabel('f [Hz]')
+        #ax2.set_xlabel('f [Hz]')
         ax2.set_ylabel('Phase [rad]')
         ax2.legend()
         ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
@@ -725,7 +725,7 @@ class TaylorF2(Waveform):
         ax3.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
 
         plt.tight_layout()
-        plt.savefig(output_folder + 'TF2_combined_plot.png')
+        plt.savefig(output_folder + 'TF2_combined_plot.pdf')
         plt.close()
 
 ######################################################################################
