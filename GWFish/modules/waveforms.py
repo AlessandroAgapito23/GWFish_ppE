@@ -701,55 +701,31 @@ class TaylorF2(Waveform):
         psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2.calculate_phase(self)
         phase = np.exp(1.j * psi)
 
-        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 10))
+        fig, (ax1, ax2) = plt.subplots(3, 1, figsize=(8, 6))
 
         # Fourier amplitude
-        ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+$')
-        ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times$')
-        ax1.set_xlabel('Frequency [Hz]')
-        ax1.set_ylabel(r'Fourier amplitude [$Hz^{-1}$]')
-        ax1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
+        ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+(f)$')
+        #ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times(f)$')
+        ax1.set_xlabel('f [Hz]')
+        ax1.set_ylabel(r'Polarization amplitude [$Hz^{-1}$]')
+        ax1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
         ax1.legend()
 
         # Phase
-        ax2.semilogx(self.frequencyvector, psi)
-        ax2.set_xlabel('Frequency [Hz]')
+        ax2.semilogx(self.frequencyvector, psi, label=r'$\Phi(f)$')
+        ax2.set_xlabel('f [Hz]')
         ax2.set_ylabel('Phase [rad]')
-        ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
+        ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
+
+        # Cosine
+        ax3.semilogx(self.frequencyvector, np.cos(psi), label=r'$\cos{(Phi(f))}$')
+        ax3.set_xlabel('f [Hz]')
+        ax3.set_ylabel(r'$\cos{\Phi}$ [rad]')
+        ax3.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
 
         plt.tight_layout()
         plt.savefig(output_folder + 'TF2_combined_plot.png')
         plt.close()
-
-        """
-        psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2.calculate_phase(self)   
-        phase = np.exp(1.j * psi)
-        
-        plt.figure()
-        plt.loglog(self.frequencyvector, \
-                   np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+$')
-        plt.loglog(self.frequencyvector, \
-                   np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times$')
-        
-        plt.xlabel('Frequency [Hz]')
-        plt.ylabel(r'Fourier amplitude [$Hz^{-1}$]')
-        plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
-        #plt.axis(axis)
-        plt.legend()
-        plt.tight_layout()
-        plt.savefig(output_folder + 'TF2_polarizations.png')
-        plt.close()
-
-        plt.figure()
-        plt.semilogx(self.frequencyvector, psi)
-        
-        plt.xlabel('Frequency [Hz]')
-        plt.ylabel('Phase [rad]')
-        plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
-        plt.tight_layout()
-        plt.savefig(output_folder + 'TF2_phase.png')
-        plt.close()
-        """
 
 ######################################################################################
 
