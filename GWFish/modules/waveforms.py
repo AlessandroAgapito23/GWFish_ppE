@@ -698,6 +698,30 @@ class TaylorF2(Waveform):
 
     def plot(self, output_folder='./'):
 
+        psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2.calculate_phase(self)
+        phase = np.exp(1.j * psi)
+
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 10))
+
+        # Fourier amplitude
+        ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+$')
+        ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times$')
+        ax1.set_xlabel('Frequency [Hz]')
+        ax1.set_ylabel(r'Fourier amplitude [$Hz^{-1}$]')
+        ax1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
+        ax1.legend()
+
+        # Phase
+        ax2.semilogx(self.frequencyvector, psi)
+        ax2.set_xlabel('Frequency [Hz]')
+        ax2.set_ylabel('Phase [rad]')
+        ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
+
+        plt.tight_layout()
+        plt.savefig(output_folder + 'TF2_combined_plot.png')
+        plt.close()
+
+        """
         psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2.calculate_phase(self)   
         phase = np.exp(1.j * psi)
         
@@ -725,6 +749,7 @@ class TaylorF2(Waveform):
         plt.tight_layout()
         plt.savefig(output_folder + 'TF2_phase.png')
         plt.close()
+        """
 
 ######################################################################################
 
