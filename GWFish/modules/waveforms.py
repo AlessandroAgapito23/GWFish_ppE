@@ -1247,15 +1247,14 @@ class IMRPhenomD(Waveform):
         ax2.legend(fontsize=15)
         ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         #ax2.set_xlabel('f [Hz]', fontsize=17)
-        ax2.set_ylabel('$\Phi$', fontsize=17)
+        ax2.set_ylabel('Phase [rad]', fontsize=17)
         ax2.set_xlim(f_limits)
 
         # Cosine
         ax3.semilogx(self.frequencyvector, np.cos(psi), linewidth=2, color='blue', label='PhenomD')
-        ax3.legend(fontsize=15)
         ax3.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         ax3.set_xlabel('f [Hz]', fontsize=17)
-        ax3.set_ylabel('$\cos{(Phi)}$', fontsize=17)
+        ax3.set_ylabel('$\cos{(\Phi)}$', fontsize=17)
         ax3.set_xlim(f_limits)
         
         plt.tight_layout()
