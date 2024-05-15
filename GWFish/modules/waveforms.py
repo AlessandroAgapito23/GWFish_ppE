@@ -701,7 +701,7 @@ class TaylorF2(Waveform):
         psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2.calculate_phase(self)
         phase = np.exp(1.j * psi)
 
-        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(9, 7))
+        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 7))
 
         # Fourier amplitude
         ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+(f)$', color='red')
