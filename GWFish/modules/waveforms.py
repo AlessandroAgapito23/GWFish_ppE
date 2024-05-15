@@ -1260,20 +1260,20 @@ class IMRPhenomD(Waveform):
         ax2.set_ylabel('$\Phi$', fontsize=17)
 
         # cosine pf the phase
-        ax2.semilogx(self.frequencyvector, np.cos(psi), linewidth=2, color='blue', label='PhenomD')
+        ax3.semilogx(self.frequencyvector, np.cos(psi), linewidth=2, color='blue', label='PhenomD')
         #y_loc = (1 + 1e-9) * psi_tot[0, 0]
         #ax2.axvline(x=0.018 * cst.c**3 / (cst.G * M), color='orange', linestyle='--', linewidth=2)
         #ax2.axvline(x=ff_RD * cst.c**3 / (cst.G * M), color='orange', linestyle='--', linewidth=2)
         #ax2.text(1.05 * 0.018 * cst.c**3 / (cst.G * M), y_loc, '$Mf = 0.018$', rotation=90, fontsize=12, color='orange')
         #ax2.text(1.05 * ff_RD * cst.c**3 / (cst.G * M), y_loc, '$f_{RD}$', rotation=90, fontsize=12, color='orange')
-        ax2.legend(fontsize=15)
-        ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
-        ax2.set_xlabel('f [Hz]', fontsize=17)
-        ax2.set_ylabel('$\cos{(Phi)}$', fontsize=17)
+        ax3.legend(fontsize=15)
+        ax3.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
+        ax3.set_xlabel('f [Hz]', fontsize=17)
+        ax3.set_ylabel('$\cos{(Phi)}$', fontsize=17)
 
         # Miglior layout e salvataggio
         plt.tight_layout()
-        plt.savefig(output_folder + 'combined_phenomD.png')
+        plt.savefig(output_folder + 'combined_phenomD.pdf')
         plt.close()
 
         """
