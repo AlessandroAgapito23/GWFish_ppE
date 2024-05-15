@@ -707,21 +707,22 @@ class TaylorF2(Waveform):
         ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+(f)$', color='red')
         #ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times(f)$')
         #ax1.set_xlabel('f [Hz]')
-        ax1.set_ylabel(r'Amplitude [$Hz^{-1}$]')
+        ax1.set_ylabel(r'Amplitude [$Hz^{-1}$]',  fontsize = 13)
         ax1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
         ax1.legend()
+        ax1.set_title('TaylorF2', fontsize = 15)
 
         # Phase
         ax2.semilogx(self.frequencyvector, psi, label=r'$\Phi(f)$', color='red')
         #ax2.set_xlabel('f [Hz]')
-        ax2.set_ylabel('Phase [rad]')
+        ax2.set_ylabel('Phase [rad]',  fontsize = 13)
         ax2.legend()
         ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
 
         # Cosine
         ax3.semilogx(self.frequencyvector, np.cos(psi), label=r'$\cos{(Phi(f))}$', color='red')
-        ax3.set_xlabel('f [Hz]')
-        ax3.set_ylabel(r'$\cos{(\Phi)}$')
+        ax3.set_xlabel('f [Hz]',  fontsize = 13)
+        ax3.set_ylabel(r'$\cos{(\Phi)}$',  fontsize = 13)
         ax3.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
 
         plt.tight_layout()
@@ -1228,7 +1229,41 @@ class IMRPhenomD(Waveform):
     def plot(self, output_folder='./'):
 
         psi, psi_prime = IMRPhenomD.calculate_phase(self) 
-        
+
+        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 7))
+
+        # Fourier amplitude
+        ax1.loglog(frequencyvector, np.abs(polarizations[:, 0]), linewidth=2, color='blue', label=r'$h_+$')
+        #ax1.loglog(frequencyvector, np.abs(polarizations[:, 1]), linewidth=2, color='blue', label=r'$h_\times$')
+        ax1.axvline(x=f1_amp*cst.c**3/(M*cst.G), color='orange', linestyle='--', linewidth=2)
+        ax1.axvline(x=f2_amp*cst.c**3/(M*cst.G), color='orange', linestyle='--', linewidth=2)
+        ax1.axvline(x=f3_amp*cst.c**3/(M*cst.G), color='orange', linestyle='--', linewidth=2)
+        ax1.text(1.05*f1_amp*cst.c**3/(M*cst.G), 0.1, 'f1_match', rotation=90, fontsize=10, color='orange')
+        ax1.text(1.05*f3_amp*cst.c**3/(M*cst.G), 0.1, 'f3_match', rotation=90, fontsize=10, color='orange')
+        ax1.text(1.05*f2_amp*cst.c**3/(M*cst.G), 0.1, 'f2_match', rotation=90, fontsize=10, color='orange')
+        ax1.legend(fontsize=13)
+        ax1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
+        #ax1.set_xlabel('f [Hz]')
+        ax1.set_ylabel(r'Amplitude [$Hz^{-1}$]',fontsize=13)
+
+        # Phase
+        ax2.semilogx(frequencyvector, psi, linewidth=2, color='blue', label='PhenomD')
+        y_loc = (1 + 1e-9) * psi_tot[0, 0]
+        ax2.axvline(x=0.018 * cst.c**3 / (cst.G * M), color='orange', linestyle='--', linewidth=2)
+        ax2.axvline(x=ff_RD * cst.c**3 / (cst.G * M), color='orange', linestyle='--', linewidth=2)
+        ax2.text(1.05 * 0.018 * cst.c**3 / (cst.G * M), y_loc, '$Mf = 0.018$', rotation=90, fontsize=12, color='orange')
+        ax2.text(1.05 * ff_RD * cst.c**3 / (cst.G * M), y_loc, '$f_{RD}$', rotation=90, fontsize=12, color='orange')
+        ax2.legend(fontsize=13)
+        ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
+        ax2.set_xlabel('f [Hz]')
+        ax2.set_ylabel('$\phi$_prime')
+
+        # Miglior layout e salvataggio
+        plt.tight_layout()
+        plt.savefig(output_folder + 'combined_phenomD.png')
+        plt.close()
+
+        """
         plt.figure()
         #y_height = plot[3]/10
         plt.loglog(frequencyvector, np.abs(polarizations[:, 0]), linewidth=2, color='blue', label=r'$h_+$')
@@ -1242,8 +1277,8 @@ class IMRPhenomD(Waveform):
         plt.legend(fontsize=8)
         #plt.axis(plot)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
-        plt.xlabel('Frequency [Hz]')
-        plt.ylabel(r'Fourier amplitude [$Hz^{-1}$]')
+        #plt.xlabel('Frequency [Hz]')
+        plt.ylabel(r'Amplitude [$Hz^{-1}$]')
         plt.savefig(output_folder + 'amp_phenomD.png')
         plt.close()
 
@@ -1280,4 +1315,5 @@ class IMRPhenomD(Waveform):
         plt.ylabel('$\phi$')
         plt.savefig(output_folder + 'psi_phenomD_zoomed.png')
         plt.close()
+        """
 
