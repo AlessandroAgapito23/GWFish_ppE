@@ -707,7 +707,7 @@ class TaylorF2(Waveform):
         ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+(f)$', color='red')
         #ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times(f)$')
         #ax1.set_xlabel('f [Hz]')
-        ax1.set_ylabel(r'Amplitude [$Hz^{-1}$]',  fontsize = 13)
+        ax1.set_ylabel(r'Amplitude [$Hz^{-1}$]',  fontsize = 17)
         ax1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
         ax1.legend(fontsize = 15)
         ax1.set_title('TaylorF2', fontsize = 19)
