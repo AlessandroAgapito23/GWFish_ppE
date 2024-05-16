@@ -1232,7 +1232,7 @@ class IMRPhenomD(Waveform):
 
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 7))
         f_limits = (2, 500)
-        h_limits = (10**(-25), 10**(-21))
+        h_limits = (10**(-25), 10**(-20))
 
         # Fourier amplitude
         ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), linewidth=2, color='blue', label=r'$h_+(f)$')
