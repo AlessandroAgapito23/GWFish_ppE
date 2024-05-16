@@ -1241,7 +1241,7 @@ class IMRPhenomD(Waveform):
         #ax1.set_xlabel('f [Hz]')
         ax1.set_title('IMRPhenomD', fontsize = 19)
         ax1.set_ylabel(r'Amplitude [$Hz^{-1}$]',fontsize=17)
-        ax1.set_xlim(f_limits)
+        #ax1.set_xlim(f_limits)
         ax1.set_ylim(h_limits)
 
         # Phase
@@ -1250,14 +1250,14 @@ class IMRPhenomD(Waveform):
         ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         #ax2.set_xlabel('f [Hz]', fontsize=17)
         ax2.set_ylabel('Phase [rad]', fontsize=17)
-        ax2.set_xlim(f_limits)
+        #ax2.set_xlim(f_limits)
 
         # Cosine
         ax3.semilogx(self.frequencyvector, np.cos(psi), linewidth=2, color='blue', label='PhenomD')
         ax3.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         ax3.set_xlabel('f [Hz]', fontsize=17)
         ax3.set_ylabel('$\cos{(\Phi)}$', fontsize=17)
-        ax3.set_xlim(f_limits)
+        #ax3.set_xlim(f_limits)
         
         plt.tight_layout()
         plt.savefig(output_folder + 'combined_phenomD.pdf')
