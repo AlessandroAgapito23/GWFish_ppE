@@ -1101,7 +1101,7 @@ class IMRPhenomD(Waveform):
         
         psi_prime_tot = psi_ins_prime*theta_minus1+theta_minus2*psi_int_prime*theta_plus1+theta_plus2*psi_MR_prime
 
-        return psi_tot, psi_prime_tot
+        return psi_tot, psi_prime_tot, psi_ins, psi_int, psi_MR
         
 
     ########################################################################
@@ -1221,7 +1221,7 @@ class IMRPhenomD(Waveform):
         
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
 
-        psi, psi_prime = IMRPhenomD.calculate_phase(self)      
+        psi, psi_prime, psi_ins, psi_int, psi_MR = IMRPhenomD.calculate_phase(self)      
         hp, hc = IMRPhenomD.calculate_amplitude(self)
 
         ############################### PHASE OUTPUT ###############################
@@ -1239,12 +1239,7 @@ class IMRPhenomD(Waveform):
     
     def plot(self, output_folder='./'):
 
-        psi, psi_prime = IMRPhenomD.calculate_phase(self) 
-        
-        psi_ins, psi_ins_prime, psi_ins_f1, psi_ins_prime_f1 = IMRPhenomD.calculate_ins_phase(self)
-        psi_int, psi_int_prime, psi_int_f2, psi_int_prime_f2 = IMRPhenomD.calculate_int_phase(self)
-        psi_MR, psi_MR_prime = IMRPhenomD.calculate_MR_phase(self)
-        
+        psi, psi_prime, psi_ins, psi_int, psi_MR = IMRPhenomD.calculate_phase(self) 
 
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 7))
         f_limits = (2, 500)
@@ -1278,19 +1273,17 @@ class IMRPhenomD(Waveform):
         plt.tight_layout()
         plt.savefig(output_folder + 'combined_phenomD.pdf')
 
-        # Phi_prime
+        # Phi_parts
         plt.figure(figsize=(8, 7))
-        plt.semilogx(self.frequencyvector, psi_prime, linewidth=2, linestyle='dashed', color='red', label=r'$\Phi^\prime(f)$')
-        plt.semilogx(self.frequencyvector, psi_ins_prime, linewidth=2, color='blue', label=r'$\Phi_{ins}^\prime(f)$')
-        #plt.semilogx(self.frequencyvector, psi_int_prime, linewidth=2, color='green', label=r'$\Phi_{int}^\prime(f)$')
-        plt.semilogx(self.frequencyvector, psi_MR_prime, linewidth=2, color='purple', label=r'$\Phi_{MR}^\prime(f)$')
+        plt.semilogx(self.frequencyvector, psi_ins, linewidth=2, color='red', label=r'$\Phi_{ins}(f)$')
+        plt.semilogx(self.frequencyvector, psi_int, linewidth=2, color='blue', label=r'$\Phi_{int}(f)$')
+        plt.semilogx(self.frequencyvector, psi_MR, linewidth=2, color='green', label=r'$\Phi_{MR}(f)$')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('f [Hz]', fontsize=17)
         plt.ylabel(r'Phase derivative', fontsize=17)
         plt.show()
 
-        
         plt.close()
         
 
