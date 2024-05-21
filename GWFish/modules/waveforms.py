@@ -1354,6 +1354,16 @@ class IMRPhenomD(Waveform):
         plt.xlim(10**(-4.),0.018)
         plt.show()
 
+        # Phi_ins_prime
+        plt.figure(figsize=(8, 7))
+        plt.semilogx(ff, psi_ins_prime, linewidth=2, color='blue',label=r'$\Phi_{EI+LI}^\prime(f)$')
+        plt.legend(fontsize=15)
+        plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
+        plt.xlabel('$f^\prime$[Hz]', fontsize=17)
+        plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
+        plt.xlim(10**(-4.),0.018)
+        plt.show()
+
         # Phi_int_prime
         plt.figure(figsize=(8, 7))
         plt.semilogx(ff, psi_int_prime, linewidth=2, color='blue',label=r'$\Phi_{int}^\prime(f)$')
