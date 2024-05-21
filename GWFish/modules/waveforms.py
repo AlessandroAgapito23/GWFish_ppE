@@ -1024,7 +1024,7 @@ class IMRPhenomD(Waveform):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
         
-        psi_ins, psi_ins_prime, psi_ins_f1, psi_ins_prime_f1 = IMRPhenomD.calculate_ins_phase(self)
+        psi_ins, psi_ins_prime, psi_ins_f1, psi_ins_prime_f1, psi_late_ins, psi_late_ins_prime = IMRPhenomD.calculate_ins_phase(self)
 
         beta2, beta3 = IMRPhenomD.INT_phase_coeff(self)
 
@@ -1111,7 +1111,7 @@ class IMRPhenomD(Waveform):
         theta_plus1 = 0.5*(1*ones + step_function(ff,ff1))
         theta_plus2 = 0.5*(1*ones + step_function(ff,ff2))
 
-        psi_ins, psi_ins_prime, psi_ins_f1, psi_ins_prime_f1 = IMRPhenomD.calculate_ins_phase(self)
+        psi_ins, psi_ins_prime, psi_ins_f1, psi_ins_prime_f1, psi_late_ins, psi_late_ins_prime = IMRPhenomD.calculate_ins_phase(self)
         psi_int, psi_int_prime, psi_int_f2, psi_int_prime_f2 = IMRPhenomD.calculate_int_phase(self)
         psi_MR, psi_MR_prime = IMRPhenomD.calculate_MR_phase(self)
 
