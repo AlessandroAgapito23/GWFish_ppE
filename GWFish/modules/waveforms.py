@@ -1304,7 +1304,7 @@ class IMRPhenomD(Waveform):
 
         # Phi_prime
         plt.figure(figsize=(8, 7))
-        plt.semilogx(self.frequencyvector, psi_prime_tot, linewidth=2, color='red',label=r'$\Phi^\prime(f)$')
+        plt.semilogx(self.frequencyvector, psi_prime_tot, linewidth=2, color='blue',label=r'$\Phi^\prime(f)$')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('f [Hz]', fontsize=17)
@@ -1685,7 +1685,7 @@ class IMRPhenomD_GWFISH(Waveform):
 
         # Phi_prime
         plt.figure(figsize=(8, 7))
-        plt.semilogx(self.frequencyvector, self.psi_prime, linewidth=2, color='red',label=r'$\Phi^\prime(f)$')
+        plt.semilogx(self.frequencyvector, self.psi_prime, linewidth=2, color='blue',label=r'$\Phi^\prime(f)$')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('f [Hz]', fontsize=17)
