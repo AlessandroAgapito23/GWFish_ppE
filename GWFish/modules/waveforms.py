@@ -1274,6 +1274,7 @@ class IMRPhenomD(Waveform):
         psi_tot, psi_prime_tot = IMRPhenomD.calculate_phase(self) 
 
         ff_RD, ff_damp = IMRPhenomD.RD_damping(self)
+        ones = np.ones((len(ff), 1))
         ff1 = 0.018*ones
         ff2 = 0.5*ff_RD*ones
         theta_minus1 = 0.5*(1*ones - step_function(ff,ff1))
