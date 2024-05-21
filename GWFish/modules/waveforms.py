@@ -1579,8 +1579,6 @@ class IMRPhenomD_GWFISH(Waveform):
         self._frequency_domain_strain = polarizations
 
     def plot(self, output_folder='./'):
-
-        psi = self.psi
         
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 7))
         f_limits = (2, 500)
@@ -1597,7 +1595,7 @@ class IMRPhenomD_GWFISH(Waveform):
         ax1.set_ylim(h_limits)
 
         # Phase
-        ax2.semilogx(self.frequencyvector, psi, linewidth=2, color='blue', label=r'$\Phi(f)$')
+        ax2.semilogx(self.frequencyvector, self.psi, linewidth=2, color='blue', label=r'$\Phi(f)$')
         ax2.legend(fontsize=15)
         ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         #ax2.set_xlabel('f [Hz]', fontsize=17)
@@ -1605,7 +1603,7 @@ class IMRPhenomD_GWFISH(Waveform):
         #ax2.set_xlim(f_limits)
 
         # Cosine
-        ax3.semilogx(self.frequencyvector, np.cos(psi), linewidth=2, color='blue', label='PhenomD')
+        ax3.semilogx(self.frequencyvector, np.cos(self.psi), linewidth=2, color='blue', label='PhenomD')
         ax3.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         ax3.set_xlabel('f [Hz]', fontsize=17)
         ax3.set_ylabel('$\cos{(\Phi)}$', fontsize=17)
