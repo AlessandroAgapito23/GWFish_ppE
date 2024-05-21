@@ -1244,7 +1244,7 @@ class IMRPhenomD(Waveform):
 
         ############################### PHASE OUTPUT ###############################
 
-        phase = np.exp(1.j * psi)
+        phase = np.exp(1.j * psi_tot)
 
         ############################## STRAIN OUTPUT ###############################
         
