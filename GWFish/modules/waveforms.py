@@ -1240,6 +1240,11 @@ class IMRPhenomD(Waveform):
     def plot(self, output_folder='./'):
 
         psi, psi_prime = IMRPhenomD.calculate_phase(self) 
+        
+        psi_ins, psi_ins_prime, psi_ins_f1, psi_ins_prime_f1 = IMRPhenomD.calculate_ins_phase(self)
+        psi_int, psi_int_prime, psi_int_f2, psi_int_prime_f2 = IMRPhenomD.calculate_int_phase(self)
+        psi_MR, psi_MR_prime = IMRPhenomD.calculate_MR_phase(self)
+        
 
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 7))
         f_limits = (2, 500)
@@ -1276,11 +1281,15 @@ class IMRPhenomD(Waveform):
         # Phi_prime
         plt.figure(figsize=(8, 7))
         plt.semilogx(self.frequencyvector, psi_prime, linewidth=2, color='red', label=r'$\Phi^\prime(f)$')
+        plt.semilogx(self.frequencyvector, psi_ins_prime, linewidth=2, color='blue', label=r'$\Phi^\prime_{\text{ins}}(f)$')
+        plt.semilogx(self.frequencyvector, psi_int_prime, linewidth=2, color='green', label=r'$\Phi^\prime_{\text{int}}(f)$')
+        plt.semilogx(self.frequencyvector, psi_MR_prime, linewidth=2, color='purple', label=r'$\Phi^\prime_{\text{MR}}(f)$')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('f [Hz]', fontsize=17)
         plt.ylabel(r'Phase derivative', fontsize=17)
         plt.show()
+
         
         plt.close()
         
