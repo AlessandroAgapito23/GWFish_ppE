@@ -987,7 +987,7 @@ class IMRPhenomD(Waveform):
         
         sigma2, sigma3, sigma4 = IMRPhenomD.LI_phase_coeff(self)
 
-        psi_late_ins = + 1./eta*(3./4.*sigma2*ff**(4./3.) +\
+        psi_late_ins = 1./eta*(3./4.*sigma2*ff**(4./3.) +\
                                  3./5.*sigma3*ff**(5./3.) +\
                                  1./2.*sigma4*ff**2)
         
@@ -1127,7 +1127,7 @@ class IMRPhenomD(Waveform):
         
         psi_prime_tot = psi_ins_prime*theta_minus1+theta_minus2*psi_int_prime*theta_plus1+theta_plus2*psi_MR_prime
 
-        return psi_tot, psi_prime_tot, psi_ins, psi_ins_prime, psi_int, psi_int_prime ,psi_MR, psi_MR_prime
+        return psi_tot, psi_prime_tot
         
 
     ########################################################################
@@ -1247,8 +1247,7 @@ class IMRPhenomD(Waveform):
         
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
 
-        psi_tot, psi_prime_tot, psi_ins, psi_ins_prime,\
-        psi_int, psi_int_prime ,psi_MR, psi_MR_prime = IMRPhenomD.calculate_phase(self)      
+        psi_tot, psi_prime_tot = IMRPhenomD.calculate_phase(self)      
         hp, hc = IMRPhenomD.calculate_amplitude(self)
 
         ############################### PHASE OUTPUT ###############################
@@ -1269,9 +1268,28 @@ class IMRPhenomD(Waveform):
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
         
         psi_TF2, psi_prime_TF2, psi__TF2_f1, psi_prime_TF2_f1 = TaylorF2.calculate_phase(self)
-        psi_tot, psi_prime_tot, psi_ins, psi_ins_prime,\
-        psi_int, psi_int_prime ,psi_MR, psi_MR_prime = IMRPhenomD.calculate_phase(self) 
+        psi_ins, psi_ins_prime, psi_ins_f1, psi_ins_prime_f1 = IMRPhenomD.calculate_ins_phase(self)
+        psi_int, psi_int_prime, psi_int_f2, psi_int_prime_f2 = IMRPhenomD.calculate_int_phase(self)
+        psi_MR, psi_MR_prime = IMRPhenomD.calculate_MR_phase(self)
+        psi_tot, psi_prime_tot = IMRPhenomD.calculate_phase(self) 
 
+        ff_RD, ff_damp = IMRPhenomD.RD_damping(self)
+        ff1 = 0.018*ones
+        ff2 = 0.5*ff_RD*ones
+        theta_minus1 = 0.5*(1*ones - step_function(ff,ff1))
+        theta_minus2 = 0.5*(1*ones - step_function(ff,ff2))
+        theta_plus1 = 0.5*(1*ones + step_function(ff,ff1))
+        theta_plus2 = 0.5*(1*ones + step_function(ff,ff2))
+
+        psi_ins = psi_ins*theta_minus1
+        psi_int = theta_plus1*psi_int*theta_minus2
+        psi_MR = psi_MR*theta_plus2
+
+        psi_ins_prime = psi_ins_prime*theta_minus1
+        psi_int_prime = theta_plus1*psi_int_prime*theta_minus2
+        psi_MR_prime = psi_MR_prime*theta_plus2
+
+        ####################################################################################
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 7))
         f_limits = (2, 500)
         h_limits = (10**(-25), 10**(-20))
@@ -1309,7 +1327,7 @@ class IMRPhenomD(Waveform):
         plt.semilogx(ff, psi_prime_tot, linewidth=2, color='blue',label=r'$\Phi^\prime(f)$')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
-        plt.xlabel('f^\prime[Hz]', fontsize=17)
+        plt.xlabel('$f^\prime$[Hz]', fontsize=17)
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
         plt.show()
 
@@ -1318,7 +1336,7 @@ class IMRPhenomD(Waveform):
         plt.semilogx(ff, psi_ins_prime, linewidth=2, color='blue',label=r'$\Phi_{ins}^\prime(f)$')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
-        plt.xlabel('f^\prime[Hz]', fontsize=17)
+        plt.xlabel('$f^\prime$[Hz]', fontsize=17)
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
         plt.show()
 
@@ -1327,7 +1345,7 @@ class IMRPhenomD(Waveform):
         plt.semilogx(ff, psi_int_prime, linewidth=2, color='blue',label=r'$\Phi_{int}^\prime(f)$')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
-        plt.xlabel('f^\prime[Hz]', fontsize=17)
+        plt.xlabel('$f^\prime$[Hz]', fontsize=17)
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
         plt.show()
 
