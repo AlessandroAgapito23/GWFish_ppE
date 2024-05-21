@@ -743,6 +743,7 @@ class TaylorF2(Waveform):
 ######################################################################################
 
 def step_function(f1, f2):
+    
     vec = []
     for i in range(len(f1)):
         if (f1[i] < f2[i]):
@@ -751,26 +752,33 @@ def step_function(f1, f2):
             vec.append(+1.)
     vec = np.array(vec)
     vec = vec[:, np.newaxis]
+    
     return vec
 
 def kerr_isco(chi):
+    
     Z1 = 1 + (1 - chi**2)**(1/3)*((1 + chi)**(1/3) + (1 - chi)**(1/3))
-    Z2 = (3*chi**2 + Z1**2)**(0.5)
+    Z2 = (3*chi**2 + Z1**2)**(0.5) 
+    
     return (3 + Z2 - np.sign(chi)*((3 - Z1)*(3 + Z1 + 2*Z2))**(0.5))
 
 def epsilon_chi(x):
+    
     return (1. - 2./kerr_isco(x) + x/(kerr_isco(x))**(3/2))/(1 - 3./kerr_isco(x) + 2*x/(kerr_isco(x))**(3/2))**(0.5)
 
 def j_chi(x):
+    
     return 2./(3*kerr_isco(x))**(0.5)*(3*(kerr_isco(x))**(0.5) -2*x)
 
 def chi_final_func(x, M, eta, s, delta_m, Delta, L0, L1, L2a, L2b, L2c, L2d, L3a, L3b, L3c, L3d, L4a, L4b, L4c, L4d, L4e, L4f, L4g, L4h, L4i):
+    
     return (4*eta)**2*(L0 +L1*s + L2a*Delta*delta_m + L2b*s**2 + L2c*Delta**2 + L2d*delta_m**2 + \
     L3a*Delta*s*delta_m + L3b*s*Delta**2 + L3c*s**3 + L3d*s*delta_m**2 + L4a*s**2*Delta*delta_m + L4b*Delta**3*delta_m + \
     L4c*Delta**4 + L4d*s**4 + L4e*Delta**2*s**2 + L4f*delta_m**4 + L4g*Delta*delta_m**3 + L4h*Delta**2*delta_m**2 + \
     L4i*s**2*delta_m**2 + s*(1+8*eta)*delta_m**4 + eta*j_chi(x)*delta_m**6) - x
 
 def final_bh(M1, M2, chi1, chi2):
+    
     M, eta = [M1 + M2, (M1*M2)/(M1 + M2)**2]
     s, delta_m, Delta = [(chi1*M1**2 + chi2*M2**2)/M**2, (M1 - M2)/M, (chi2*M2 - chi1*M1)/M]
 
@@ -791,6 +799,7 @@ def final_bh(M1, M2, chi1, chi2):
     return chi_f, m_f
 
 def phenomD_amp_MR(f, parameters, f_damp, f_RD, gamma1, gamma2, gamma3):
+    
     ff = sp.symbols('ff', real=True)
     amp_MR = gamma1*(gamma3*f_damp)/((ff - f_RD)**2. + (gamma3*f_damp)**2)*\
             sp.exp(-gamma2*(ff - f_RD)/(gamma3*f_damp))
@@ -1024,8 +1033,8 @@ class IMRPhenomD(Waveform):
         
         f1 = 0.018
 
-        beta1 = eta*psi_ins_prime_f1 - beta2*f1**(-1.) - beta3*f1**(-4.)  # psi_ins_prime_f1 = psi_int_prime_f1
-        beta0 = eta*psi_ins_f1 - beta1*f1 - beta2*np.log(f1) + 1./3.*beta3*f1**(-3.) #psi_ins_f1 = psi_int_f1
+        beta1 = eta*psi_ins_prime_f1 - (beta2*f1**(-1.) + beta3*f1**(-4.))  # psi_ins_prime_f1 = psi_int_prime_f1
+        beta0 = eta*psi_ins_f1 - (beta1*f1 + beta2*np.log(f1) - 1./3.*beta3*f1**(-3.)) #psi_ins_f1 = psi_int_f1
       
         # Evaluate full psi intermediate and its analytical derivative
         psi_int = 1./eta*(beta0 +\
@@ -1066,10 +1075,10 @@ class IMRPhenomD(Waveform):
         
         ####################### IN-MERG PHASE CONTINUITY CONDITIONS ###################
         
-        alpha1 = eta*psi_int_prime_f2 - alpha2*f2**(-2.) - alpha3*f2**(-1./4.) -\
-                 (alpha4*ff_damp)/(ff_damp**2. + (f2 - alpha5*ff_RD)**2.) # psi_int_prime_f2 = psi_MR_prime_f2
-        alpha0 = eta*psi_int_f2 - alpha1*f2 + alpha2*f2**(-1.) -\
-                 4./3.*alpha3*f2**(3./4.) - alpha4*np.arctan((f2 - alpha5*ff_RD)/ff_damp) #psi_int_f2 = psi_MR_f2
+        alpha1 = eta*psi_int_prime_f2 - (alpha2*f2**(-2.) + alpha3*f2**(-1./4.) +\
+                 (alpha4*ff_damp)/(ff_damp**2. + (f2 - alpha5*ff_RD)**2.)) # psi_int_prime_f2 = psi_MR_prime_f2
+        alpha0 = eta*psi_int_f2 - (alpha1*f2 - alpha2*f2**(-1.) +\
+                 4./3.*alpha3*f2**(3./4.) + alpha4*np.arctan((f2 - alpha5*ff_RD)/ff_damp)) #psi_int_f2 = psi_MR_f2
 
         # Evaluate full merger-ringdown phase and its analytical derivative
         psi_MR = 1./eta*(alpha0 +\
@@ -1295,7 +1304,7 @@ class IMRPhenomD(Waveform):
 
         # Phi_prime
         plt.figure(figsize=(8, 7))
-        plt.semilogx(self.frequencyvector, psi_prime, linewidth=2, color='red',label=r'$\Phi^\prime(f)$')
+        plt.semilogx(self.frequencyvector, psi_prime_tot, linewidth=2, color='red',label=r'$\Phi^\prime(f)$')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('f [Hz]', fontsize=17)
