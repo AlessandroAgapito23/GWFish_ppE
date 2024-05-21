@@ -1266,6 +1266,8 @@ class IMRPhenomD(Waveform):
     
     def plot(self, output_folder='./'):
 
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+        
         psi_TF2, psi_prime_TF2, psi__TF2_f1, psi_prime_TF2_f1 = TaylorF2.calculate_phase(self)
         psi_tot, psi_prime_tot, psi_ins, psi_ins_prime,\
         psi_int, psi_int_prime ,psi_MR, psi_MR_prime = IMRPhenomD.calculate_phase(self) 
@@ -1304,7 +1306,7 @@ class IMRPhenomD(Waveform):
 
         # Phi_prime
         plt.figure(figsize=(8, 7))
-        plt.semilogx(self.frequencyvector, psi_prime_tot, linewidth=2, color='blue',label=r'$\Phi^\prime(f)$')
+        plt.semilogx(ff, psi_prime_tot, linewidth=2, color='blue',label=r'$\Phi^\prime(f)$')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('f [Hz]', fontsize=17)
