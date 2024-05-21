@@ -1281,9 +1281,9 @@ class IMRPhenomD(Waveform):
         # Phi_prime
         plt.figure(figsize=(8, 7))
         plt.semilogx(self.frequencyvector, psi_prime, linewidth=2, color='red', label=r'$\Phi^\prime(f)$')
-        plt.semilogx(self.frequencyvector, psi_ins_prime, linewidth=2, color='blue', label=r'$\Phi^\prime_{\text{ins}}(f)$')
-        plt.semilogx(self.frequencyvector, psi_int_prime, linewidth=2, color='green', label=r'$\Phi^\prime_{\text{int}}(f)$')
-        plt.semilogx(self.frequencyvector, psi_MR_prime, linewidth=2, color='purple', label=r'$\Phi^\prime_{\text{MR}}(f)$')
+        plt.semilogx(self.frequencyvector, psi_ins_prime, linewidth=2, color='blue', label=r'$\Phi_{ins}^\prime(f)$')
+        plt.semilogx(self.frequencyvector, psi_int_prime, linewidth=2, color='green', label=r'$\Phi_{int}^\prime(f)$')
+        plt.semilogx(self.frequencyvector, psi_MR_prime, linewidth=2, color='purple', label=r'$\Phi_{MR}^\prime(f)$')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('f [Hz]', fontsize=17)
