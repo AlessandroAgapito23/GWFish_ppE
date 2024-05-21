@@ -1453,6 +1453,7 @@ class IMRPhenomD_GWFISH(Waveform):
     
        
         psi_tot = psi_ins + psi_int + psi_MR
+        self.psi = psi_tot
         psi_prime_tot = psi_ins_gradient(ff)*theta_minus1+theta_minus2*psi_int_prime*theta_plus1+theta_plus2*psi_MR_prime
     
     
@@ -1579,7 +1580,7 @@ class IMRPhenomD_GWFISH(Waveform):
 
     def plot(self, output_folder='./'):
 
-        psi = psi_tot
+        psi = self.psi
         
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 7))
         f_limits = (2, 500)
