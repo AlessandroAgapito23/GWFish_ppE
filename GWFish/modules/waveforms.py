@@ -1272,8 +1272,8 @@ class IMRPhenomD_GWFISH(Waveform):
         super().__init__(name, gw_params, data_params)
         self._maxn = None
         self.psi = None
-        if self.name != 'IMRPhenomD':
-            logging.warning('Different waveform name passed to IMRPhenomD: '+\
+        if self.name != 'IMRPhenomD_GWFISH':
+            logging.warning('Different waveform name passed to IMRPhenomD_GWFISH: '+\
                              self.name)
 
     def calculate_frequency_domain_strain(self):
