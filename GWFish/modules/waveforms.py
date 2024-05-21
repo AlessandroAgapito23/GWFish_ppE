@@ -1053,7 +1053,7 @@ class IMRPhenomD(Waveform):
         psi_MR_prime = 1./eta*(alpha1 +\
                                alpha2*ff**(-2.) +\
                                alpha3*ff**(-1./4.) +\
-                               alpha4*ff_damp/(ff_damp**2.*(ff - alpha5*ff_RD)**2.))
+                               alpha4*ff_damp/(ff_damp**2. + (ff - alpha5*ff_RD)**2.))
 
         return psi_MR, psi_MR_prime
 
