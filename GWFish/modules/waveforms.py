@@ -1261,7 +1261,19 @@ class IMRPhenomD(Waveform):
         
         plt.tight_layout()
         plt.savefig(output_folder + 'combined_phenomD.pdf')
+
+        # Phi_prime
+        plt.figure(figsize=(8, 7))
+        plt.plot(self.frequencyvector, psi_prime, linewidth=2, color='red', label=r'$\psi^\prime(f)$')
+        plt.legend(fontsize=15)
+        plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
+        plt.xlabel('f [Hz]', fontsize=17)
+        plt.ylabel(r'Phase derivative', fontsize=17)
+        plt.show()
+        
         plt.close()
+        
+
         
 ####################################################################################################
 ####################################################################################################
