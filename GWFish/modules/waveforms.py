@@ -1294,7 +1294,7 @@ class IMRPhenomD(Waveform):
         # Phi_parts
         plt.figure(figsize=(8, 7))
         plt.semilogx(self.frequencyvector, psi_TF2, linewidth=2, color='red')
-        plt.semilogx(self.frequencyvector, psi_ins - psi_TF2, linewidth=2, color='blue')
+        plt.semilogx(self.frequencyvector, psi_ins, linewidth=2, color='blue')
         plt.semilogx(self.frequencyvector, psi_int, linewidth=2, color='green')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
