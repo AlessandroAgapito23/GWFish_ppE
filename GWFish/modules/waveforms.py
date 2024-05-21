@@ -979,8 +979,8 @@ class IMRPhenomD(Waveform):
         sigma2, sigma3, sigma4 = IMRPhenomD.LI_phase_coeff(self)
 
         psi_late_ins = + 1./eta*(3./4.*sigma2*ff**(4./3.) +\
-                            3./5.*sigma3*ff**(5./3.) +\
-                            1./2.*sigma4*ff**2)
+                                 3./5.*sigma3*ff**(5./3.) +\
+                                 1./2.*sigma4*ff**2)
         
         ################################################################################ 
         # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
@@ -1239,6 +1239,7 @@ class IMRPhenomD(Waveform):
     
     def plot(self, output_folder='./'):
 
+        psi_TF2, psi_prime_TF2, psi__TF2_f1, psi_prime_TF2_f1 = TaylorF2.calculate_phase(self)
         psi, psi_prime, psi_ins, psi_int, psi_MR = IMRPhenomD.calculate_phase(self) 
 
         fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 7))
@@ -1275,9 +1276,9 @@ class IMRPhenomD(Waveform):
 
         # Phi_parts
         plt.figure(figsize=(8, 7))
-        plt.semilogx(self.frequencyvector, psi_ins, linewidth=2, color='red', label=r'$\Phi_{ins}(f)$')
-        plt.semilogx(self.frequencyvector, psi_int, linewidth=2, color='blue', label=r'$\Phi_{int}(f)$')
-        plt.semilogx(self.frequencyvector, psi_MR, linewidth=2, color='green', label=r'$\Phi_{MR}(f)$')
+        plt.semilogx(self.frequencyvector, psi_TF2, linewidth=2, color='red')
+        plt.semilogx(self.frequencyvector, psi_ins, linewidth=2, color='blue')
+        plt.semilogx(self.frequencyvector, psi_int, linewidth=2, color='green')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('f [Hz]', fontsize=17)
