@@ -1028,16 +1028,27 @@ class IMRPhenomD(Waveform):
         beta0 = eta*psi_ins_f1 - beta1*f1 - beta2*np.log(f1) + 1./3.*beta3*f1**(-3.) #psi_ins_f1 = psi_int_f1
       
         # Evaluate full psi intermediate and its analytical derivative
-        psi_int = 1./eta*(beta0 + beta1*ff + beta2*np.log(ff) - 1./3.*beta3*ff**(-3.))
-        psi_int_prime = 1./eta*(beta1 + beta2*ff**(-1.) + beta3*ff**(-4.))
+        psi_int = 1./eta*(beta0 +\
+                          beta1*ff +\
+                          beta2*np.log(ff) -\
+                          1./3.*beta3*ff**(-3.))
+        
+        psi_int_prime = 1./eta*(beta1 +\
+                                beta2*ff**(-1.) +\
+                                beta3*ff**(-4.))
 
         # Frequency at the interface between intermediate and merger-ringdown phases
         ff_RD, ff_damp = IMRPhenomD.RD_damping(self)
         f2 = 0.5*ff_RD
 
-        psi_int_f2 = 1./eta*(beta0 + beta1*f2 + beta2*np.log(f2) - 1./3.*beta3*f2**(-3.))
+        psi_int_f2 = 1./eta*(beta0 +\
+                             beta1*f2 +\
+                             beta2*np.log(f2) -\
+                             1./3.*beta3*f2**(-3.))
         
-        psi_int_prime_f2 = 1./eta*(beta1 + beta2*f2**(-1.) + beta3*f2**(-4.))
+        psi_int_prime_f2 = 1./eta*(beta1 +\
+                                   beta2*f2**(-1.) +\
+                                   beta3*f2**(-4.))
         
         return psi_int, psi_int_prime, psi_int_f2, psi_int_prime_f2
 
@@ -1283,7 +1294,7 @@ class IMRPhenomD(Waveform):
         # Phi_parts
         plt.figure(figsize=(8, 7))
         plt.semilogx(self.frequencyvector, psi_TF2, linewidth=2, color='red')
-        plt.semilogx(self.frequencyvector, psi_ins, linewidth=2, color='blue')
+        plt.semilogx(self.frequencyvector, psi_ins - psi_TF2, linewidth=2, color='blue')
         plt.semilogx(self.frequencyvector, psi_int, linewidth=2, color='green')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
