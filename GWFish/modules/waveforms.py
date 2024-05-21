@@ -1276,7 +1276,7 @@ class IMRPhenomD(Waveform):
         ax1.set_ylim(h_limits)
 
         # Phase
-        ax2.semilogx(self.frequencyvector, psi, linewidth=2, color='blue', label=r'$\Phi(f)$')
+        ax2.semilogx(self.frequencyvector, psi_tot, linewidth=2, color='blue', label=r'$\Phi(f)$')
         ax2.legend(fontsize=15)
         ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         #ax2.set_xlabel('f [Hz]', fontsize=17)
@@ -1284,7 +1284,7 @@ class IMRPhenomD(Waveform):
         #ax2.set_xlim(f_limits)
 
         # Cosine
-        ax3.semilogx(self.frequencyvector, np.cos(psi), linewidth=2, color='blue', label='PhenomD')
+        ax3.semilogx(self.frequencyvector, np.cos(psi_tot), linewidth=2, color='blue', label='PhenomD')
         ax3.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         ax3.set_xlabel('f [Hz]', fontsize=17)
         ax3.set_ylabel('$\cos{(\Phi)}$', fontsize=17)
@@ -1320,6 +1320,7 @@ class IMRPhenomD_GWFISH(Waveform):
                              self.name)
 
     def calculate_frequency_domain_strain(self):
+        
         frequencyvector = self.frequencyvector[:,np.newaxis]
         phic = self.gw_params['phase']
         tc = self.gw_params['geocent_time']
@@ -1332,29 +1333,23 @@ class IMRPhenomD_GWFISH(Waveform):
             aux_mass = M1
             M1 = M2
             M2 = aux_mass
-    
         chi_1 = self.gw_params.get('a_1', 0.0)
-        chi_2 = self.gw_params.get('a_2', 0.0)
-        
+        chi_2 = self.gw_params.get('a_2', 0.0)      
         M = M1 + M2
         mu = M1 * M2 / M
         Mc = cst.G * mu ** 0.6 * M ** 0.4 / cst.c ** 3
-        delta_mass = (M1 - M2)/M
-        
+        delta_mass = (M1 - M2)/M        
         ff = frequencyvector*cst.G*M/cst.c**3
-        ones = np.ones((len(ff), 1))
-    
+        ones = np.ones((len(ff), 1))   
         C = 0.57721566  # Euler constant
         eta = mu / M
         eta2 = eta*eta
-        eta3 = eta2*eta
-    
+        eta3 = eta2*eta   
         chi_eff = (M1*chi_1 + M2*chi_2)/M
         chi_PN = chi_eff - 38/113*eta*(chi_1 + chi_2)
         chi_s = 0.5*(chi_1 + chi_2)
         chi_a = 0.5*(chi_1 - chi_2)
-    
-    
+     
         #########################################################################################################
         #########################################################################################################
         #########################################################################################################
@@ -1378,9 +1373,14 @@ class IMRPhenomD_GWFISH(Waveform):
                 delta_mass*(-(25150083775./3048192.) + 26804935./6048.*eta - 1985./48.*eta2)*chi_a +\
                 (-(25150083775./3048192.) + 10566655595./762048.*eta - 1042165./3024.*eta2 + 5345./36.*eta3)*chi_s
        
-        psi_TF2 = 2.*np.pi*ff*cst.c**3/(cst.G*M)*tc - phic*ones - np.pi/4.*ones + 3./(128.*eta)*((np.pi*ff)**(-5./3.) +\
-                phi_2*(np.pi*ff)**(-1.) + phi_3*(np.pi*ff)**(-2./3.) + phi_4*(np.pi*ff)**(-1./3.) +\
-                phi_5 + phi_6*(np.pi*ff)**(1./3.) + phi_7*(np.pi*ff)**(2./3.))
+        psi_TF2 = 2.*np.pi*ff*cst.c**3/(cst.G*M)*tc - phic*ones - np.pi/4.*ones +\
+                  3./(128.*eta)*((np.pi*ff)**(-5./3.) +\
+                                  phi_2*(np.pi*ff)**(-1.) +\
+                                  phi_3*(np.pi*ff)**(-2./3.) +\
+                                  phi_4*(np.pi*ff)**(-1./3.) +\
+                                  phi_5 +\
+                                  phi_6*(np.pi*ff)**(1./3.) +\
+                                  phi_7*(np.pi*ff)**(2./3.))
         
         # Coefficients for the late ispiral phase
         sigma2 = -10114.056472621156 - 44631.01109458185*eta\
@@ -1396,8 +1396,9 @@ class IMRPhenomD_GWFISH(Waveform):
                 + (chi_PN - 1)**2*(-22366.683262266528 - 2.5019716386377467e6*eta + 1.0274495902259542e7*eta2)\
                 + (chi_PN - 1)**3*(-85360.30079034246 - 570025.3441737515*eta + 4.396844346849777e6*eta2)
     
-        psi_ins = psi_TF2 + 1./eta*(3./4.*sigma2*ff**(4./3.) + 3./5.*sigma3*ff**(5./3.) +\
-                        1./2.*sigma4*ff**2)
+        psi_ins = psi_TF2 + 1./eta*(3./4.*sigma2*ff**(4./3.) +\
+                                    3./5.*sigma3*ff**(5./3.) +\
+                                    1./2.*sigma4*ff**2)
         
         #psi_ins_prime = psi_TF2_prime + 1./eta*(sigma2*ff**(1./3.) + sigma3*ff**(2./3.) + sigma4*ff)
     
@@ -1410,15 +1411,20 @@ class IMRPhenomD_GWFISH(Waveform):
         phi_6_f1 = 11583231236531./4694215680. - 6848./21.*C - (640.*np.pi**2)/3. + (-15737765635./3048192. + 2255.*np.pi**2/12.)*eta +\
                 76055.*eta2/1728. - 127825.*eta3/1296. - 6848./63.*np.log(64*np.pi*f1) + 2270./3.*np.pi*delta_mass*chi_a +\
                 (2270.*np.pi/3. - 520.*np.pi*eta)*chi_s
-        psi_ins_f1 = 2.*np.pi*f1/(cst.G*M)*cst.c**3*tc - phic - np.pi/4. + 3./(128.*eta)*(np.pi*f1)**(-5/3)*(phi_0 +\
-                phi_2*(np.pi*f1)**(2./3.) + phi_3*(np.pi*f1) +\
-                phi_4*(np.pi*f1)**(4./3.) + phi_5_f1*(np.pi*f1)**(5./3.) +\
-                phi_6_f1*(np.pi*f1)**2. + phi_7*(np.pi*f1)**(7./3.)) +\
-                1./eta*(3./4.*sigma2*f1**(4./3.) + 3./5.*sigma3*f1**(5./3.) +\
-                1./2.*sigma4*f1**2)
+        
+        psi_ins_f1 = 2.*np.pi*f1/(cst.G*M)*cst.c**3*tc - phic - np.pi/4. +\
+                     3./(128.*eta)*(np.pi*f1)**(-5/3)*(phi_0 +\
+                                                       phi_2*(np.pi*f1)**(2./3.) +\
+                                                       phi_3*(np.pi*f1) +\
+                                                       phi_4*(np.pi*f1)**(4./3.) +\
+                                                       phi_5_f1*(np.pi*f1)**(5./3.) +\
+                                                       phi_6_f1*(np.pi*f1)**2. +\
+                                                       phi_7*(np.pi*f1)**(7./3.)) +\
+                     1./eta*(3./4.*sigma2*f1**(4./3.) +\
+                             3./5.*sigma3*f1**(5./3.) +\
+                             1./2.*sigma4*f1**2)
     
         psi_ins_prime_f1 = psi_ins_gradient(f1)
-    
     
         # Coefficients for the intermediate phase
         beta2 = -3.282701958759534 - 9.051384468245866*eta\
@@ -1435,8 +1441,14 @@ class IMRPhenomD_GWFISH(Waveform):
         beta0 = eta*psi_ins_f1 - beta1*f1 - beta2*np.log(f1) + beta3/3.*f1**(-3.) #psi_ins_f1 = psi_int_f1
        
         # Evaluate full psi intermediate and its analytical derivative
-        psi_int = 1./eta*(beta0 + beta1*ff + beta2*np.log(ff) - 1./3.*beta3*ff**(-3.))
-        psi_int_prime = 1./eta*(beta1 + beta2*ff**(-1.) + beta3*ff**(-4.))
+        psi_int = 1./eta*(beta0 +\
+                          beta1*ff +\
+                          beta2*np.log(ff) -\
+                          1./3.*beta3*ff**(-3.))
+        
+        psi_int_prime = 1./eta*(beta1 +\
+                                beta2*ff**(-1.) +\
+                                beta3*ff**(-4.))
         
         # Coefficients for the merger-ringdown phase
         alpha2 = -0.07020209449091723 - 0.16269798450687084*eta\
@@ -1475,10 +1487,16 @@ class IMRPhenomD_GWFISH(Waveform):
                 4./3.*alpha3*f2**(3./4.) - alpha4*np.arctan((f2 - alpha5*ff_RD)/ff_damp) #psi_int_f2 = psi_MR_f2
     
         # Evaluate full merger-ringdown phase and its analytical derivative
-        psi_MR = 1./eta*(alpha0 + alpha1*ff - alpha2*ff**(-1.) + 4./3.*alpha3*ff**(3./4.) +\
-                                alpha4*np.arctan((ff - alpha5*ff_RD)/ff_damp))
-        psi_MR_prime = 1./eta*(alpha1 + alpha2*ff**(-2.) + alpha3*ff**(-1./4.) + alpha4*ff_damp/(ff_damp**2. +\
-                        (ff - alpha5*ff_RD)**2.))
+        psi_MR = 1./eta*(alpha0 +\
+                         alpha1*ff -\
+                         alpha2*ff**(-1.) +\
+                         4./3.*alpha3*ff**(3./4.) +\
+                         alpha4*np.arctan((ff - alpha5*ff_RD)/ff_damp))
+        
+        psi_MR_prime = 1./eta*(alpha1 +\
+                               alpha2*ff**(-2.) +\
+                               alpha3*ff**(-1./4.) +\
+                               alpha4*ff_damp/(ff_damp**2. +(ff - alpha5*ff_RD)**2.))
     
         # Conjunction functions
         ff1 = 0.018*ones
@@ -1493,8 +1511,7 @@ class IMRPhenomD_GWFISH(Waveform):
         psi_ins = psi_ins*theta_minus1
         psi_int = theta_plus1*psi_int*theta_minus2
         psi_MR = psi_MR*theta_plus2
-    
-       
+           
         psi_tot = psi_ins + psi_int + psi_MR
         self.psi = psi_tot
         
