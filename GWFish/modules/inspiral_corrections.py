@@ -244,7 +244,7 @@ class TaylorF2_PPE(Inspiral_corr):
 
 class TaylorF2_mult(Inspiral_corr):
 
-    """ GWFish implementation of TaylorF2_k """
+    """ GWFish implementation of TaylorF2_mult """
     def __init__(self, name, gw_params, data_params):
         super().__init__(name, gw_params, data_params)
         self._maxn = None
