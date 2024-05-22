@@ -636,8 +636,7 @@ class TaylorF2(Waveform):
                                        phi_4*(np.pi)**(-1./3.)*(-1./3.*ff**(-4./3.)) +\
                                        phi_5_l*ff**(-1.) +\
                                        phi_6*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.)) +\
-                                       phi_6_l*(ff**(-1.)*(np.pi*ff)**(1./3.) +\
-                                                np.log(np.pi*ff)*(np.pi)**(1./3.)*(1./3.*ff**(-2./3.))) +\
+                                       phi_6_l*(np.pi)**(1./3.)*(1. + 1./3.*np.log(np.pi*ff))*ff**(-2./3.) +\
                                        phi_7*(np.pi)**(2./3.)*(2./3.*ff**(-1./3.)))
         
         psi_TF2_prime_f1 = 2.*np.pi*cst.c**3/(cst.G*M)*tc +\
@@ -647,8 +646,7 @@ class TaylorF2(Waveform):
                                           phi_4*(np.pi)**(-1./3.)*(-1./3.*f1**(-4./3.)) +\
                                           phi_5_l*f1**(-1.) +\
                                           phi_6*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.)) +\
-                                          phi_6_l*(f1**(-1.)*(np.pi*f1)**(1./3.) +\
-                                                   np.log(np.pi*f1)*(np.pi)**(1./3.)*(1./3.*f1**(-2./3.))) +\
+                                          phi_6_l*(np.pi)**(1./3.)*(1. + 1./3.*np.log(np.pi*f1))*f1**(-2./3.) +\
                                           phi_7*(np.pi)**(2./3.)*(2./3.*f1**(-1./3.)))
         
         return psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1
@@ -988,8 +986,8 @@ class IMRPhenomD(Waveform):
         sigma2, sigma3, sigma4 = IMRPhenomD.LI_phase_coeff(self)
 
         psi_late_ins = 1./eta*(3./4.*sigma2*ff**(4./3.) +\
-                                 3./5.*sigma3*ff**(5./3.) +\
-                                 1./2.*sigma4*ff**2)
+                               3./5.*sigma3*ff**(5./3.) +\
+                               1./2.*sigma4*ff**(2.))
         
         ################################################################################ 
         # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
@@ -999,14 +997,14 @@ class IMRPhenomD(Waveform):
         
         psi_late_ins_f1 = 1./eta*(3./4.*sigma2*f1**(4./3.) +\
                                   3./5.*sigma3*f1**(5./3.) +\
-                                  1./2.*sigma4*f1**2)
+                                  1./2.*sigma4*f1**(2.))
 
         psi_late_ins_prime = 1./eta*(sigma2*ff**(1./3.) +\
                                      sigma3*ff**(2./3.) +\
-                                     sigma4*ff)
+                                     sigma4*ff**(1.))
         psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) +\
                                         sigma3*f1**(2./3.) +\
-                                        sigma4*f1)
+                                        sigma4*f1**(1.))
 
         #Total INSPIRAL PART OF THE PHASE (and its DERIVATIVE), with also late inspiral terms
         ################################################################################ 
