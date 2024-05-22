@@ -606,7 +606,7 @@ class TaylorF2(Waveform):
                                  phi_2*(np.pi*ff)**(-1.) +\
                                  phi_3*(np.pi*ff)**(-2./3.) +\
                                  phi_4*(np.pi*ff)**(-1./3.) +\
-                                 phi_5 +\
+                                 phi_5*ones +\
                                  phi_5_l*np.log(np.pi*ff) +\
                                  phi_6*(np.pi*ff)**(1./3.) +\
                                  phi_6_l*np.log(np.pi*ff)*(np.pi*ff)**(1./3.) +\
@@ -623,7 +623,7 @@ class TaylorF2(Waveform):
                                     phi_2*(np.pi*f1)**(-1.) +\
                                     phi_3*(np.pi*f1)**(-2./3.) +\
                                     phi_4*(np.pi*f1)**(-1./3.) +\
-                                    phi_5 +\
+                                    phi_5*ones +\
                                     phi_5_l*np.log(np.pi*f1) +\
                                     phi_6*(np.pi*f1)**(1./3.) +\
                                     phi_6_l*np.log(np.pi*f1)*(np.pi*f1)**(1./3.) +\
@@ -1035,12 +1035,12 @@ class IMRPhenomD(Waveform):
         beta0 = eta*psi_ins_f1 - (beta1*f1 + beta2*np.log(f1) - 1./3.*beta3*f1**(-3.)) #psi_ins_f1 = psi_int_f1
       
         # Evaluate full psi intermediate and its analytical derivative
-        psi_int = 1./eta*(beta0 +\
+        psi_int = 1./eta*(beta0*ones +\
                           beta1*ff +\
                           beta2*np.log(ff) -\
                           1./3.*beta3*ff**(-3.))
         
-        psi_int_prime = 1./eta*(beta1 +\
+        psi_int_prime = 1./eta*(beta1*ones +\
                                 beta2*ff**(-1.) +\
                                 beta3*ff**(-4.))
 
@@ -1079,13 +1079,13 @@ class IMRPhenomD(Waveform):
                  4./3.*alpha3*f2**(3./4.) + alpha4*np.arctan((f2 - alpha5*ff_RD)/ff_damp)) #psi_int_f2 = psi_MR_f2
 
         # Evaluate full merger-ringdown phase and its analytical derivative
-        psi_MR = 1./eta*(alpha0 +\
+        psi_MR = 1./eta*(alpha0*ones +\
                          alpha1*ff -\
                          alpha2*ff**(-1.) +\
                          4./3.*alpha3*ff**(3./4.) +\
                          alpha4*np.arctan((ff - alpha5*ff_RD)/ff_damp))
         
-        psi_MR_prime = 1./eta*(alpha1 +\
+        psi_MR_prime = 1./eta*(alpha1*ones +\
                                alpha2*ff**(-2.) +\
                                alpha3*ff**(-1./4.) +\
                                alpha4*ff_damp/(ff_damp**2. + (ff - alpha5*ff_RD)**2.))
