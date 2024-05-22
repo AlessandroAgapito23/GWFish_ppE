@@ -629,7 +629,7 @@ class TaylorF2(Waveform):
                                     phi_6_l*np.log(np.pi*f1)*(np.pi*f1)**(1./3.) +\
                                     phi_7*(np.pi*f1)**(2./3.))
         
-        psi_TF2_prime = 2.*np.pi*cst.c**3/(cst.G*M)*tc +\
+        psi_TF2_prime = 2.*np.pi*cst.c**3/(cst.G*M)*tc*ones +\
                         3./(128.*eta)*(phi_0*(np.pi)**(-5./3.)*(-5./3.*ff**(-8./3.)) +\
                                        phi_2*(np.pi)**(-1.)*(-1.*ff**(-2.)) +\
                                        phi_3*(np.pi)**(-2./3.)*(-2./3.*ff**(-5./3.)) +\
@@ -1143,7 +1143,7 @@ class IMRPhenomD(Waveform):
         ones = np.ones((len(ff), 1))
         a_0, a_1, a_2, a_2, a_3, a_4, a_5, a_6 = IMRPhenomD.INS_amp_coeff(self)
         
-        amp_PN = a_0 +\
+        amp_PN = a_0*ones +\
                  a_2*(np.pi*ff)**(2./3.) +\
                  a_3*(np.pi*ff) +\
                  a_4*(np.pi*ff)**(4./3.) +\
@@ -1210,7 +1210,7 @@ class IMRPhenomD(Waveform):
         delta = np.linalg.solve(A, b)
     
         # Full intermediate amplitude
-        amp_int = (delta[0] +\
+        amp_int = (delta[0]*ones +\
                    delta[1]*(ff) +\
                    delta[2]*(ff)**2. +\
                    delta[3]*(ff)**3. +\
