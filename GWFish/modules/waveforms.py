@@ -1461,13 +1461,13 @@ class IMRPhenomD_GWFISH(Waveform):
                 (-(25150083775./3048192.) + 10566655595./762048.*eta - 1042165./3024.*eta2 + 5345./36.*eta3)*chi_s
        
         psi_TF2 = 2.*np.pi*ff*cst.c**3/(cst.G*M)*tc - phic*ones - np.pi/4.*ones +\
-                  3./(128.*eta)*((np.pi*ff)**(-5./3.) +\
-                                  phi_2*(np.pi*ff)**(-1.) +\
-                                  phi_3*(np.pi*ff)**(-2./3.) +\
-                                  phi_4*(np.pi*ff)**(-1./3.) +\
-                                  phi_5 +\
-                                  phi_6*(np.pi*ff)**(1./3.) +\
-                                  phi_7*(np.pi*ff)**(2./3.))
+                  3./(128.*eta)*(phi_0*(np.pi*ff)**(-5./3.) +\
+                                 phi_2*(np.pi*ff)**(-1.) +\
+                                 phi_3*(np.pi*ff)**(-2./3.) +\
+                                 phi_4*(np.pi*ff)**(-1./3.) +\
+                                 phi_5*ones +\
+                                 phi_6*(np.pi*ff)**(1./3.) +\
+                                 phi_7*(np.pi*ff)**(2./3.))
         
         # Coefficients for the late ispiral phase
         sigma2 = -10114.056472621156 - 44631.01109458185*eta\
@@ -1494,10 +1494,12 @@ class IMRPhenomD_GWFISH(Waveform):
         psi_ins_gradient = interp1d(ff[:,0], np.gradient(psi_ins[:,0]))
     
         phi_5_f1 = (1 + np.log(np.pi*f1))*(38645./756.*np.pi - 65./9.*np.pi*eta + \
-                delta_mass*(-(732985./2268.) - 140./9.*eta)*chi_a + (-(732985./2268.) + 24260./81.*eta + 340./9.*eta2)*chi_s)
-        phi_6_f1 = 11583231236531./4694215680. - 6848./21.*C - (640.*np.pi**2)/3. + (-15737765635./3048192. + 2255.*np.pi**2/12.)*eta +\
-                76055.*eta2/1728. - 127825.*eta3/1296. - 6848./63.*np.log(64*np.pi*f1) + 2270./3.*np.pi*delta_mass*chi_a +\
-                (2270.*np.pi/3. - 520.*np.pi*eta)*chi_s
+                    delta_mass*(-(732985./2268.) - 140./9.*eta)*chi_a + (-(732985./2268.) +\
+                    24260./81.*eta + 340./9.*eta2)*chi_s)
+        phi_6_f1 = 11583231236531./4694215680. - 6848./21.*C - (640.*np.pi**2)/3. +\
+                   (-15737765635./3048192. + 2255.*np.pi**2/12.)*eta +\
+                   76055.*eta2/1728. - 127825.*eta3/1296. - 6848./63.*np.log(64*np.pi*f1) +\
+                   2270./3.*np.pi*delta_mass*chi_a + (2270.*np.pi/3. - 520.*np.pi*eta)*chi_s
         
         psi_ins_f1 = 2.*np.pi*f1/(cst.G*M)*cst.c**3*tc - phic - np.pi/4. +\
                      3./(128.*eta)*(np.pi*f1)**(-5/3)*(phi_0 +\
@@ -1528,12 +1530,12 @@ class IMRPhenomD_GWFISH(Waveform):
         beta0 = eta*psi_ins_f1 - beta1*f1 - beta2*np.log(f1) + beta3/3.*f1**(-3.) #psi_ins_f1 = psi_int_f1
        
         # Evaluate full psi intermediate and its analytical derivative
-        psi_int = 1./eta*(beta0 +\
+        psi_int = 1./eta*(beta0*ones +\
                           beta1*ff +\
                           beta2*np.log(ff) -\
                           1./3.*beta3*ff**(-3.))
         
-        psi_int_prime = 1./eta*(beta1 +\
+        psi_int_prime = 1./eta*(beta1*ones +\
                                 beta2*ff**(-1.) +\
                                 beta3*ff**(-4.))
         
@@ -1574,13 +1576,13 @@ class IMRPhenomD_GWFISH(Waveform):
                 4./3.*alpha3*f2**(3./4.) - alpha4*np.arctan((f2 - alpha5*ff_RD)/ff_damp) #psi_int_f2 = psi_MR_f2
     
         # Evaluate full merger-ringdown phase and its analytical derivative
-        psi_MR = 1./eta*(alpha0 +\
+        psi_MR = 1./eta*(alpha0*ones +\
                          alpha1*ff -\
                          alpha2*ff**(-1.) +\
                          4./3.*alpha3*ff**(3./4.) +\
                          alpha4*np.arctan((ff - alpha5*ff_RD)/ff_damp))
         
-        psi_MR_prime = 1./eta*(alpha1 +\
+        psi_MR_prime = 1./eta*(alpha1*ones +\
                                alpha2*ff**(-2.) +\
                                alpha3*ff**(-1./4.) +\
                                alpha4*ff_damp/(ff_damp**2. +(ff - alpha5*ff_RD)**2.))
@@ -1628,8 +1630,12 @@ class IMRPhenomD_GWFISH(Waveform):
             (31./12.*np.pi - 7./3.*np.pi*eta)*chi_s + (1614569./64512. - 61391./1344.*eta + 57451./4032.*eta2)*chi_s**2. +\
             delta_mass*chi_a*(31./12.*np.pi + (1614569./32256. - 165961./2688.*eta)*chi_s)
         
-        amp_PN = (a_0 + a_2*(np.pi*ff)**(2./3.) + a_3*(np.pi*ff) + a_4*(np.pi*ff)**(4./3.) +\
-                a_5*(np.pi*ff)**(5./3.) + a_6*(np.pi*ff)**2.)
+        amp_PN = a_0*ones +\
+                 a_2*(np.pi*ff)**(2./3.) +\
+                 a_3*(np.pi*ff) +\
+                 a_4*(np.pi*ff)**(4./3.) +\
+                 a_5*(np.pi*ff)**(5./3.) +\
+                 a_6*(np.pi*ff)**2.
     
         # Late inspiral coefficients
         rho1 = 3931.8979897196696 - 17395.758706812805*eta\
@@ -1645,7 +1651,10 @@ class IMRPhenomD_GWFISH(Waveform):
                 + (chi_PN - 1)**2*(-1.9889806527362722e6 + 3.0888029960154563e7*eta - 8.390870279256162e7*eta2)\
                 + (chi_PN - 1)**3*(-1.4535031953446497e6 + 1.7063528990822166e7*eta - 4.2748659731120914e7*eta2)
     
-        amp_ins = amp_PN + (rho1*(ff)**(7./3.) + rho2*(ff)**(8./3.) + rho3*(ff)**3.)
+        amp_ins = amp_PN +\
+                  rho1*(ff)**(7./3.) +\
+                  rho2*(ff)**(8./3.) +\
+                  rho3*(ff)**3.
     
         # Merger-ringdown coefficients
         gamma1 = 0.006927402739328343 + 0.03020474290328911*eta\
@@ -1676,13 +1685,24 @@ class IMRPhenomD_GWFISH(Waveform):
         amp_MR = gamma1*(gamma3*ff_damp*ones)/((ff - ff_RD*ones)**2. +\
                 (gamma3*ff_damp*ones)**2)*np.exp(-gamma2*(ff - ff_RD*ones)/(gamma3*ff_damp*ones))
     
-        amp_ins_f1 = a_0 + a_2*(np.pi*f1_amp)**(2./3.) + a_3*(np.pi*f1_amp) + a_4*(np.pi*f1_amp)**(4./3.) +\
-                a_5*(np.pi*f1_amp)**(5./3.) + a_6*(np.pi*f1_amp)**2. + rho1*f1_amp**(7./3.) +\
-                rho2*f1_amp**(8./3.) + rho3*f1_amp**3.
+        amp_ins_f1 = a_0 +\
+                     a_2*(np.pi*f1_amp)**(2./3.) +\
+                     a_3*(np.pi*f1_amp) +\
+                     a_4*(np.pi*f1_amp)**(4./3.) +\
+                     a_5*(np.pi*f1_amp)**(5./3.) +\
+                     a_6*(np.pi*f1_amp)**2. +\
+                     rho1*f1_amp**(7./3.) +\
+                     rho2*f1_amp**(8./3.) +\
+                     rho3*f1_amp**3.
     
-        amp_ins_prime_f1 = 2./3.*a_2*np.pi**(2./3.)*f1_amp**(-1./3.) + a_3*np.pi + 4./3.*a_4*np.pi**(4./3.)*f1_amp**(1./3.) +\
-                            5./3.*a_5*np.pi**(5./3.)*f1_amp**(2./3.) + 2*a_6*np.pi**2.*f1_amp + 7./3.*rho1*f1_amp**(4./3.) +\
-                            8./3.*rho2*f1_amp**(5./3.) + 3.*rho3*f1_amp**2.
+        amp_ins_prime_f1 = 2./3.*a_2*np.pi**(2./3.)*f1_amp**(-1./3.) +\
+                           a_3*np.pi +\
+                           4./3.*a_4*np.pi**(4./3.)*f1_amp**(1./3.) +\
+                           5./3.*a_5*np.pi**(5./3.)*f1_amp**(2./3.) +\
+                           2*a_6*np.pi**2.*f1_amp +\
+                           7./3.*rho1*f1_amp**(4./3.) +\
+                           8./3.*rho2*f1_amp**(5./3.) +\
+                           3.*rho3*f1_amp**2.
     
         amp_MR_f3, amp_MR_prime_f3 = phenomD_amp_MR(f3_amp, self.gw_params, ff_damp, ff_RD, gamma1, gamma2, gamma3)
         amp_MR_f3 = float(amp_MR_f3)
@@ -1694,12 +1714,16 @@ class IMRPhenomD_GWFISH(Waveform):
                         [1., f3_amp, f3_amp**2., f3_amp**3., f3_amp**4.],\
                         [0., 1., 2.*f1_amp, 3.*f1_amp**2., 4.*f1_amp**3.],\
                         [0., 1., 2.*f3_amp, 3.*f3_amp**2., 4.*f3_amp**3.]])
+        
         b = np. array([amp_ins_f1, v2, amp_MR_f3, amp_ins_prime_f1, amp_MR_prime_f3])
         delta = np.linalg.solve(A, b)
     
         # Full intermediate amplitude
-        amp_int = (delta[0] + delta[1]*(ff) + delta[2]*(ff)**2. + delta[3]*(ff)**3. +\
-                delta[4]*(ff)**4.)
+        amp_int = delta[0]*+ones +\
+                  delta[1]*(ff) +\
+                  delta[2]*(ff)**2. +\
+                  delta[3]*(ff)**3. +\
+                  delta[4]*(ff)**4.
       
     
         ff1_amp = f1_amp*ones
