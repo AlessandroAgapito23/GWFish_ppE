@@ -1333,9 +1333,10 @@ class IMRPhenomD(Waveform):
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
         plt.show()
 
-        # Phi_early_ins_prime
+        # EI
         plt.figure(figsize=(8, 7))
-        plt.semilogx(ff, psi_prime_TF2, linewidth=2, color='blue',label=r'$\Phi_{EI}^\prime(f)$')
+        plt.semilogx(ff, psi_TF2, linewidth=2, color='blue',label=r'$\Phi_{EI}(f)$')
+        plt.semilogx(ff, psi_prime_TF2, linewidth=2, color='green',label=r'$\Phi_{EI}^\prime(f)$')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
@@ -1344,9 +1345,10 @@ class IMRPhenomD(Waveform):
         plt.show()
 
         
-        # Phi_late_ins_prime
+        # LI
         plt.figure(figsize=(8, 7))
-        plt.semilogx(ff, psi_late_ins_prime, linewidth=2, color='blue',label=r'$\Phi_{LI}^\prime(f)$')
+        plt.semilogx(ff, psi_late_ins, linewidth=2, color='blue',label=r'$\Phi_{LI}(f)$')
+        plt.semilogx(ff, psi_late_ins_prime, linewidth=2, color='green',label=r'$\Phi_{LI}^\prime(f)$')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
@@ -1354,9 +1356,10 @@ class IMRPhenomD(Waveform):
         plt.xlim(10**(-4.),0.018)
         plt.show()
 
-        # Phi_ins_prime
+        # EI + LI
         plt.figure(figsize=(8, 7))
-        plt.semilogx(ff, psi_ins_prime, linewidth=2, color='blue',label=r'$\Phi_{EI+LI}^\prime(f)$')
+        plt.semilogx(ff, psi_ins, linewidth=2, color='blue',label=r'$\Phi_{EI+LI}(f)$')
+        plt.semilogx(ff, psi_ins_prime, linewidth=2, color='green',label=r'$\Phi_{EI+LI}^\prime(f)$')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
@@ -1364,9 +1367,10 @@ class IMRPhenomD(Waveform):
         plt.xlim(10**(-4.),0.018)
         plt.show()
 
-        # Phi_int_prime
+        # INT
         plt.figure(figsize=(8, 7))
-        plt.semilogx(ff, psi_int_prime, linewidth=2, color='blue',label=r'$\Phi_{int}^\prime(f)$')
+        plt.semilogx(ff, psi_int, linewidth=2, color='blue',label=r'$\Phi_{INT}(f)$')
+        plt.semilogx(ff, psi_int_prime, linewidth=2, color='green',label=r'$\Phi_{int}^\prime(f)$')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
@@ -1374,9 +1378,10 @@ class IMRPhenomD(Waveform):
         plt.xlim(0.018,0.5*ff_RD)
         plt.show()
 
-        # Phi_MR_prime
+        # MR
         plt.figure(figsize=(8, 7))
-        plt.semilogx(ff, psi_MR_prime, linewidth=2, color='blue',label=r'$\Phi_{MR}^\prime(f)$')
+        plt.semilogx(ff, psi_MR, linewidth=2, color='blue',label=r'$\Phi_{MR}(f)$')
+        plt.semilogx(ff, psi_MR_prime, linewidth=2, color='green',label=r'$\Phi_{MR}^\prime(f)$')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
