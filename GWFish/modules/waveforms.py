@@ -980,7 +980,8 @@ class IMRPhenomD(Waveform):
     def calculate_ins_phase(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-
+        ones = np.ones((len(ff), 1))
+        
         psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2.calculate_phase(self)
         
         sigma2, sigma3, sigma4 = IMRPhenomD.LI_phase_coeff(self)
@@ -1021,6 +1022,7 @@ class IMRPhenomD(Waveform):
     def calculate_int_phase(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+        ones = np.ones((len(ff), 1))
         
         psi_ins, psi_ins_prime, psi_ins_f1, psi_ins_prime_f1, psi_late_ins, psi_late_ins_prime = IMRPhenomD.calculate_ins_phase(self)
 
@@ -1062,7 +1064,7 @@ class IMRPhenomD(Waveform):
     def calculate_MR_phase(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-        
+        ones = np.ones((len(ff), 1))
         psi_int, psi_int_prime, psi_int_f2, psi_int_prime_f2 = IMRPhenomD.calculate_int_phase(self)
 
         # Frequency at the interface between intermediate and merger-ringdown phases
