@@ -1370,7 +1370,7 @@ class IMRPhenomD(Waveform):
         # INT
         plt.figure(figsize=(8, 7))
         plt.semilogx(ff, psi_int, linewidth=2, color='blue',label=r'$\Phi_{INT}(f)$')
-        plt.semilogx(ff, psi_int_prime, linewidth=2, color='green',label=r'$\Phi_{int}^\prime(f)$')
+        plt.semilogx(ff, psi_int_prime, linewidth=2, color='green',label=r'$\Phi_{INT}^\prime(f)$')
         plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
