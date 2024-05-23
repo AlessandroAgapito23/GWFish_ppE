@@ -390,7 +390,7 @@ class TaylorF2_mult(Inspiral_corr):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = wf.Waveform.get_param_comb(self)
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
-        psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2_mult.calculate_phase(self)
+        psi = TaylorF2_mult.calculate_phase(self)
         
         delta_phase = psi - psi_TF2
         
