@@ -1327,7 +1327,7 @@ class IMRPhenomD(Waveform):
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
-        plt.xlim(10**(-4.),0.018)
+        plt.xlim(10**(-4.),f1)
         plt.show()
 
         
@@ -1339,7 +1339,7 @@ class IMRPhenomD(Waveform):
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
-        plt.xlim(10**(-4.),0.018)
+        plt.xlim(10**(-4.),f1)
         plt.show()
 
         # EI + LI
@@ -1350,7 +1350,7 @@ class IMRPhenomD(Waveform):
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
-        plt.xlim(10**(-4.),0.018)
+        plt.xlim(10**(-4.),f1)
         plt.show()
 
         # INT
@@ -1361,7 +1361,7 @@ class IMRPhenomD(Waveform):
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
-        plt.xlim(0.018,0.5*ff_RD)
+        plt.xlim(0.018,f2)
         plt.show()
 
         # MR
@@ -1372,7 +1372,7 @@ class IMRPhenomD(Waveform):
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
-        plt.xlim(0.5*ff_RD, 1)
+        plt.xlim(f2, 1)
         plt.show()
 
         plt.close()
