@@ -1072,6 +1072,7 @@ class IMRPhenomD(Waveform):
         
         ####################### IN-MERG PHASE CONTINUITY CONDITIONS ###################
         f1, f2, f1_amp, f2_amp = IMRPhenomD.transition_freq(self)
+        ff_RD, ff_damp = IMRPhenomD.RD_damping(self)
         
         alpha1 = eta*psi_int_prime_f2 - (alpha2*f2**(-2.) + alpha3*f2**(-1./4.) +\
                  (alpha4*ff_damp)/(ff_damp**2. + (f2 - alpha5*ff_RD)**2.)) # psi_int_prime_f2 = psi_MR_prime_f2
@@ -1158,6 +1159,7 @@ class IMRPhenomD(Waveform):
              + (chi_PN - 1)**3*(0.1766934149293479 - 0.7978690983168183*eta + 2.1162391502005153*eta2)
         
         gamma1, gamma2, gamma3 = IMRPhenomD.MR_amp_coeff(self)
+        ff_RD, ff_damp = IMRPhenomD.RD_damping(self)
 
         amp_MR = gamma1*(gamma3*ff_damp*ones)/((ff - ff_RD*ones)**2. +\
                 (gamma3*ff_damp*ones)**2)*np.exp(-gamma2*(ff - ff_RD*ones)/(gamma3*ff_damp*ones))
