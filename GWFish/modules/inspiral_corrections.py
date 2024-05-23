@@ -228,8 +228,9 @@ class TaylorF2_PPE(Inspiral_corr):
         # Delta_phase
         plt.figure()
         plt.semilogx(ff, delta_phase, linewidth=2, color='red', label=r'$\Phi(f) - \Phi_{TF2}$')
-        plt.xlabel('Dimensionless frequency')
-        plt.ylabel('Phase difference [rad]')
+        plt.xlabel('$f^\prime$', fontsize = 17)
+        plt.ylabel('Phase difference [rad]', fontsize = 17)
+        plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.tight_layout()
         plt.savefig(output_folder + 'delta_phase_tot_PPE.png')
@@ -420,12 +421,12 @@ class TaylorF2_mult(Inspiral_corr):
         # Delta_phase
         plt.figure()
         plt.semilogx(ff, delta_phase, linewidth=2, color='red', label=r'$\Phi(f) - \Phi_{TF2}$')
-        plt.xlabel('Dimensionless frequency')
-        plt.ylabel('Phase difference [rad]')
+        plt.xlabel('$f^\prime$', fontsize = 17)
+        plt.ylabel('Phase difference [rad]', fontsize = 17)
+        plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.tight_layout()
-        plt.savefig(output_folder + 'delta_phase_tot_PPE.png')
-        plt.show()
+        plt.savefig(output_folder + 'delta_phase_tot_mult.png')
 
         plt.close()
 
@@ -449,9 +450,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
 
     def calculate_phase(self): 
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
-        f_isco = aux.fisco(self.gw_params)  #inner stable circular orbit 
-        ones = np.ones((len(ff), 1)) 
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = wf.Waveform.get_param_comb(self)
 
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
         phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = wf.TaylorF2.EI_phase_coeff(self) 
@@ -464,7 +463,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
                                   phi_2*delta_phi_2*(np.pi*ff)**(-1.) +\
                                   phi_3*delta_phi_3*(np.pi*ff)**(-2./3.) +\
                                   phi_4*delta_phi_4*(np.pi*ff)**(-1./3.) +\
-                                  phi_5*delta_phi_5 +\
+                                  phi_5*delta_phi_5*ones +\
                                   phi_5_l*delta_phi_8*np.log(np.pi*ff) +\
                                   phi_6*delta_phi_6*(np.pi*ff)**(1./3.) +\
                                   phi_6_l*delta_phi_9*np.log(np.pi*ff)*(np.pi*ff)**(1./3.) +\
@@ -474,15 +473,11 @@ class IMRPhenomD_PPE(Inspiral_corr):
 
         psi_EI = psi_TF2 + psi_ppe + psi_gIMR
 
-        sigma2, sigma3, sigma4 = wf.IMRPhenomD.LI_phase_coeff(self)
-
-        psi_late_ins = + 1./eta*(3./4.*sigma2*ff**(4./3.) + 3./5.*sigma3*ff**(5./3.) + 1./2.*sigma4*ff**2)
-
         ################################################################################ 
         # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
         ################################################################################ 
 
-        f1 = 0.018
+        f1, f2, f1_amp, f2_amp, f3_amp = wf.IMRPhenomD.transition_freq(self)
             
         psi_gIMR_f1 = 3./(128.*eta)*(delta_phi_10*(np.pi*f1)**(-7./3.) +\
                                      phi_0*delta_phi_0*(np.pi*f1)**(-5./3.) +\
@@ -515,17 +510,20 @@ class IMRPhenomD_PPE(Inspiral_corr):
         psi_ppe_prime_f1 = eta**((2*PN-5.)/5.)*beta*((2*PN-5.)/3.)*(np.pi*f1)**((2*PN-8.)/3.)
 
         psi_EI_prime_f1 = psi_TF2_prime_f1 + psi_ppe_prime_f1 + psi_gIMR_prime_f1
+
+        sigma2, sigma3, sigma4 = wf.IMRPhenomD.LI_phase_coeff(self)
          
-        psi_late_ins_f1 = 1./eta*(3./4.*sigma2*f1**(4./3.) + 3./5.*sigma3*f1**(5./3.) + 1./2.*sigma4*f1**2)
-        psi_late_ins_prime = 1./eta*(sigma2*ff**(1./3.) + sigma3*ff**(2./3.) + sigma4*ff)
-        psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) + sigma3*f1**(2./3.) + sigma4*f1)
-
-        #sigma1 = eta*psi_EI_prime_f1 - psi_late_ins_prime_f1
-        #sigma0 = eta*psi_EI_f1 - psi_late_ins_f1
-
-        psi_late_ins = 1./eta*(3./4.*sigma2*ff**(4./3.) + 3./5.*sigma3*ff**(5./3.) + 1./2.*sigma4*ff**2)
-        psi_late_ins_f1 = 1./eta*(3./4.*sigma2*f1**(4./3.) + 3./5.*sigma3*f1**(5./3.) + 1./2.*sigma4*f1**2)
-        psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) + sigma3*f1**(2./3.) + sigma4*f1)
+        psi_late_ins = 1./eta*(3./4.*sigma2*ff**(4./3.) +\
+                               3./5.*sigma3*ff**(5./3.) +\
+                               1./2.*sigma4*ff**2)
+         
+        psi_late_ins_f1 = 1./eta*(3./4.*sigma2*f1**(4./3.) +\
+                                  3./5.*sigma3*f1**(5./3.) +\
+                                  1./2.*sigma4*f1**2)
+         
+        psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) +\
+                                        sigma3*f1**(2./3.) +\
+                                        sigma4*f1)
         
         #Total INSPIRAL PART OF THE PHASE (and its DERIVATIVE), with also late inspiral terms
         ################################################################################ 
@@ -539,23 +537,32 @@ class IMRPhenomD_PPE(Inspiral_corr):
 
         beta2, beta3 = wf.IMRPhenomD.INT_phase_coeff(self)
 
-        beta1 = eta*psi_ins_prime_f1 - beta2*f1**(-1.) - beta3*f1**(-4.)  # psi_ins_prime_f1 = psi_int_prime_f1
-        beta0 = eta*psi_ins_f1 - beta1*f1 - beta2*np.log(f1) + beta3/3.*f1**(-3.) #psi_ins_f1 = psi_int_f1
+        beta1 = eta*psi_ins_prime_f1 - (beta2*f1**(-1.) + beta3*f1**(-4.))  # psi_ins_prime_f1 = psi_int_prime_f1
+        beta0 = eta*psi_ins_f1 - beta1*f1 - (beta2*np.log(f1) - 1./3.*beta3*f1**(-3.)) #psi_ins_f1 = psi_int_f1
       
         # Evaluate full psi intermediate and its analytical derivative
-        psi_int = 1./eta*(beta0 + beta1*ff + beta2*np.log(ff) - 1./3.*beta3*ff**(-3.))
-        psi_int_prime = 1./eta*(beta1 + beta2*ff**(-1.) + beta3*ff**(-4.))
+        psi_int = 1./eta*(beta0*ones +\
+                          beta1*ff +\
+                          beta2*np.log(ff) -\
+                          1./3.*beta3*ff**(-3.))
+         
+        psi_int_prime = 1./eta*(beta1*ones +\
+                                beta2*ff**(-1.) +\
+                                beta3*ff**(-4.))
 
-        # Frequency at the interface between intermediate and merger-ringdown phases
-        ff_RD, ff_damp = wf.IMRPhenomD.RD_damping(self)
-        f2 = 0.5*ff_RD
-
-        psi_int_f2 = 1./eta*(beta0 + beta1*f2 + beta2*np.log(f2) - 1./3.*beta3*f2**(-3.))
-        psi_int_prime_f2 = 1./eta*(beta1 + beta2*f2**(-1.) + beta3*f2**(-4.))
+        psi_int_f2 = 1./eta*(beta0 +\
+                             beta1*f2 +\
+                             beta2*np.log(f2) -\
+                             1./3.*beta3*f2**(-3.))
+         
+        psi_int_prime_f2 = 1./eta*(beta1 +\
+                                   beta2*f2**(-1.) +\
+                                   beta3*f2**(-4.))
         
         ####################### INT-MERG PHASE CONTINUITY CONDITIONS ###################
 
         alpha2, alpha3, alpha4, alpha5 = wf.IMRPhenomD.MR_phase_coeff(self)
+        ff_RD, ff_damp = wf.IMRPhenomD.RD_damping(self)
         
         alpha1 = eta*psi_int_prime_f2 - alpha2*f2**(-2.) - alpha3*f2**(-1./4.) -\
                 (alpha4*ff_damp)/(ff_damp**2. + (f2 - alpha5*ff_RD)**2.) # psi_int_prime_f2 = psi_MR_prime_f2
@@ -563,23 +570,23 @@ class IMRPhenomD_PPE(Inspiral_corr):
                  4./3.*alpha3*f2**(3./4.) - alpha4*np.arctan((f2 - alpha5*ff_RD)/ff_damp) #psi_int_f2 = psi_MR_f2
 
         # Evaluate full merger-ringdown phase and its analytical derivative
-        psi_MR = 1./eta*(alpha0 +\
+        psi_MR = 1./eta*(alpha0*ones +\
                          alpha1*ff -\
                          alpha2*ff**(-1.) +\
                          4./3.*alpha3*ff**(3./4.) +\
                          alpha4*np.arctan((ff - alpha5*ff_RD)/ff_damp))
-        psi_MR_prime = 1./eta*(alpha1 +\
+         
+        psi_MR_prime = 1./eta*(alpha1*ones +\
                                alpha2*ff**(-2.) +\
                                alpha3*ff**(-1./4.) +\
                                alpha4*ff_damp/(ff_damp**2. + (ff - alpha5*ff_RD)**2.))
 
         # Conjunction functions
-        ff1 = 0.018*ones
-        ff2 = 0.5*ff_RD*ones
+        ff1 = f1*ones
+        ff2 = f2*ones
 
         theta_minus1 = 0.5*(1*ones - wf.step_function(ff,ff1))
         theta_minus2 = 0.5*(1*ones - wf.step_function(ff,ff2))
-    
         theta_plus1 = 0.5*(1*ones + wf.step_function(ff,ff1))
         theta_plus2 = 0.5*(1*ones + wf.step_function(ff,ff2))
 
@@ -597,7 +604,7 @@ class IMRPhenomD_PPE(Inspiral_corr):
         
     def calculate_frequency_domain_strain(self): 
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
 
         psi = IMRPhenomD_PPE.calculate_phase(self)
         hp, hc = wf.IMRPhenomD.calculate_amplitude(self)
@@ -635,9 +642,7 @@ class IMRPhenomD_mult(Inspiral_corr):
 
     def calculate_phase(self): 
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
-        f_isco = aux.fisco(self.gw_params)  #inner stable circular orbit 
-        ones = np.ones((len(ff), 1)) 
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = wf.Waveform.get_param_comb(self)
 
          
         ################################################################################ 
@@ -649,17 +654,16 @@ class IMRPhenomD_mult(Inspiral_corr):
         P4, P6, P7, P8, P10 = TaylorF2_mult.INS_mult_coeff(self)
 
         psi_mult = + 3./(128.*eta)*(P4*(np.pi*ff)**(-1./3.) +\
-                                  P6*(np.pi*ff)**(1./3.) +\
-                                  P7*(np.pi*ff)**(2./3.) +\
-                                  P8*(1 - np.log(np.pi*ff))*(np.pi*ff)**(1.))
+                                    P6*(np.pi*ff)**(1./3.) +\
+                                    P7*(np.pi*ff)**(2./3.) +\
+                                    P8*(1 - np.log(np.pi*ff))*(np.pi*ff)**(1.))
 
         psi_EI = psi_TF2 + psi_mult 
 
         ################################################################################ 
         # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
         ################################################################################ 
-
-        f1 = 0.018
+        f1, f2, f1_amp, f2_amp, f3_amp = wf.IMRPhenomD.transition_freq(self)
 
         psi_mult_f1 = 3./(128.*eta)*(P4*(np.pi*f1)**(-1./3.) +\
                                      P6*(np.pi*f1)**(1./3.) +\
@@ -687,19 +691,22 @@ class IMRPhenomD_mult(Inspiral_corr):
 
         sigma2, sigma3, sigma4 = wf.IMRPhenomD.LI_phase_coeff(self)
 
-        psi_late_ins = + 1./eta*(3./4.*sigma2*ff**(4./3.) + 3./5.*sigma3*ff**(5./3.) + 1./2.*sigma4*ff**2)
-        psi_late_ins_f1 = 1./eta*(3./4.*sigma2*f1**(4./3.) + 3./5.*sigma3*f1**(5./3.) + 1./2.*sigma4*f1**2)
+        psi_late_ins = + 1./eta*(3./4.*sigma2*ff**(4./3.) +\
+                                 3./5.*sigma3*ff**(5./3.) +\
+                                 1./2.*sigma4*ff**2)
+
+        psi_late_ins_f1 = 1./eta*(3./4.*sigma2*f1**(4./3.) +\
+                                  3./5.*sigma3*f1**(5./3.) +\
+                                  1./2.*sigma4*f1**2)
      
-        psi_late_ins_prime = 1./eta*(sigma2*ff**(1./3.) + sigma3*ff**(2./3.) + sigma4*ff)
-        psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) + sigma3*f1**(2./3.) + sigma4*f1)
+        psi_late_ins_prime = 1./eta*(sigma2*ff**(1./3.) +\
+                                     sigma3*ff**(2./3.) +\
+                                     sigma4*ff)
 
-        #sigma1 = eta*psi_EI_prime_f1 - psi_late_ins_prime_f1
-        #sigma0 = eta*psi_EI_f1 - psi_late_ins_f1
+        psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) +\
+                                        sigma3*f1**(2./3.) +\
+                                        sigma4*f1)
 
-        psi_late_ins = 1./eta*(3./4.*sigma2*ff**(4./3.) + 3./5.*sigma3*ff**(5./3.) + 1./2.*sigma4*ff**2)
-        psi_late_ins_f1 = 1./eta*(3./4.*sigma2*f1**(4./3.) + 3./5.*sigma3*f1**(5./3.) + 1./2.*sigma4*f1**2)
-        psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) + sigma3*f1**(2./3.) + sigma4*f1)
-        
         #Total INSPIRAL PART OF THE PHASE (and its DERIVATIVE), with also late inspiral terms
         ################################################################################ 
         
@@ -712,23 +719,32 @@ class IMRPhenomD_mult(Inspiral_corr):
 
         beta2, beta3 = wf.IMRPhenomD.INT_phase_coeff(self)
 
-        beta1 = eta*psi_ins_prime_f1 - beta2*f1**(-1.) - beta3*f1**(-4.)  # psi_ins_prime_f1 = psi_int_prime_f1
-        beta0 = eta*psi_ins_f1 - beta1*f1 - beta2*np.log(f1) + beta3/3.*f1**(-3.) #psi_ins_f1 = psi_int_f1
+        beta1 = eta*psi_ins_prime_f1 - (beta2*f1**(-1.) + beta3*f1**(-4.))  # psi_ins_prime_f1 = psi_int_prime_f1
+        beta0 = eta*psi_ins_f1 - beta1*f1 - (beta2*np.log(f1) - beta3/3.*f1**(-3.)) #psi_ins_f1 = psi_int_f1
       
         # Evaluate full psi intermediate and its analytical derivative
-        psi_int = 1./eta*(beta0 + beta1*ff + beta2*np.log(ff) - 1./3.*beta3*ff**(-3.))
-        psi_int_prime = 1./eta*(beta1 + beta2*ff**(-1.) + beta3*ff**(-4.))
+        psi_int = 1./eta*(beta0*ones +\
+                          beta1*ff +\
+                          beta2*np.log(ff) -\
+                          1./3.*beta3*ff**(-3.))
 
-        # Frequency at the interface between intermediate and merger-ringdown phases
-        ff_RD, ff_damp = wf.IMRPhenomD.RD_damping(self)
-        f2 = 0.5*ff_RD
+        psi_int_prime = 1./eta*(beta1*ones +\
+                                beta2*ff**(-1.) +\
+                                beta3*ff**(-4.))
 
-        psi_int_f2 = 1./eta*(beta0 + beta1*f2 + beta2*np.log(f2) - 1./3.*beta3*f2**(-3.))
-        psi_int_prime_f2 = 1./eta*(beta1 + beta2*f2**(-1.) + beta3*f2**(-4.))
+        psi_int_f2 = 1./eta*(beta0 +\
+                             beta1*f2 +\
+                             beta2*np.log(f2) -\
+                             1./3.*beta3*f2**(-3.))
+
+        psi_int_prime_f2 = 1./eta*(beta1 +\
+                                   beta2*f2**(-1.) +\
+                                   beta3*f2**(-4.))
         
         ####################### INT-MERG PHASE CONTINUITY CONDITIONS ###################
 
         alpha2, alpha3, alpha4, alpha5 = wf.IMRPhenomD.MR_phase_coeff(self)
+        ff_RD, ff_damp = wf.IMRPhenomD.RD_damping(self)
         
         alpha1 = eta*psi_int_prime_f2 - alpha2*f2**(-2.) - alpha3*f2**(-1./4.) -\
                 (alpha4*ff_damp)/(ff_damp**2. + (f2 - alpha5*ff_RD)**2.) # psi_int_prime_f2 = psi_MR_prime_f2
@@ -736,23 +752,23 @@ class IMRPhenomD_mult(Inspiral_corr):
                  4./3.*alpha3*f2**(3./4.) - alpha4*np.arctan((f2 - alpha5*ff_RD)/ff_damp) #psi_int_f2 = psi_MR_f2
 
         # Evaluate full merger-ringdown phase and its analytical derivative
-        psi_MR = 1./eta*(alpha0 +\
+        psi_MR = 1./eta*(alpha0*ones +\
                          alpha1*ff -\
                          alpha2*ff**(-1.) +\
                          4./3.*alpha3*ff**(3./4.) +\
                          alpha4*np.arctan((ff - alpha5*ff_RD)/ff_damp))
-        psi_MR_prime = 1./eta*(alpha1 +\
+
+        psi_MR_prime = 1./eta*(alpha1*ones +\
                                alpha2*ff**(-2.) +\
                                alpha3*ff**(-1./4.) +\
                                alpha4*ff_damp/(ff_damp**2. + (ff - alpha5*ff_RD)**2.))
 
         # Conjunction functions
-        ff1 = 0.018*ones
-        ff2 = 0.5*ff_RD*ones
+        ff1 = f1*ones
+        ff2 = f2*ones
 
         theta_minus1 = 0.5*(1*ones - wf.step_function(ff,ff1))
         theta_minus2 = 0.5*(1*ones - wf.step_function(ff,ff2))
-    
         theta_plus1 = 0.5*(1*ones + wf.step_function(ff,ff1))
         theta_plus2 = 0.5*(1*ones + wf.step_function(ff,ff2))
 
@@ -770,7 +786,7 @@ class IMRPhenomD_mult(Inspiral_corr):
         
     def calculate_frequency_domain_strain(self): 
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
 
         psi = IMRPhenomD_mult.calculate_phase(self)
         hp, hc = wf.IMRPhenomD.calculate_amplitude(self)
