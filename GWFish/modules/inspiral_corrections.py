@@ -427,6 +427,7 @@ class TaylorF2_mult(Inspiral_corr):
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.tight_layout()
         plt.savefig(output_folder + 'delta_phase_tot_mult.png')
+        plt.show()
 
         plt.close()
 
