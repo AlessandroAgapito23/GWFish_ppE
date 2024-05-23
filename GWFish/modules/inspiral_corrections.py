@@ -151,7 +151,7 @@ class TaylorF2_PPE(Inspiral_corr):
                                   phi_2*delta_phi_2*(np.pi*ff)**(-1.) +\
                                   phi_3*delta_phi_3*(np.pi*ff)**(-2./3.) +\
                                   phi_4*delta_phi_4*(np.pi*ff)**(-1./3.) +\
-                                  phi_5*delta_phi_5 +\
+                                  phi_5*delta_phi_5*ones +\
                                   phi_5_l*delta_phi_8*np.log(np.pi*ff) +\
                                   phi_6*delta_phi_6*(np.pi*ff)**(1./3.) +\
                                   phi_6_l*delta_phi_9*np.log(np.pi*ff)*(np.pi*ff)**(1./3.) +\
@@ -199,42 +199,53 @@ class TaylorF2_PPE(Inspiral_corr):
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
         psi = TaylorF2_PPE.calculate_phase(self)
         
-        phase = psi
         delta_phase = psi - psi_TF2
         
-        plt.figure()
-        plt.loglog(self.frequencyvector, \
-                   np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+$')
-        plt.loglog(self.frequencyvector, \
-                   np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times$')
-        plt.xlabel('Frequency [Hz]')
-        plt.ylabel(r'Fourier amplitude [$Hz^{-1}$]')
-        plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
-        #plt.axis(axis)
-        plt.legend()
+        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 7))
+
+        # Fourier amplitude
+        ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+(f)$', color='red')
+        #ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times(f)$')
+        ax1.set_ylabel(r'Amplitude [$Hz^{-1}$]',  fontsize = 17)
+        ax1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
+        ax1.legend(fontsize = 15)
+        ax1.set_title('TaylorF2', fontsize = 19)
+
+        # Phase
+        ax2.semilogx(self.frequencyvector, psi, label=r'$\Phi(f)$', color='red')
+        ax2.set_ylabel('Phase [rad]',  fontsize = 17)
+        ax2.legend(fontsize = 15)
+        ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
+
+        # Cos(phase)
+        ax3.semilogx(self.frequencyvector, np.cos(psi), label=r'$\cos{(Phi(f))}$', color='red')
+        ax3.set_xlabel('f [Hz]',  fontsize = 17)
+        ax3.set_ylabel(r'$\cos{(\Phi)}$',  fontsize = 17)
+        ax3.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
         plt.tight_layout()
-        plt.savefig(output_folder + 'amp_tot_TF2_PPE.png')
-        plt.close()
+        plt.savefig(output_folder + 'TF2_combined_plot.pdf')
 
-
-        plt.figure()
-        plt.semilogx(ff, phase)
-        plt.xlabel('Dimensionless frequency')
-        plt.ylabel('Phase [rad]')
+        # Phase_prime
+        plt.figure(figsize=(8, 7))
+        plt.semilogx(self.frequencyvector, psi_prime, linewidth=2, color='red', label=r'$\Phi^\prime(f)$')
+        plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
-        plt.tight_layout()
-        plt.savefig(output_folder + 'phase_tot_TF2_PPE.png')
-        plt.close()
+        plt.xlabel('f [Hz]', fontsize=17)
+        plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
+        plt.show()
 
-        
+        # Delta_phase
         plt.figure()
-        plt.semilogx(ff, delta_phase)
+        plt.semilogx(ff, delta_phase, linewidth=2, color='red', label=r'$\Phi(f) - \Phi_{TF2}$')
         plt.xlabel('Dimensionless frequency')
         plt.ylabel('Phase difference [rad]')
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.tight_layout()
         plt.savefig(output_folder + 'delta_phase_tot_PPE.png')
+        plt.show()
+
         plt.close()
+     
 
 
 ################################################################################
@@ -264,7 +275,7 @@ class TaylorF2_mult(Inspiral_corr):
 
     def INS_mult_coeff(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = wf.Waveform.get_param_comb(self)
         k_1, k_2, lambda_1, lambda_2, tilde, delta_tilde = Inspiral_corr.get_mult_corr(self)
 
         #Hadamard self-field regularisation at 3PN
@@ -309,10 +320,9 @@ class TaylorF2_mult(Inspiral_corr):
     
     def calculate_phase(self): 
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = wf.Waveform.get_param_comb(self)
         f_isco = aux.fisco(self.gw_params)  #inner stable circular orbit 
-        ones = np.ones((len(ff), 1)) 
-        
+
         #f_cut = cut_order * f_isco
         cut = self.gw_params['cut']
      
@@ -338,7 +348,7 @@ class TaylorF2_mult(Inspiral_corr):
 
     def calculate_frequency_domain_strain(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = wf.Waveform.get_param_comb(self)
         r = self.gw_params['luminosity_distance'] * cst.Mpc
         iota = self.gw_params['theta_jn']
         cut = self.gw_params['cut']
@@ -350,7 +360,7 @@ class TaylorF2_mult(Inspiral_corr):
          
         a_0, a_1, a_2, a_2, a_3, a_4, a_5, a_6 = wf.IMRPhenomD.INS_amp_coeff(self)
          
-        amp_PN = a_0 +\
+        amp_PN = a_0*ones +\
                  a_2*(np.pi*ff)**(2./3.) +\
                  a_3*(np.pi*ff) +\
                  a_4*(np.pi*ff)**(4./3.) +\
@@ -386,45 +396,55 @@ class TaylorF2_mult(Inspiral_corr):
         
     def plot (self, output_folder='./'):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = wf.Waveform.get_param_comb(self)
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
         psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2_mult.calculate_phase(self)
         
-        phase = psi
         delta_phase = psi - psi_TF2
         
-        plt.figure()
-        plt.loglog(self.frequencyvector, \
-                   np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+$')
-        plt.loglog(self.frequencyvector, \
-                   np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times$')
-        plt.xlabel('Frequency [Hz]')
-        plt.ylabel(r'Fourier amplitude [$Hz^{-1}$]')
-        plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
-        #plt.axis(axis)
-        plt.legend()
+        fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(8, 7))
+
+        # Fourier amplitude
+        ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+(f)$', color='red')
+        #ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times(f)$')
+        ax1.set_ylabel(r'Amplitude [$Hz^{-1}$]',  fontsize = 17)
+        ax1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
+        ax1.legend(fontsize = 15)
+        ax1.set_title('TaylorF2', fontsize = 19)
+
+        # Phase
+        ax2.semilogx(self.frequencyvector, psi, label=r'$\Phi(f)$', color='red')
+        ax2.set_ylabel('Phase [rad]',  fontsize = 17)
+        ax2.legend(fontsize = 15)
+        ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
+
+        # Cos(phase)
+        ax3.semilogx(self.frequencyvector, np.cos(psi), label=r'$\cos{(Phi(f))}$', color='red')
+        ax3.set_xlabel('f [Hz]',  fontsize = 17)
+        ax3.set_ylabel(r'$\cos{(\Phi)}$',  fontsize = 17)
+        ax3.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
         plt.tight_layout()
-        plt.savefig(output_folder + 'amp_tot_TF2_mult.png')
-        plt.close()
+        plt.savefig(output_folder + 'TF2_combined_plot.pdf')
 
-
-        plt.figure()
-        plt.semilogx(ff, phase)
-        plt.xlabel('Dimensionless frequency')
-        plt.ylabel('Phase [rad]')
+        # Phase_prime
+        plt.figure(figsize=(8, 7))
+        plt.semilogx(self.frequencyvector, psi_prime, linewidth=2, color='red', label=r'$\Phi^\prime(f)$')
+        plt.legend(fontsize=15)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
-        plt.tight_layout()
-        plt.savefig(output_folder + 'phase_tot_TF2_mult.png')
-        plt.close()
+        plt.xlabel('f [Hz]', fontsize=17)
+        plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
+        plt.show()
 
-        
+        # Delta_phase
         plt.figure()
-        plt.semilogx(ff, delta_phase)
+        plt.semilogx(ff, delta_phase, linewidth=2, color='red', label=r'$\Phi(f) - \Phi_{TF2}$')
         plt.xlabel('Dimensionless frequency')
         plt.ylabel('Phase difference [rad]')
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.tight_layout()
-        plt.savefig(output_folder + 'delta_phase_tot_mult.png')
+        plt.savefig(output_folder + 'delta_phase_tot_PPE.png')
+        plt.show()
+
         plt.close()
 
 
