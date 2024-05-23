@@ -19,7 +19,7 @@ import GWFish.modules.fft as fft
 import GWFish.modules.waveforms as wf
 from GWFish.modules.waveforms import Waveform
 
-#class which inherits the Waveform class in waveforms.py
+# Class which inherits the Waveform class in waveforms.py
 class Inspiral_corr(Waveform):
 
      def _set_default_gw_params(self):
@@ -129,9 +129,8 @@ class TaylorF2_PPE(Inspiral_corr):
     
     def calculate_phase(self): 
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
-        f_isco = aux.fisco(self.gw_params)  #inner stable circular orbit 
-        ones = np.ones((len(ff), 1)) 
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = wf.Waveform.get_param_comb(self)
+        f_isco = aux.fisco(self.gw_params)  #inner stable circular orbit
 
         PN, beta, delta_phi_0, delta_phi_1, delta_phi_2, delta_phi_3, delta_phi_4,\
         delta_phi_5, delta_phi_6, delta_phi_7, delta_phi_8, delta_phi_9, delta_phi_10 = Inspiral_corr.get_ppe_corr(self)
@@ -166,7 +165,7 @@ class TaylorF2_PPE(Inspiral_corr):
 
     def calculate_frequency_domain_strain(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = wf.Waveform.get_param_comb(self)
         cut = self.gw_params['cut']
         f_isco = aux.fisco(self.gw_params)
 
@@ -196,7 +195,7 @@ class TaylorF2_PPE(Inspiral_corr):
         
     def plot (self, output_folder='./'):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = wf.Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = wf.Waveform.get_param_comb(self)
         psi_TF2, psi_TF2_prime, psi_TF2_f1, psi_TF2_prime_f1 = wf.TaylorF2.calculate_phase(self)
         psi = TaylorF2_PPE.calculate_phase(self)
         
