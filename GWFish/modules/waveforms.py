@@ -264,7 +264,7 @@ class Waveform:
         eta3 = eta2*eta
     
         chi_eff = (M1*chi_1 + M2*chi_2)/M
-        chi_PN = chi_eff - 38/113*eta*(chi_1 + chi_2)
+        chi_PN = chi_eff - 38./113.*eta*(chi_1 + chi_2)
         chi_s = 0.5*(chi_1 + chi_2)
         chi_a = 0.5*(chi_1 - chi_2)
         
@@ -662,7 +662,7 @@ class TaylorF2(Waveform):
         ########################### without PN corrections #############################
 
         A0 = 1./(np.pi**(2./3.))*(5./24.)**(0.5)*cst.c/r*Mc**(5./6.)*(ff*cst.c**3/(cst.G*M))**(-7./6.)
-        hp = A0 * 0.5* (1. + np.cos(iota) ** 2.)
+        hp = A0 * 0.5* (1. + np.cos(iota)**2.)
         hc = A0 *np.cos(iota)
 
         return hp, hc
@@ -1003,6 +1003,7 @@ class IMRPhenomD(Waveform):
         psi_late_ins_prime = 1./eta*(sigma2*ff**(1./3.) +\
                                      sigma3*ff**(2./3.) +\
                                      sigma4*ff)
+        
         psi_late_ins_prime_f1 = 1./eta*(sigma2*f1**(1./3.) +\
                                         sigma3*f1**(2./3.) +\
                                         sigma4*f1)
@@ -1016,7 +1017,7 @@ class IMRPhenomD(Waveform):
         psi_ins_prime = psi_prime + psi_late_ins_prime
         psi_ins_prime_f1 = psi_prime_f1 + psi_late_ins_prime_f1
 
-        return psi_ins, psi_ins_f1, psi_prime, psi_ins_prime_f1, psi_late_ins, psi_late_ins_prime
+        return psi_ins, psi_prime, psi_ins_f1, psi_ins_prime_f1, psi_late_ins, psi_late_ins_prime
         
         
     def calculate_int_phase(self):
@@ -1024,7 +1025,7 @@ class IMRPhenomD(Waveform):
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
         ones = np.ones((len(ff), 1))
         
-        psi_ins, psi_ins_prime, psi_ins_f1, psi_ins_prime_f1, psi_late_ins, psi_late_ins_prime = IMRPhenomD.calculate_ins_phase(self)
+        psi_ins, psi_prime, psi_ins_f1, psi_ins_prime_f1, psi_late_ins, psi_late_ins_prime = IMRPhenomD.calculate_ins_phase(self)
 
         beta2, beta3 = IMRPhenomD.INT_phase_coeff(self)
 
