@@ -11,6 +11,7 @@
 # - LI_phase_coeff(self), INT_phase_coeff(self), MR_phase_coeff(self) return the phase coefficients
 # - INS_amp_coeff(self), INT_amp_coeff(self), MR_amp_coeff(self) return the amplitude coefficients
 # - RD_damping(self) returns the ff_RD and ff_damp
+# - transition_freq(self) returns the transition frequencies for the phase and amplitude
 # - calculate_ins_phase(self), calculate_int_phase(self), calculate_MR_phase(self) return the different parts of the phase and their analytical derivatives
 # - calculate_phase(self) returns the total phase as a function of f 
 # - calculate_amplitude(self) returns the total amplitudes hp and hc as functions of f 
@@ -269,8 +270,9 @@ class Waveform:
         chi_a = 0.5*(chi_1 - chi_2)
         
         ff = frequencyvector*cst.G*M/cst.c**3 #adimensional frequency ----> ff = 4.93*10^{-6} (M/M_sol)(f/Hz)
+        ones = np.ones((len(ff), 1))
 
-        return M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff
+        return M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones
 
 class LALFD_Waveform(Waveform):
     """
@@ -564,7 +566,7 @@ class TaylorF2(Waveform):
 
     def EI_phase_coeff(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
     
         # PN coefficients (up to 3.5 PN order) INSPIRAL phase coefficients >>>>>>>>>>>>
         # including the spin corrections and the logaritmic corrections (phi_5_l and phi_6_l)
@@ -591,13 +593,11 @@ class TaylorF2(Waveform):
     
     def calculate_phase(self):
         
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-        ones = np.ones((len(ff), 1))
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
         phic = self.gw_params['phase']
         tc = self.gw_params['geocent_time']
 
         phi_0, phi_1, phi_2, phi_3, phi_4, phi_5, phi_5_l, phi_6, phi_6_l, phi_7 = TaylorF2.EI_phase_coeff(self)
-        #tc = 0.
         
         #EARLY INSPIRAL PART OF THE PHASE phi_EI(f)>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         
@@ -653,7 +653,7 @@ class TaylorF2(Waveform):
         
     def calculate_amplitude(self):
         
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
         r = self.gw_params['luminosity_distance'] * cst.Mpc
         iota = self.gw_params['theta_jn']
 
@@ -669,7 +669,7 @@ class TaylorF2(Waveform):
     
     def calculate_frequency_domain_strain(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
         cut = self.gw_params['cut']
         f_isco = aux.fisco(self.gw_params)
 
@@ -704,7 +704,6 @@ class TaylorF2(Waveform):
         # Fourier amplitude
         ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), label=r'$h_+(f)$', color='red')
         #ax1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 1]), label=r'$h_\times(f)$')
-        #ax1.set_xlabel('f [Hz]')
         ax1.set_ylabel(r'Amplitude [$Hz^{-1}$]',  fontsize = 17)
         ax1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
         ax1.legend(fontsize = 15)
@@ -712,12 +711,11 @@ class TaylorF2(Waveform):
 
         # Phase
         ax2.semilogx(self.frequencyvector, psi, label=r'$\Phi(f)$', color='red')
-        #ax2.set_xlabel('f [Hz]')
         ax2.set_ylabel('Phase [rad]',  fontsize = 17)
         ax2.legend(fontsize = 15)
         ax2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
 
-        # Cosine
+        # Cos(phase)
         ax3.semilogx(self.frequencyvector, np.cos(psi), label=r'$\cos{(Phi(f))}$', color='red')
         ax3.set_xlabel('f [Hz]',  fontsize = 17)
         ax3.set_ylabel(r'$\cos{(\Phi)}$',  fontsize = 17)
@@ -725,7 +723,7 @@ class TaylorF2(Waveform):
         plt.tight_layout()
         plt.savefig(output_folder + 'TF2_combined_plot.pdf')
 
-        # Phi_prime
+        # Phase_prime
         plt.figure(figsize=(8, 7))
         plt.semilogx(self.frequencyvector, psi_prime, linewidth=2, color='red', label=r'$\Phi^\prime(f)$')
         plt.legend(fontsize=15)
@@ -802,7 +800,6 @@ def phenomD_amp_MR(f, parameters, f_damp, f_RD, gamma1, gamma2, gamma3):
     
     amp_MR_f = amp_MR.evalf(subs={ff: f})
     amp_MR_prime = sp.diff(amp_MR, ff)
-    #print('amp_MR_prime = ', sp.simplify(amp_MR_prime))
     amp_MR_prime_f = amp_MR_prime.evalf(subs={ff: f})
     
     return amp_MR_f, amp_MR_prime_f
@@ -824,7 +821,7 @@ class IMRPhenomD(Waveform):
 
     def LI_phase_coeff(self):
     
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
     
         #LATE INSPIRAL Phase Coefficients >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         #(sigma0=sigma1=0 due to phase translation)
@@ -846,9 +843,9 @@ class IMRPhenomD(Waveform):
 
     def INT_phase_coeff(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
 
-        # PN coefficients for the INTERMEDIATE PHASE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        # INTERMEDIATE Phase coefficients >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         #beta0 and beta1 are fixed by the continuity conditions 
         
         beta2 = -3.282701958759534 - 9.051384468245866*eta\
@@ -864,9 +861,9 @@ class IMRPhenomD(Waveform):
 
     def MR_phase_coeff(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
 
-        # PN coefficients for the MERGER-RINGDOWN PHASE>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        # MERGER-RINGDOWN Phase coefficients >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         #alpha0 and alpha1 are fixed by the continuity conditions
         
         alpha2 = -0.07020209449091723 - 0.16269798450687084*eta\
@@ -890,9 +887,9 @@ class IMRPhenomD(Waveform):
 
     def INS_amp_coeff(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
 
-        # PN coefficients:
+        # Early inspiral PN coefficients:
         a_0 = 1.
         a_1 = 0.
         a_2 = -323./224. + 451./168.*eta
@@ -910,7 +907,7 @@ class IMRPhenomD(Waveform):
 
     def INT_amp_coeff(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
 
         # Late inspiral coefficients
         rho1 = 3931.8979897196696 - 17395.758706812805*eta\
@@ -930,7 +927,7 @@ class IMRPhenomD(Waveform):
     
     def MR_amp_coeff(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
 
         # Merger-ringdown coefficients
         gamma1 = 0.006927402739328343 + 0.03020474290328911*eta\
@@ -950,7 +947,7 @@ class IMRPhenomD(Waveform):
 
     def RD_damping(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
         
         M1 = self.gw_params['mass_1'] * cst.Msol
         M2 = self.gw_params['mass_2'] * cst.Msol
@@ -968,6 +965,23 @@ class IMRPhenomD(Waveform):
         ff_damp = (-tau_omega(chi_f)/(2*np.pi)*M/m_f)[0]
 
         return ff_RD, ff_damp
+        
+    def transition_freq(self):
+
+        gamma1, gamma2, gamma3 = IMRPhenomD.MR_amp_coeff(self)
+        
+        # Frequency at the interface between inspiral and intermediate phases
+        f1 = 0.018
+        # Frequency at the interface between intermediate and merger-ringdown phases
+        ff_RD, ff_damp = IMRPhenomD.RD_damping(self)
+        f2 = 0.5*ff_RD
+
+        # Amplitude
+        f1_amp = 0.014
+        f3_amp = (np.abs(ff_RD + (ff_damp*gamma3*(np.sqrt(1-gamma2**2.) - 1)/gamma2)))
+        f2_amp = (f1_amp + f3_amp)/2.
+
+        return f1, f2, f1_amp, f2_amp
 
 
     ################################################################################ 
@@ -977,13 +991,9 @@ class IMRPhenomD(Waveform):
 
     def calculate_ins_phase(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-        ones = np.ones((len(ff), 1))
-        
-        psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2.calculate_phase(self)
-        
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)  
         sigma2, sigma3, sigma4 = IMRPhenomD.LI_phase_coeff(self)
-
+        
         psi_late_ins = 1./eta*(3./4.*sigma2*ff**(4./3.) +\
                                3./5.*sigma3*ff**(5./3.) +\
                                1./2.*sigma4*ff**(2.))
@@ -991,8 +1001,7 @@ class IMRPhenomD(Waveform):
         ################################################################################ 
         # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
         ################################################################################ 
-
-        f1 = 0.018
+        f1, f2, f1_amp, f2_amp = IMRPhenomD.transition_freq(self)
         
         psi_late_ins_f1 = 1./eta*(3./4.*sigma2*f1**(4./3.) +\
                                   3./5.*sigma3*f1**(5./3.) +\
@@ -1006,34 +1015,32 @@ class IMRPhenomD(Waveform):
                                         sigma3*f1**(2./3.) +\
                                         sigma4*f1)
 
-        #Total INSPIRAL PART OF THE PHASE (and its DERIVATIVE), with also late inspiral terms
+        #Total INSPIRAL PART OF THE PHASE (and its DERIVATIVE), with also LI terms
         ################################################################################ 
+        psi, psi_prime, psi_f1, psi_prime_f1 = TaylorF2.calculate_phase(self)
         
         psi_ins = psi + psi_late_ins
-        psi_ins_f1 = psi_f1 + psi_late_ins_f1
-
         psi_ins_prime = psi_prime + psi_late_ins_prime
+        
+        psi_ins_f1 = psi_f1 + psi_late_ins_f1
         psi_ins_prime_f1 = psi_prime_f1 + psi_late_ins_prime_f1
 
-        return psi_ins, psi_prime, psi_ins_f1, psi_ins_prime_f1, psi_late_ins, psi_late_ins_prime
+        return psi_ins, psi_ins_prime, psi_ins_f1, psi_ins_prime_f1, psi_late_ins, psi_late_ins_prime
         
         
     def calculate_int_phase(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-        ones = np.ones((len(ff), 1))
-        
-        psi_ins, psi_prime, psi_ins_f1, psi_ins_prime_f1, psi_late_ins, psi_late_ins_prime = IMRPhenomD.calculate_ins_phase(self)
-
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self) 
         beta2, beta3 = IMRPhenomD.INT_phase_coeff(self)
 
+        psi_ins, psi_prime, psi_ins_f1, psi_ins_prime_f1, psi_late_ins, psi_late_ins_prime = IMRPhenomD.calculate_ins_phase(self)
+        
         ####################### INS-INT PHASE CONTINUITY CONDITIONS ###################
         # Impose C1 conditions at the interface
-        
-        f1 = 0.018
+        f1, f2, f1_amp, f2_amp = IMRPhenomD.transition_freq(self)
 
         beta1 = eta*psi_ins_prime_f1 - (beta2*f1**(-1.) + beta3*f1**(-4.))  # psi_ins_prime_f1 = psi_int_prime_f1
-        beta0 = eta*psi_ins_f1 - (beta1*f1 + beta2*np.log(f1) - 1./3.*beta3*f1**(-3.)) #psi_ins_f1 = psi_int_f1
+        beta0 = eta*psi_ins_f1 - (beta1*f1 + beta2*np.log(f1) - 1./3.*beta3*f1**(-3.)) # psi_ins_f1 = psi_int_f1
       
         # Evaluate full psi intermediate and its analytical derivative
         psi_int = 1./eta*(beta0*ones +\
@@ -1044,10 +1051,6 @@ class IMRPhenomD(Waveform):
         psi_int_prime = 1./eta*(beta1*ones +\
                                 beta2*ff**(-1.) +\
                                 beta3*ff**(-4.))
-
-        # Frequency at the interface between intermediate and merger-ringdown phases
-        ff_RD, ff_damp = IMRPhenomD.RD_damping(self)
-        f2 = 0.5*ff_RD
 
         psi_int_f2 = 1./eta*(beta0 +\
                              beta1*f2 +\
@@ -1062,17 +1065,13 @@ class IMRPhenomD(Waveform):
 
     def calculate_MR_phase(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-        ones = np.ones((len(ff), 1))
-        psi_int, psi_int_prime, psi_int_f2, psi_int_prime_f2 = IMRPhenomD.calculate_int_phase(self)
-
-        # Frequency at the interface between intermediate and merger-ringdown phases
-        ff_RD, ff_damp = IMRPhenomD.RD_damping(self)
-        f2 = 0.5*ff_RD
-
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
         alpha2, alpha3, alpha4, alpha5 = IMRPhenomD.MR_phase_coeff(self)
+
+        psi_int, psi_int_prime, psi_int_f2, psi_int_prime_f2 = IMRPhenomD.calculate_int_phase(self)
         
         ####################### IN-MERG PHASE CONTINUITY CONDITIONS ###################
+        f1, f2, f1_amp, f2_amp = IMRPhenomD.transition_freq(self)
         
         alpha1 = eta*psi_int_prime_f2 - (alpha2*f2**(-2.) + alpha3*f2**(-1./4.) +\
                  (alpha4*ff_damp)/(ff_damp**2. + (f2 - alpha5*ff_RD)**2.)) # psi_int_prime_f2 = psi_MR_prime_f2
@@ -1096,24 +1095,21 @@ class IMRPhenomD(Waveform):
     
     def calculate_phase(self):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-        ones = np.ones((len(ff), 1))
-        ff_RD, ff_damp = IMRPhenomD.RD_damping(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
+        f1, f2, f1_amp, f2_amp = IMRPhenomD.transition_freq(self)
         
         # Conjunction functions
-        ff1 = 0.018*ones
-        ff2 = 0.5*ff_RD*ones
+        ff1 = f1*ones
+        ff2 = f2*ones
     
         theta_minus1 = 0.5*(1*ones - step_function(ff,ff1))
         theta_minus2 = 0.5*(1*ones - step_function(ff,ff2))
-    
         theta_plus1 = 0.5*(1*ones + step_function(ff,ff1))
         theta_plus2 = 0.5*(1*ones + step_function(ff,ff2))
 
         psi_ins, psi_ins_prime, psi_ins_f1, psi_ins_prime_f1, psi_late_ins, psi_late_ins_prime = IMRPhenomD.calculate_ins_phase(self)
         psi_int, psi_int_prime, psi_int_f2, psi_int_prime_f2 = IMRPhenomD.calculate_int_phase(self)
         psi_MR, psi_MR_prime = IMRPhenomD.calculate_MR_phase(self)
-
 
         ########################### PHASE COMPONENTS ############################
         ###################### written continuosly in frequency #################
@@ -1136,10 +1132,9 @@ class IMRPhenomD(Waveform):
     
     def calculate_amplitude(self):
         
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
         r = self.gw_params['luminosity_distance'] * cst.Mpc
         iota = self.gw_params['theta_jn']
-        ones = np.ones((len(ff), 1))
         a_0, a_1, a_2, a_2, a_3, a_4, a_5, a_6 = IMRPhenomD.INS_amp_coeff(self)
         
         amp_PN = a_0*ones +\
@@ -1162,18 +1157,12 @@ class IMRPhenomD(Waveform):
              + (chi_PN - 1)**2*(0.7570782938606834 - 2.7256896890432474*eta + 7.1140380397149965*eta2)\
              + (chi_PN - 1)**3*(0.1766934149293479 - 0.7978690983168183*eta + 2.1162391502005153*eta2)
         
-        ff_RD, ff_damp = IMRPhenomD.RD_damping(self)
-
         gamma1, gamma2, gamma3 = IMRPhenomD.MR_amp_coeff(self)
 
         amp_MR = gamma1*(gamma3*ff_damp*ones)/((ff - ff_RD*ones)**2. +\
                 (gamma3*ff_damp*ones)**2)*np.exp(-gamma2*(ff - ff_RD*ones)/(gamma3*ff_damp*ones))
-        
-        # Conjunction frequencies
-        f1_amp = 0.014
-        f3_amp = (np.abs(ff_RD + (ff_damp*gamma3*(np.sqrt(1-gamma2**2.) - 1)/gamma2)))
-        f2_amp = (f1_amp + f3_amp)/2.
-    
+
+        f1, f2, f1_amp, f2_amp = IMRPhenomD.transition_freq(self)
     
         amp_ins_f1 = a_0 +\
                      a_2*(np.pi*f1_amp)**(2./3.) +\
@@ -1219,8 +1208,7 @@ class IMRPhenomD(Waveform):
         ff3_amp = f3_amp*ones
     
         theta_minus1_amp = 0.5*(1*ones - step_function(ff,ff1_amp))
-        theta_minus2_amp = 0.5*(1*ones - step_function(ff,ff3_amp))
-    
+        theta_minus2_amp = 0.5*(1*ones - step_function(ff,ff3_amp))  
         theta_plus1_amp = 0.5*(1*ones + step_function(ff,ff1_amp))
         theta_plus2_amp = 0.5*(1*ones + step_function(ff,ff3_amp))
     
@@ -1244,8 +1232,7 @@ class IMRPhenomD(Waveform):
         
     def calculate_frequency_domain_strain(self):
         
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
-
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
         psi_tot, psi_prime_tot = IMRPhenomD.calculate_phase(self)      
         hp, hc = IMRPhenomD.calculate_amplitude(self)
 
@@ -1264,18 +1251,17 @@ class IMRPhenomD(Waveform):
     
     def plot(self, output_folder='./'):
 
-        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff = Waveform.get_param_comb(self)
+        M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
+        f1, f2, f1_amp, f2_amp = IMRPhenomD.transition_freq(self)
         
         psi_TF2, psi_prime_TF2, psi__TF2_f1, psi_prime_TF2_f1 = TaylorF2.calculate_phase(self)
         psi_ins, psi_ins_prime, psi_ins_f1, psi_ins_prime_f1, psi_late_ins, psi_late_ins_prime = IMRPhenomD.calculate_ins_phase(self)
         psi_int, psi_int_prime, psi_int_f2, psi_int_prime_f2 = IMRPhenomD.calculate_int_phase(self)
         psi_MR, psi_MR_prime = IMRPhenomD.calculate_MR_phase(self)
         psi_tot, psi_prime_tot = IMRPhenomD.calculate_phase(self) 
-
-        ff_RD, ff_damp = IMRPhenomD.RD_damping(self)
-        ones = np.ones((len(ff), 1))
-        ff1 = 0.018*ones
-        ff2 = 0.5*ff_RD*ones
+        
+        ff1 = f1*ones
+        ff2 = f2*ones
         theta_minus1 = 0.5*(1*ones - step_function(ff,ff1))
         theta_minus2 = 0.5*(1*ones - step_function(ff,ff2))
         theta_plus1 = 0.5*(1*ones + step_function(ff,ff1))
