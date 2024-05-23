@@ -225,15 +225,6 @@ class TaylorF2_PPE(Inspiral_corr):
         plt.tight_layout()
         plt.savefig(output_folder + 'TF2_combined_plot.pdf')
 
-        # Phase_prime
-        plt.figure(figsize=(8, 7))
-        plt.semilogx(self.frequencyvector, psi_prime, linewidth=2, color='red', label=r'$\Phi^\prime(f)$')
-        plt.legend(fontsize=15)
-        plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
-        plt.xlabel('f [Hz]', fontsize=17)
-        plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
-        plt.show()
-
         # Delta_phase
         plt.figure()
         plt.semilogx(ff, delta_phase, linewidth=2, color='red', label=r'$\Phi(f) - \Phi_{TF2}$')
@@ -425,15 +416,6 @@ class TaylorF2_mult(Inspiral_corr):
         ax3.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
         plt.tight_layout()
         plt.savefig(output_folder + 'TF2_combined_plot.pdf')
-
-        # Phase_prime
-        plt.figure(figsize=(8, 7))
-        plt.semilogx(self.frequencyvector, psi_prime, linewidth=2, color='red', label=r'$\Phi^\prime(f)$')
-        plt.legend(fontsize=15)
-        plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
-        plt.xlabel('f [Hz]', fontsize=17)
-        plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
-        plt.show()
 
         # Delta_phase
         plt.figure()
