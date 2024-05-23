@@ -981,7 +981,7 @@ class IMRPhenomD(Waveform):
         f3_amp = (np.abs(ff_RD + (ff_damp*gamma3*(np.sqrt(1-gamma2**2.) - 1)/gamma2)))
         f2_amp = (f1_amp + f3_amp)/2.
 
-        return f1, f2, f1_amp, f2_amp
+        return f1, f2, f1_amp, f2_amp, f3_amp
 
 
     ################################################################################ 
@@ -1001,7 +1001,7 @@ class IMRPhenomD(Waveform):
         ################################################################################ 
         # Evaluate PHASE and DERIVATIVE at the INTERFACE between ins and int >>>>>>>>>>>
         ################################################################################ 
-        f1, f2, f1_amp, f2_amp = IMRPhenomD.transition_freq(self)
+        f1, f2, f1_amp, f2_amp, f3_amp = IMRPhenomD.transition_freq(self)
         
         psi_late_ins_f1 = 1./eta*(3./4.*sigma2*f1**(4./3.) +\
                                   3./5.*sigma3*f1**(5./3.) +\
@@ -1037,7 +1037,7 @@ class IMRPhenomD(Waveform):
         
         ####################### INS-INT PHASE CONTINUITY CONDITIONS ###################
         # Impose C1 conditions at the interface
-        f1, f2, f1_amp, f2_amp = IMRPhenomD.transition_freq(self)
+        f1, f2, f1_amp, f2_amp, f3_amp = IMRPhenomD.transition_freq(self)
 
         beta1 = eta*psi_ins_prime_f1 - (beta2*f1**(-1.) + beta3*f1**(-4.))  # psi_ins_prime_f1 = psi_int_prime_f1
         beta0 = eta*psi_ins_f1 - (beta1*f1 + beta2*np.log(f1) - 1./3.*beta3*f1**(-3.)) # psi_ins_f1 = psi_int_f1
@@ -1071,7 +1071,7 @@ class IMRPhenomD(Waveform):
         psi_int, psi_int_prime, psi_int_f2, psi_int_prime_f2 = IMRPhenomD.calculate_int_phase(self)
         
         ####################### IN-MERG PHASE CONTINUITY CONDITIONS ###################
-        f1, f2, f1_amp, f2_amp = IMRPhenomD.transition_freq(self)
+        f1, f2, f1_amp, f2_amp, f3_amp = IMRPhenomD.transition_freq(self)
         ff_RD, ff_damp = IMRPhenomD.RD_damping(self)
         
         alpha1 = eta*psi_int_prime_f2 - (alpha2*f2**(-2.) + alpha3*f2**(-1./4.) +\
@@ -1097,7 +1097,7 @@ class IMRPhenomD(Waveform):
     def calculate_phase(self):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
-        f1, f2, f1_amp, f2_amp = IMRPhenomD.transition_freq(self)
+        f1, f2, f1_amp, f2_amp, f3_amp = IMRPhenomD.transition_freq(self)
         
         # Conjunction functions
         ff1 = f1*ones
@@ -1164,7 +1164,7 @@ class IMRPhenomD(Waveform):
         amp_MR = gamma1*(gamma3*ff_damp*ones)/((ff - ff_RD*ones)**2. +\
                 (gamma3*ff_damp*ones)**2)*np.exp(-gamma2*(ff - ff_RD*ones)/(gamma3*ff_damp*ones))
 
-        f1, f2, f1_amp, f2_amp = IMRPhenomD.transition_freq(self)
+        f1, f2, f1_amp, f2_amp, f3_amp = IMRPhenomD.transition_freq(self)
     
         amp_ins_f1 = a_0 +\
                      a_2*(np.pi*f1_amp)**(2./3.) +\
@@ -1184,7 +1184,7 @@ class IMRPhenomD(Waveform):
                            7./3.*rho1*f1_amp**(4./3.) +\
                            8./3.*rho2*f1_amp**(5./3.) +\
                            3.*rho3*f1_amp**2.
-    
+        
         amp_MR_f3, amp_MR_prime_f3 = phenomD_amp_MR(f3_amp, self.gw_params, ff_damp, ff_RD, gamma1, gamma2, gamma3)
         amp_MR_f3 = float(amp_MR_f3)
         amp_MR_prime_f3 = float(amp_MR_prime_f3)
@@ -1254,7 +1254,7 @@ class IMRPhenomD(Waveform):
     def plot(self, output_folder='./'):
 
         M, mu, Mc, delta_mass, eta, eta2, eta3, chi_eff, chi_PN, chi_s, chi_a, C, ff, ones = Waveform.get_param_comb(self)
-        f1, f2, f1_amp, f2_amp = IMRPhenomD.transition_freq(self)
+        f1, f2, f1_amp, f2_amp, f3_amp = IMRPhenomD.transition_freq(self)
         
         psi_TF2, psi_prime_TF2, psi__TF2_f1, psi_prime_TF2_f1 = TaylorF2.calculate_phase(self)
         psi_ins, psi_ins_prime, psi_ins_f1, psi_ins_prime_f1, psi_late_ins, psi_late_ins_prime = IMRPhenomD.calculate_ins_phase(self)
