@@ -722,10 +722,8 @@ class TaylorF2(Waveform):
         ax3.set_xlabel('f [Hz]',  fontsize = 17)
         ax3.set_ylabel(r'$\cos{(\Phi)}$',  fontsize = 17)
         ax3.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.6)
-
         plt.tight_layout()
         plt.savefig(output_folder + 'TF2_combined_plot.pdf')
-
 
         # Phi_prime
         plt.figure(figsize=(8, 7))
@@ -1129,8 +1127,8 @@ class IMRPhenomD(Waveform):
         psi_prime_tot = psi_ins_prime*theta_minus1+theta_minus2*psi_int_prime*theta_plus1+theta_plus2*psi_MR_prime
 
         return psi_tot, psi_prime_tot
-        
 
+    
     ########################################################################
     ############################# AMPLITUDE ################################
     ########################################################################
@@ -1320,8 +1318,7 @@ class IMRPhenomD(Waveform):
         ax3.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         ax3.set_xlabel('f [Hz]', fontsize=17)
         ax3.set_ylabel('$\cos{(\Phi)}$', fontsize=17)
-        #ax3.set_xlim(f_limits)
-        
+        #ax3.set_xlim(f_limits)   
         plt.tight_layout()
         plt.savefig(output_folder + 'combined_phenomD.pdf')
 
