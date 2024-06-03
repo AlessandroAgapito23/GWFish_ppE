@@ -1379,7 +1379,7 @@ class IMRPhenomD(Waveform):
 
         ##############################################################################################
         
-        fig, (bx1, bx2) = plt.subplots(3, 1, figsize=(8, 7))
+        fig, (bx1, bx2) = plt.subplots(2, 1, figsize=(8, 7))
         f_limits = (2, 500)    
         h_limits = (10**(-25), 10**(-20))
 
@@ -1413,7 +1413,6 @@ class IMRPhenomD(Waveform):
 
         plt.tight_layout()
         plt.savefig(output_folder + 'regions_phenomD.pdf')
-        plt.show()
 
         plt.close()
 
