@@ -1402,13 +1402,13 @@ class IMRPhenomD(Waveform):
         bx1.loglog(self.frequencyvector*f_dim, np.abs(self.frequency_domain_strain[:, 0]), linewidth=2, color='blue', label=r'$A(f)$', zorder = 1)
         bx1.legend(fontsize=15)
         bx1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
-        bx1.set_title('IMRPhenomD', fontsize=19)
+        #bx1.set_title('IMRPhenomD', fontsize=19)
         bx1.set_ylabel(r'Amplitude [$Hz^{-1}$]', fontsize=17)
         #bx1.set_ylim(h_limits)
 
         bx1.axvspan(0., f1_amp, color=cm(0.2), alpha=0.2, zorder=-1)    # LightYellow
         bx1.axvspan(f1_amp, f2_amp, color=cm(0.5), alpha=0.3, zorder=-1)  # Gold
-        bx1.axvspan(f2_amp, 0.4, color=cm(1.), alpha=0.3, zorder=-1)  # Orange
+        bx1.axvspan(f2_amp, 1., color=cm(1.), alpha=0.3, zorder=-1)  # Orange
 
         bx1.axvline(f1_amp, color='black', linestyle='--', linewidth=1., zorder=0)  # Linea al cambio di colore 1
         bx1.axvline(f2_amp, color='black', linestyle='--', linewidth=1., zorder=0)
@@ -1416,13 +1416,13 @@ class IMRPhenomD(Waveform):
         
         # Phase
         bx2.semilogx(self.frequencyvector*f_dim, psi_tot, linewidth=2, color='blue', label=r'$\Phi(f)$',zorder = 1)
-        bx2.legend(fontsize=15)
+        bx2.legend(fontsize=15, loc = 'upper right')
         bx2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         bx2.set_ylabel('Phase [rad]', fontsize=17)
 
         bx2.axvspan(0., f1, color=cm(0.2), alpha=0.2, zorder=-1)    # LightYellow
         bx2.axvspan(f1, f2, color=cm(0.5), alpha=0.3, zorder=-1)  # Gold
-        bx2.axvspan(f2, 0.4, color=cm(1.), alpha=0.3, zorder=-1) # Orange
+        bx2.axvspan(f2, 1., color=cm(1.), alpha=0.3, zorder=-1) # Orange
 
         bx2.axvline(f1, color='black', linestyle='--', linewidth=1., zorder=0)  # Linea al cambio di colore 1
         bx2.axvline(f2, color='black', linestyle='--', linewidth=1., zorder=0)
