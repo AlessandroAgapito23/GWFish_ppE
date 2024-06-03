@@ -1420,7 +1420,7 @@ class IMRPhenomD(Waveform):
         bx2.legend(fontsize=15, loc = 'upper right')
         bx2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         bx2.set_ylabel('Phase [rad]', fontsize=17)
-        bx1.set_xlabel('$\hat f$', fontsize=17)
+        bx2.set_xlabel('$\hat f$', fontsize=17)
 
         bx2.axvspan(0., f1, color=cm(0.2), alpha=0.2, zorder=-1)    # LightYellow
         bx2.axvspan(f1, f2, color=cm(0.5), alpha=0.3, zorder=-1)  # Gold
@@ -1433,6 +1433,13 @@ class IMRPhenomD(Waveform):
         bx1.set_xlim(f_limits)
         bx2.set_xlim(f_limits)
 
+        # Aggiunta delle etichette
+        bbox_props = dict(boxstyle="round,pad=0.3", fc="white", ec="black", lw=1)
+        plt.text(0.1, 0.9, 'Inspiral', color='black', fontsize=12, transform=ax1.transAxes, bbox=bbox_props)
+        plt.text(0.5, 0.9, 'Intermediate', color='black', fontsize=12, transform=ax1.transAxes, bbox=bbox_props)
+        plt.text(0.85, 0.9, 'Merger-Ringdown', color='black', fontsize=12, transform=ax1.transAxes, bbox=bbox_props)
+
+        
         plt.tight_layout()
         plt.savefig(output_folder + 'regions_phenomD.pdf')
 
