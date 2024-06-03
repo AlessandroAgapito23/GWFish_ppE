@@ -1400,7 +1400,7 @@ class IMRPhenomD(Waveform):
 
         # Fourier amplitude
         bx1.loglog(self.frequencyvector*f_dim, np.abs(self.frequency_domain_strain[:, 0]), linewidth=2, color='blue', label=r'$A(f)$', zorder = 1)
-        bx1.legend(fontsize=15)
+        bx1.legend(fontsize=15, loc = 'upper right')
         bx1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         #bx1.set_title('IMRPhenomD', fontsize=19)
         bx1.set_ylabel(r'Amplitude [$Hz^{-1}$]', fontsize=17)
@@ -1420,6 +1420,7 @@ class IMRPhenomD(Waveform):
         bx2.legend(fontsize=15, loc = 'upper right')
         bx2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         bx2.set_ylabel('Phase [rad]', fontsize=17)
+        bx1.set_xlabel('$\hat f$', fontsize=17)
 
         bx2.axvspan(0., f1, color=cm(0.2), alpha=0.2, zorder=-1)    # LightYellow
         bx2.axvspan(f1, f2, color=cm(0.5), alpha=0.3, zorder=-1)  # Gold
@@ -1429,7 +1430,7 @@ class IMRPhenomD(Waveform):
         bx2.axvline(f2, color='black', linestyle='--', linewidth=1., zorder=0)
 
         # Impostazione limiti di frequenza
-        #bx1.set_xlim(f_limits)
+        bx1.set_xlim(f_limits)
         bx2.set_xlim(f_limits)
 
         plt.tight_layout()
