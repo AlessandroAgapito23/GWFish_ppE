@@ -1386,7 +1386,7 @@ class IMRPhenomD(Waveform):
         cm = LinearSegmentedColormap.from_list(cmap_name, colors, N=100)
         
         fig, (bx1, bx2) = plt.subplots(2, 1, figsize=(8, 7))
-        f_limits = (2, 500)    
+        f_limits = (0.0006, 0.4)    
         h_limits = (10**(-25), 10**(-20))
 
         f_dim = cst.G*M/cst.c**3
@@ -1405,6 +1405,7 @@ class IMRPhenomD(Waveform):
         #bx1.set_title('IMRPhenomD', fontsize=19)
         bx1.set_ylabel(r'Amplitude [$Hz^{-1}$]', fontsize=17)
         #bx1.set_ylim(h_limits)
+        bx2.set_xlim(f_limits)
 
         bx1.axvspan(0., f1_amp, color=cm(0.2), alpha=0.2, zorder=-1)    # LightYellow
         bx1.axvspan(f1_amp, f2_amp, color=cm(0.5), alpha=0.3, zorder=-1)  # Gold
@@ -1429,7 +1430,7 @@ class IMRPhenomD(Waveform):
 
         # Impostazione limiti di frequenza
         #bx1.set_xlim(f_limits)
-        #bx2.set_xlim(f_limits)
+        bx2.set_xlim(f_limits)
 
         plt.tight_layout()
         plt.savefig(output_folder + 'regions_phenomD.pdf')
