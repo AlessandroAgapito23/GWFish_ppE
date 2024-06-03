@@ -1402,9 +1402,9 @@ class IMRPhenomD(Waveform):
         bx1.set_ylabel(r'Amplitude [$Hz^{-1}$]', fontsize=17)
         #bx1.set_ylim(h_limits)
 
-        bx1.axvspan(2., f1_amp, color='#FFFACD', alpha=0.2, zorder=-1)    # LightYellow
+        bx1.axvspan(0., f1_amp, color='#FFFACD', alpha=0.2, zorder=-1)    # LightYellow
         bx1.axvspan(f1_amp, f2_amp, color='#FFD700', alpha=0.3, zorder=-1)  # Gold
-        bx1.axvspan(f2_amp, 2048, color='#FFA500', alpha=0.3, zorder=-1)  # Orange
+        bx1.axvspan(f2_amp, 0.4, color='#FFA500', alpha=0.3, zorder=-1)  # Orange
 
         bx1.axvline(f1_amp, color='black', linestyle='--', linewidth=1., zorder=0)  # Linea al cambio di colore 1
         bx1.axvline(f2_amp, color='black', linestyle='--', linewidth=1., zorder=0)
@@ -1416,16 +1416,16 @@ class IMRPhenomD(Waveform):
         bx2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         bx2.set_ylabel('Phase [rad]', fontsize=17)
 
-        bx2.axvspan(2., f1, color='#FFFACD', alpha=0.2, zorder=-1)    # LightYellow
+        bx2.axvspan(0., f1, color='#FFFACD', alpha=0.2, zorder=-1)    # LightYellow
         bx2.axvspan(f1, f2, color='#FFD700', alpha=0.3, zorder=-1)  # Gold
-        bx2.axvspan(f2, 2048, color='#FFA500', alpha=0.3, zorder=-1) # Orange
+        bx2.axvspan(f2, 0.4, color='#FFA500', alpha=0.3, zorder=-1) # Orange
 
         bx2.axvline(f1, color='black', linestyle='--', linewidth=1., zorder=0)  # Linea al cambio di colore 1
         bx2.axvline(f2, color='black', linestyle='--', linewidth=1., zorder=0)
 
         # Impostazione limiti di frequenza
-        #ax1.set_xlim(f_limits)
-        #ax2.set_xlim(f_limits)
+        bx1.set_xlim(f_limits)
+        bx2.set_xlim(f_limits)
 
         plt.tight_layout()
         plt.savefig(output_folder + 'regions_phenomD.pdf')
