@@ -1310,6 +1310,8 @@ class IMRPhenomD(Waveform):
         plt.tight_layout()
         plt.savefig(output_folder + 'combined_phenomD.pdf')
 
+
+        #####################################################################################
         # Phi_prime
         plt.figure(figsize=(8, 7))
         plt.loglog(ff, -psi_prime_tot, linewidth=2, color='blue',label=r'$-\Phi^\prime(f^\prime)$')
@@ -1317,7 +1319,7 @@ class IMRPhenomD(Waveform):
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
-        plt.show()
+        #plt.show()
 
         # EI
         plt.figure(figsize=(8, 7))
@@ -1328,7 +1330,7 @@ class IMRPhenomD(Waveform):
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
         plt.xlim(10**(-4.),f1)
-        plt.show()
+        #plt.show()
 
         
         # LI
@@ -1340,7 +1342,7 @@ class IMRPhenomD(Waveform):
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
         plt.xlim(10**(-4.),f1)
-        plt.show()
+        #plt.show()
 
         # EI + LI
         plt.figure(figsize=(8, 7))
@@ -1351,7 +1353,7 @@ class IMRPhenomD(Waveform):
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
         plt.xlim(10**(-4.),f1)
-        plt.show()
+        #plt.show()
 
         # INT
         plt.figure(figsize=(8, 7))
@@ -1362,7 +1364,7 @@ class IMRPhenomD(Waveform):
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
         plt.xlim(0.018,f2)
-        plt.show()
+        #plt.show()
 
         # MR
         plt.figure(figsize=(8, 7))
@@ -1373,6 +1375,44 @@ class IMRPhenomD(Waveform):
         plt.xlabel('$f^\prime$[Hz]', fontsize=17)
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
         plt.xlim(f2, 1)
+        #plt.show()
+
+        ##############################################################################################
+        
+        fig, (bx1, bx2) = plt.subplots(3, 1, figsize=(8, 7))
+        f_limits = (2, 500)    
+        h_limits = (10**(-25), 10**(-20))
+
+        # Fourier amplitude
+        bx1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), linewidth=2, color='blue', label=r'$h_+(f)$')
+        bx1.legend(fontsize=15)
+        bx1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
+        bx1.set_title('IMRPhenomD', fontsize=19)
+        bx1.set_ylabel(r'Amplitude [$Hz^{-1}$]', fontsize=17)
+        bx1.set_ylim(h_limits)
+
+        # Evidenziazione delle zone
+        bx1.axvspan(2, 20, color='yellow', alpha=0.3)
+        bx1.axvspan(20, 100, color='green', alpha=0.3)
+        bx1.axvspan(100, 500, color='red', alpha=0.3)
+
+        # Phase
+        bx2.semilogx(self.frequencyvector, psi_tot, linewidth=2, color='blue', label=r'$\Phi(f)$')
+        bx2.legend(fontsize=15)
+        bx2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
+        bx2.set_ylabel('Phase [rad]', fontsize=17)
+
+        # Evidenziazione delle zone
+        bx2.axvspan(2, 20, color='yellow', alpha=0.3)
+        bx2.axvspan(20, 100, color='green', alpha=0.3)
+        bx2.axvspan(100, 500, color='red', alpha=0.3)
+
+        # Impostazione limiti di frequenza
+        #ax1.set_xlim(f_limits)
+        #ax2.set_xlim(f_limits)
+
+        plt.tight_layout()
+        plt.savefig(output_folder + 'regions_phenomD.pdf')
         plt.show()
 
         plt.close()
