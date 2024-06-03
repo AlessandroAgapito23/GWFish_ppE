@@ -1388,32 +1388,22 @@ class IMRPhenomD(Waveform):
         fig, (bx1, bx2) = plt.subplots(2, 1, figsize=(8, 7))
         f_limits = (0.0006, 0.4)    
         h_limits = (10**(-25), 10**(-20))
-
         f_dim = cst.G*M/cst.c**3
-        
-        """
-        f1 = f1/f_dim
-        f2 = f2/f_dim
-        f1_amp = f1_amp/f_dim
-        f2_amp = f2_amp/f_dim
-        """
 
         # Fourier amplitude
         bx1.loglog(self.frequencyvector*f_dim, np.abs(self.frequency_domain_strain[:, 0]), linewidth=2, color='blue', label=r'$A(f)$', zorder = 1)
         bx1.legend(fontsize=15, loc = 'upper right')
         bx1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
-        #bx1.set_title('IMRPhenomD', fontsize=19)
         bx1.set_ylabel(r'Amplitude [$Hz^{-1}$]', fontsize=17)
         #bx1.set_ylim(h_limits)
         bx2.set_xlim(f_limits)
 
-        bx1.axvspan(0., f1_amp, color=cm(0.2), alpha=0.2, zorder=-1)    # LightYellow
-        bx1.axvspan(f1_amp, f2_amp, color=cm(0.5), alpha=0.3, zorder=-1)  # Gold
-        bx1.axvspan(f2_amp, 1., color=cm(1.), alpha=0.3, zorder=-1)  # Orange
+        bx1.axvspan(0., f1_amp, color=cm(0.2), alpha=0.2, zorder=-1)    
+        bx1.axvspan(f1_amp, f2_amp, color=cm(0.5), alpha=0.3, zorder=-1) 
+        bx1.axvspan(f2_amp, 1., color=cm(1.), alpha=0.3, zorder=-1) 
 
-        bx1.axvline(f1_amp, color='black', linestyle='--', linewidth=1., zorder=0)  # Linea al cambio di colore 1
+        bx1.axvline(f1_amp, color='black', linestyle='--', linewidth=1., zorder=0) 
         bx1.axvline(f2_amp, color='black', linestyle='--', linewidth=1., zorder=0)
-
         
         # Phase
         bx2.semilogx(self.frequencyvector*f_dim, psi_tot, linewidth=2, color='blue', label=r'$\Phi(f)$',zorder = 1)
@@ -1422,27 +1412,16 @@ class IMRPhenomD(Waveform):
         bx2.set_ylabel('Phase [rad]', fontsize=17)
         bx2.set_xlabel('$\hat f$', fontsize=17)
 
-        bx2.axvspan(0., f1, color=cm(0.2), alpha=0.2, zorder=-1)    # LightYellow
-        bx2.axvspan(f1, f2, color=cm(0.5), alpha=0.3, zorder=-1)  # Gold
-        bx2.axvspan(f2, 1., color=cm(1.), alpha=0.3, zorder=-1) # Orange
+        bx2.axvspan(0., f1, color=cm(0.2), alpha=0.2, zorder=-1)    
+        bx2.axvspan(f1, f2, color=cm(0.5), alpha=0.3, zorder=-1) 
+        bx2.axvspan(f2, 1., color=cm(1.), alpha=0.3, zorder=-1) 
 
-        bx2.axvline(f1, color='black', linestyle='--', linewidth=1., zorder=0)  # Linea al cambio di colore 1
+        bx2.axvline(f1, color='black', linestyle='--', linewidth=1., zorder=0) 
         bx2.axvline(f2, color='black', linestyle='--', linewidth=1., zorder=0)
 
         # Impostazione limiti di frequenza
         bx1.set_xlim(f_limits)
         bx2.set_xlim(f_limits)
-
-        """
-        # Aggiunta delle etichette
-        bbox_props = dict(boxstyle="round,pad=0.3", fc="white", ec="black", lw=1)
-        plt.text(0.1, 0.9, 'Inspiral', color='black', fontsize=9, transform=bx1.transAxes, bbox=bbox_props)
-        plt.text(0.5, 0.9, 'Intermediate', color='black', fontsize=9, transform=bx1.transAxes, bbox=bbox_props)
-        plt.text(0.85, 0.9, 'Merger-Ringdown', color='black', fontsize=9, transform=bx1.transAxes, bbox=bbox_props)
-        plt.text(0.1, 0.9, 'Inspiral', color='black', fontsize=9, transform=bx2.transAxes, bbox=bbox_props)
-        plt.text(0.5, 0.9, 'Intermediate', color='black', fontsize=9, transform=bx2.transAxes, bbox=bbox_props)
-        plt.text(0.85, 0.9, 'Merger-Ringdown', color='black', fontsize=9, transform=bx2.transAxes, bbox=bbox_props)
-        """
 
         plt.tight_layout()
         plt.savefig(output_folder + 'regions_phenomD.pdf')
