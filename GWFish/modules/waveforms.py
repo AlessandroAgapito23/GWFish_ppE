@@ -1428,8 +1428,8 @@ class IMRPhenomD(Waveform):
         bx2.axvline(f2, color='black', linestyle='--', linewidth=1., zorder=0)
 
         # Impostazione limiti di frequenza
-        bx1.set_xlim(f_limits)
-        bx2.set_xlim(f_limits)
+        #bx1.set_xlim(f_limits)
+        #bx2.set_xlim(f_limits)
 
         plt.tight_layout()
         plt.savefig(output_folder + 'regions_phenomD.pdf')
