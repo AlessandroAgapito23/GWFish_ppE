@@ -1386,10 +1386,10 @@ class IMRPhenomD(Waveform):
         h_limits = (10**(-25), 10**(-20))
 
         f_dim = cst.G*M/cst.c**3
-        f1 = f1*f_dim
-        f2 = f2*f_dim
-        f1_amp = f1_amp*f_dim
-        f2_amp = f2_amp*f_dim
+        f1 = f1/f_dim
+        f2 = f2/f_dim
+        f1_amp = f1_amp/f_dim
+        f2_amp = f2_amp/f_dim
 
         # Fourier amplitude
         bx1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), linewidth=2, color='blue', label=r'$A(f)$', zorder = 1)
@@ -1403,8 +1403,8 @@ class IMRPhenomD(Waveform):
         bx1.axvspan(f1_amp, f2_amp, color='#FFD700', alpha=0.3, zorder=-1)  # Gold
         bx1.axvspan(f2_amp, 2048, color='#FFA500', alpha=0.3, zorder=-1)  # Orange
 
-        bx1.axvline(f1, color='black', linestyle='--', linewidth=1., zorder=0)  # Linea al cambio di colore 1
-        bx1.axvline(f2, color='black', linestyle='--', linewidth=1., zorder=0)
+        bx1.axvline(f1_amp, color='black', linestyle='--', linewidth=1., zorder=0)  # Linea al cambio di colore 1
+        bx1.axvline(f2_amp, color='black', linestyle='--', linewidth=1., zorder=0)
 
         
         # Phase
