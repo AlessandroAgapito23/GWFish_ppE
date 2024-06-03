@@ -1379,7 +1379,6 @@ class IMRPhenomD(Waveform):
         #plt.show()
         """
         ##############################################################################################
-        self = type('', (), {})()  # Crea un oggetto vuoto per contenere i dati
         fig, (bx1, bx2) = plt.subplots(2, 1, figsize=(8, 7))
         f_limits = (2, 500)    
         h_limits = (10**(-25), 10**(-20))
