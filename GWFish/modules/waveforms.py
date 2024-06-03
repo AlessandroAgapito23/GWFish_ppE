@@ -1385,34 +1385,36 @@ class IMRPhenomD(Waveform):
         f_limits = (2, 500)    
         h_limits = (10**(-25), 10**(-20))
 
+        f_dim = cst.G*M/cst.c**3
+
         # Fourier amplitude
-        bx1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), linewidth=2, color='blue', label=r'$A(f)$', zorder = 1)
+        bx1.loglog(self.frequencyvector/f_dim, np.abs(self.frequency_domain_strain[:, 0]), linewidth=2, color='blue', label=r'$A(f)$', zorder = 1)
         bx1.legend(fontsize=15)
         bx1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         bx1.set_title('IMRPhenomD', fontsize=19)
         bx1.set_ylabel(r'Amplitude [$Hz^{-1}$]', fontsize=17)
-        bx1.set_ylim(h_limits)
+        #bx1.set_ylim(h_limits)
 
-        bx1.axvspan(2, 20, color=cm.viridis(0.2), alpha=0.2, zorder=0)
-        bx1.axvspan(20, 100, color=cm.viridis(0.5), alpha=0.3, zorder=0)
-        bx1.axvspan(100, 500, color=cm.viridis(1.0), alpha=0.3, zorder=0)
+        bx1.axvspan(0., f1_amp, color='#FFFACD', alpha=0.2, zorder=-1)    # LightYellow
+        bx1.axvspan(f1_amp, f2_amp, color='#FFD700', alpha=0.3, zorder=-1)  # Gold
+        bx1.axvspan(f2_amp, 500, color='#FFA500', alpha=0.3, zorder=-1)  # Orange
 
-        bx1.axvline(20, color='black', linestyle='--', linewidth=1., zorder=1)  # Linea al cambio di colore 1
-        bx1.axvline(100, color='black', linestyle='--', linewidth=1., zorder=1)
+        bx1.axvline(f1, color='black', linestyle='--', linewidth=1., zorder=0)  # Linea al cambio di colore 1
+        bx1.axvline(f2, color='black', linestyle='--', linewidth=1., zorder=0)
 
         
         # Phase
-        bx2.semilogx(self.frequencyvector, psi_tot, linewidth=2, color='blue', label=r'$\Phi(f)$',zorder = 1)
+        bx2.semilogx(self.frequencyvector/f_dim, psi_tot, linewidth=2, color='blue', label=r'$\Phi(f)$',zorder = 1)
         bx2.legend(fontsize=15)
         bx2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         bx2.set_ylabel('Phase [rad]', fontsize=17)
 
-        bx2.axvspan(2, 20, color=cm.viridis(0.2), alpha=0.2, zorder=0)
-        bx2.axvspan(20, 100, color=cm.viridis(0.5), alpha=0.3, zorder=0)
-        bx2.axvspan(100, 500, color=cm.viridis(1.0), alpha=0.3, zorder=0)
+        bx2.axvspan(0., f1, color='#FFFACD', alpha=0.2, zorder=-1)    # LightYellow
+        bx2.axvspan(f1, f2, color='#FFD700', alpha=0.3, zorder=-1)  # Gold
+        bx2.axvspan(f2, 500, color='#FFA500', alpha=0.3, zorder=-1) # Orange
 
-        bx2.axvline(20, color='black', linestyle='--', linewidth=1., zorder=1)  # Linea al cambio di colore 1
-        bx2.axvline(100, color='black', linestyle='--', linewidth=1., zorder=1)
+        bx2.axvline(f1, color='black', linestyle='--', linewidth=1., zorder=0)  # Linea al cambio di colore 1
+        bx2.axvline(f2, color='black', linestyle='--', linewidth=1., zorder=0)
 
 
 
