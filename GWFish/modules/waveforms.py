@@ -1384,32 +1384,34 @@ class IMRPhenomD(Waveform):
         h_limits = (10**(-25), 10**(-20))
 
         # Fourier amplitude
-        bx1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), linewidth=2, color='blue', label=r'$h_+(f)$')
+        bx1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), linewidth=2, color='blue', label=r'$A(f)$', zorder = 1)
         bx1.legend(fontsize=15)
         bx1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         bx1.set_title('IMRPhenomD', fontsize=19)
         bx1.set_ylabel(r'Amplitude [$Hz^{-1}$]', fontsize=17)
         bx1.set_ylim(h_limits)
 
-        bx1.fill_between(self.frequencyvector, h_limits[0], h_limits[1], where=(self.frequencyvector < 20), 
-                 color='#FFFACD', alpha=0.3)
-        bx1.fill_between(self.frequencyvector, h_limits[0], h_limits[1], where=(self.frequencyvector >= 20) & (self.frequencyvector < 100), 
-                 color='#FFD700', alpha=0.3)
-        bx1.fill_between(self.frequencyvector, h_limits[0], h_limits[1], where=(self.frequencyvector >= 100), 
-                 color='#FFA500', alpha=0.3)
+        bx1.axvspan(2, 20, color=cm.viridis(0.2), alpha=0.2, zorder=0)
+        bx1.axvspan(20, 100, color=cm.viridis(0.5), alpha=0.3, zorder=0)
+        bx1.axvspan(100, 500, color=cm.viridis(1.0), alpha=0.3, zorder=0)
 
+        bx1.axvline(20, color='black', linestyle='--', linewidth=1., zorder=1)  # Linea al cambio di colore 1
+        bx1.axvline(100, color='black', linestyle='--', linewidth=1., zorder=1)
+
+        
         # Phase
-        bx2.semilogx(self.frequencyvector, psi_tot, linewidth=2, color='blue', label=r'$\Phi(f)$')
+        bx2.semilogx(self.frequencyvector, psi_tot, linewidth=2, color='blue', label=r'$\Phi(f)$',zorder = 1)
         bx2.legend(fontsize=15)
         bx2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         bx2.set_ylabel('Phase [rad]', fontsize=17)
 
-        bx2.fill_between(self.frequencyvector, min(psi_tot), max(psi_tot), where=(self.frequencyvector >= 2) & (self.frequencyvector < 20), 
-                 color='#FFFACD', alpha=0.3)
-        bx2.fill_between(self.frequencyvector, min(psi_tot), max(psi_tot), where=(self.frequencyvector >= 20) & (self.frequencyvector < 100), 
-                 color='#FFD700', alpha=0.3)
-        bx2.fill_between(self.frequencyvector, min(psi_tot), max(psi_tot), where=(self.frequencyvector >= 100), 
-                 color='#FFA500', alpha=0.3)
+        bx2.axvspan(2, 20, color=cm.viridis(0.2), alpha=0.2, zorder=0)
+        bx2.axvspan(20, 100, color=cm.viridis(0.5), alpha=0.3, zorder=0)
+        bx2.axvspan(100, 500, color=cm.viridis(1.0), alpha=0.3, zorder=0)
+
+        bx2.axvline(20, color='black', linestyle='--', linewidth=1., zorder=1)  # Linea al cambio di colore 1
+        bx2.axvline(100, color='black', linestyle='--', linewidth=1., zorder=1)
+
 
 
         # Impostazione limiti di frequenza
