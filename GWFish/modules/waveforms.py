@@ -1321,6 +1321,7 @@ class IMRPhenomD(Waveform):
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
         #plt.show()
 
+        """
         # EI
         plt.figure(figsize=(8, 7))
         plt.semilogx(ff, psi_TF2, linewidth=2, color='blue',label=r'$\Phi_{EI}(f)$')
@@ -1376,9 +1377,9 @@ class IMRPhenomD(Waveform):
         plt.ylabel(r'Phase derivative [rad/Hz]', fontsize=17)
         plt.xlim(f2, 1)
         #plt.show()
-
+        """
         ##############################################################################################
-        
+        self = type('', (), {})()  # Crea un oggetto vuoto per contenere i dati
         fig, (bx1, bx2) = plt.subplots(2, 1, figsize=(8, 7))
         f_limits = (2, 500)    
         h_limits = (10**(-25), 10**(-20))
@@ -1391,10 +1392,12 @@ class IMRPhenomD(Waveform):
         bx1.set_ylabel(r'Amplitude [$Hz^{-1}$]', fontsize=17)
         bx1.set_ylim(h_limits)
 
-        # Evidenziazione delle zone
-        bx1.axvspan(2, 20, color='yellow', alpha=0.3)
-        bx1.axvspan(20, 100, color='green', alpha=0.3)
-        bx1.axvspan(100, 500, color='red', alpha=0.3)
+        bx1.fill_between(self.frequencyvector, h_limits[0], h_limits[1], where=(self.frequencyvector < 20), 
+                 color='#FFFACD', alpha=0.3)
+        bx1.fill_between(self.frequencyvector, h_limits[0], h_limits[1], where=(self.frequencyvector >= 20) & (self.frequencyvector < 100), 
+                 color='#FFD700', alpha=0.3)
+        bx1.fill_between(self.frequencyvector, h_limits[0], h_limits[1], where=(self.frequencyvector >= 100), 
+                 color='#FFA500', alpha=0.3)
 
         # Phase
         bx2.semilogx(self.frequencyvector, psi_tot, linewidth=2, color='blue', label=r'$\Phi(f)$')
@@ -1402,10 +1405,13 @@ class IMRPhenomD(Waveform):
         bx2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         bx2.set_ylabel('Phase [rad]', fontsize=17)
 
-        # Evidenziazione delle zone
-        bx2.axvspan(2, 20, color='yellow', alpha=0.3)
-        bx2.axvspan(20, 100, color='green', alpha=0.3)
-        bx2.axvspan(100, 500, color='red', alpha=0.3)
+        bx2.fill_between(self.frequencyvector, min(psi_tot), max(psi_tot), where=(self.frequencyvector >= 2) & (self.frequencyvector < 20), 
+                 color='#FFFACD', alpha=0.3)
+        bx2.fill_between(self.frequencyvector, min(psi_tot), max(psi_tot), where=(self.frequencyvector >= 20) & (self.frequencyvector < 100), 
+                 color='#FFD700', alpha=0.3)
+        bx2.fill_between(self.frequencyvector, min(psi_tot), max(psi_tot), where=(self.frequencyvector >= 100), 
+                 color='#FFA500', alpha=0.3)
+
 
         # Impostazione limiti di frequenza
         #ax1.set_xlim(f_limits)
