@@ -1386,13 +1386,16 @@ class IMRPhenomD(Waveform):
         h_limits = (10**(-25), 10**(-20))
 
         f_dim = cst.G*M/cst.c**3
+        
+        """
         f1 = f1/f_dim
         f2 = f2/f_dim
         f1_amp = f1_amp/f_dim
         f2_amp = f2_amp/f_dim
+        """
 
         # Fourier amplitude
-        bx1.loglog(self.frequencyvector, np.abs(self.frequency_domain_strain[:, 0]), linewidth=2, color='blue', label=r'$A(f)$', zorder = 1)
+        bx1.loglog(self.frequencyvector*f_dim, np.abs(self.frequency_domain_strain[:, 0]), linewidth=2, color='blue', label=r'$A(f)$', zorder = 1)
         bx1.legend(fontsize=15)
         bx1.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         bx1.set_title('IMRPhenomD', fontsize=19)
@@ -1408,7 +1411,7 @@ class IMRPhenomD(Waveform):
 
         
         # Phase
-        bx2.semilogx(self.frequencyvector, psi_tot, linewidth=2, color='blue', label=r'$\Phi(f)$',zorder = 1)
+        bx2.semilogx(self.frequencyvector*f_dim, psi_tot, linewidth=2, color='blue', label=r'$\Phi(f)$',zorder = 1)
         bx2.legend(fontsize=15)
         bx2.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         bx2.set_ylabel('Phase [rad]', fontsize=17)
