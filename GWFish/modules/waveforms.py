@@ -1435,9 +1435,12 @@ class IMRPhenomD(Waveform):
 
         # Aggiunta delle etichette
         bbox_props = dict(boxstyle="round,pad=0.3", fc="white", ec="black", lw=1)
-        plt.text(0.1, 0.9, 'Inspiral', color='black', fontsize=12, transform=ax1.transAxes, bbox=bbox_props)
-        plt.text(0.5, 0.9, 'Intermediate', color='black', fontsize=12, transform=ax1.transAxes, bbox=bbox_props)
-        plt.text(0.85, 0.9, 'Merger-Ringdown', color='black', fontsize=12, transform=ax1.transAxes, bbox=bbox_props)
+        plt.text(0.1, 0.9, 'Inspiral', color='black', fontsize=12, transform=bx1.transAxes, bbox=bbox_props)
+        plt.text(0.5, 0.9, 'Intermediate', color='black', fontsize=12, transform=bx1.transAxes, bbox=bbox_props)
+        plt.text(0.85, 0.9, 'Merger-Ringdown', color='black', fontsize=12, transform=bx1.transAxes, bbox=bbox_props)
+        plt.text(0.1, 0.9, 'Inspiral', color='black', fontsize=12, transform=bx2.transAxes, bbox=bbox_props)
+        plt.text(0.5, 0.9, 'Intermediate', color='black', fontsize=12, transform=bx2.transAxes, bbox=bbox_props)
+        plt.text(0.85, 0.9, 'Merger-Ringdown', color='black', fontsize=12, transform=bx2.transAxes, bbox=bbox_props)
 
         
         plt.tight_layout()
