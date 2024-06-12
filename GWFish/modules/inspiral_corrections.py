@@ -228,9 +228,9 @@ class TaylorF2_PPE(Inspiral_corr):
         # Delta_phase
         plt.figure()
         plt.semilogx(self.frequencyvector, delta_phase, linewidth=2, color='red', label=r'$\Phi(f) - \Phi^{GR}}$')
-        plt.xlabel('$f$ [Hz]', fontsize = 17)
-        plt.ylabel('Phase difference [rad]', fontsize = 17)
-        plt.legend(fontsize=15)
+        plt.xlabel('$f$ [Hz]', fontsize = 15)
+        plt.ylabel(r'$\Delta \Phi (f)$ [rad]', fontsize = 15)
+        plt.legend(fontsize=13)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.tight_layout()
         plt.savefig(output_folder + 'delta_phase_tot_PPE.png')
