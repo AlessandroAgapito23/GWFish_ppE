@@ -233,7 +233,7 @@ class TaylorF2_PPE(Inspiral_corr):
         plt.legend(fontsize=13)
         plt.grid(which='both', color='lightgray', alpha=0.5, linestyle='dashed', linewidth=0.5)
         plt.tight_layout()
-        plt.savefig(output_folder + 'delta_phase_tot_PPE.png')
+        plt.savefig(output_folder + 'delta_phase_tot_PPE.pdf')
         plt.show()
 
         plt.close()
